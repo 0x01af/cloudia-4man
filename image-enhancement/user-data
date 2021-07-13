@@ -16,12 +16,12 @@ ssh_pwauth: true
 ## Add users and groups to the system, and import keys with the ssh-import-id
 ## utility
 groups:
- - superadmin
+ - osoz-su
 #- pi
 #
 users:
-- name: superadmin
-  primary-group: superadmin
+- name: osoz-su
+  primary-group: osoz-su
   shell: /bin/bash
   sudo: ALL=(ALL) NOPASSWD:ALL
   passwd: $5$JohOZuDSz8s4hrMS$WAmGo.fT8UTVLLExKKag1KEP9QAIn16KJCfcEEhfnWC
@@ -44,4 +44,4 @@ users:
 chpasswd:
   expire: true
   list:
-  - superadmin:superadmin
+  - osoz-su:osoz-su
