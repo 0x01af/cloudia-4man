@@ -24,10 +24,9 @@ users:
   primary-group: osoz-su
   shell: /bin/bash
   sudo: ALL=(ALL) NOPASSWD:ALL
-  passwd: $5$JohOZuDSz8s4hrMS$WAmGo.fT8UTVLLExKKag1KEP9QAIn16KJCfcEEhfnWC
-  groups: superadmin,users,adm,dialout,audio,plugdev,netdev,video
+  groups: [osoz-su, users, adm, audio, cdrom, dialout, dip, floppy, lxd, netdev, plugdev, sudo, video]
   lock_passwd: false
-  passwd: xxx
+  passwd: $1$0v31uXwG$2VykMho3fYcJAwD2KkqYQ.
 #  lock_passwd: true
 #  ssh-authorized-keys:
 #    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDtpAxHXoJaIxbbfkTZGh6IPqCfQyD7oBSwDxdocNmzxbMXbfqwML/CN7Rfp0icBC+fCL03LgcpmZ9nuF1Jvfjp90JhnXWD2hrnLjBrOaP4x6RlTSkFLSLxgJaLe6JTjb3pMJmkPgqpNhtC/T2SyfG8G5MRDnNItyn5vof2ZxanDO5rs2unNpr11LIFqa9s/UmjUQFOgeqWT8OZWY239abdMzh2OvY4gsDn5KCOHuzPdy8zcYeevLozInY4kNvywZtx+KkA0j6X9LHTO0Il7IzvPcdpw8VlqMK/mw3ENcE4aHfbmGyRKOSmamP5Wi0fCZqjXYnFQy+nyBIkz7Yi3IFQjUVuCuafIBvDmWUCuYiL3fmCH4R+KdNzE/Jes3zXABjcYF89fHRu2O99kKKjj53Un7SUdghtJrH9h4FJKOrZHgRqT4udJ2vOwxJB9qwW8Q0vqn/U79Ds80+H3updm40OUJB93LtMPpwqIKghuDsFaYO/J62zK38UBLZpUvKeCf8= ansible@rashome1
@@ -41,7 +40,7 @@ users:
 #  passwd: $5$hkui88$nvZgIle31cNpryjRfO9uArF7DYiBcWEnjqq7L1AQNN3
 
 # On first boot, set the user's password and expire user passwords
-chpasswd:
-  expire: true
-  list:
-  - osoz-su:osoz-su
+# chpasswd:
+#  expire: true
+#  list:
+#  - osoz-su:osoz-su
