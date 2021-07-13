@@ -39,3 +39,9 @@ users:
 #  ssh_import_id: foobar
 #  lock_passwd: false
 #  passwd: $5$hkui88$nvZgIle31cNpryjRfO9uArF7DYiBcWEnjqq7L1AQNN3
+
+# On first boot, set the user's password and expire user passwords
+chpasswd:
+  expire: true
+  list:
+  - superadmin:superadmin
