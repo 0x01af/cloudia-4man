@@ -4,10 +4,12 @@
 # Provisioning Services by default run only at resource creation, additional runs without cleanup may introduce problems.
 # https://www.terraform.io/docs/provisioners/index.html
 
-provider "ssh" {
-  
-}
+# provider "" { }
 
 module "rpi_basic" {
-  source = "../../rpi-basic"
+  source = "../../rpi_basic"
 }
+
+# module "rpi_k3s_master" {
+#  source = "../../rpi_k3s_master"
+#}

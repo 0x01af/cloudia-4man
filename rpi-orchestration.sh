@@ -1,30 +1,40 @@
 #!/bin/bash
-
 # Arguments
-while getopts ip:host: flag
-do
+# based on: https://www.baeldung.com/linux/use-command-line-arguments-in-bash-script
+while getopts ":u:p:h:" flag; do
   case "${flag}" in
-    ip) ip=${OPTARG};;
-    host) host=${OPTARG};;
+    u) username=${OPTARG};;
+    p) password=${OPTARG};;
+    h) hosts=${OPTARG};;
   esac
 done
 
-[ "$ip" == "" ] && { echo "Usage: $0 -ip 192.158.0.1 -host hostname"; exit 1; }
-[ "$host" == "" ] && { echo "Usage: $0 -ip 192.158.0.1 -host hostname"; exit 1; }
+[ "$username" == "" ] && [ "$password" == "" ] && [ "$hosts" == "" ] && { echo "ERROR - You have to define each parameter.\n\nUsage: $0 -u username -p password -hl host2,host3,hostN"; exit 1; }
 
-# Prepare working directory for current Raspberry PI
-# based on: https://www.cyberciti.biz/faq/check-if-a-directory-exists-in-linux-or-unix-shell/
-if [ ! -d "./rpi-configs/$host" ]; then
-  # creating working directory for current Raspberry PI
-  mkdir -p "./rpi-configs/$host"
-fi
-cd "./rpi-configs/$host"
+maindir = $(pwd)
 
-# (Re-)Initialize terraform job
-terraform init -input=false
+for host in hosts 
+do
 
-# Plan terraform job
-terraform plan -out=$host.tfplan -input=false
+  if [ ! -d "$maindir/rpi-configs/$host" ]; then
+    echo "ERROR - Configuration is missing: $host\n";
+	# based on: https://linuxize.com/post/bash-break-continue/
+    continue
+  fi
+  
+  cd "$maindir/rpi-configs/$host"
 
-# Apply terraform job
-# terraform apply -var 'host=$host' -var 'ip=$ip' -input=false $host.tfplan
+  # (Re-)Initialize terraform job
+  terraform init -input=false
+
+  # Plan terraform job
+  terraform plan -out=$host.tfplan -input=false
+
+  # Apply terraform job
+  # terraform apply -var 'host=$host' -var 'ip=$ip' -input=false $host.tfplan
+  
+  cd "$maindir"
+
+done
+
+
