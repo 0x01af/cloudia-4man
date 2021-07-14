@@ -27,6 +27,10 @@ variable "rpi_ip4" {
   description = "Raspberry Pi's IPv4 address, that has to be statically configured."
   type        = string
 }
+variable "rpi_ip4_netprefix" {
+  description = "Raspberry Pi's IPv4 net prefix (CIDR notation)"
+  type        = string
+}
 variable "rpi_ip6" {
   description = "Raspberry Pi's IPv6 address, that has to be statically configured."
   type        = string

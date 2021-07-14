@@ -2,24 +2,24 @@
 resource "null_resource" "rpi_basic" {
   connection {
     type = "ssh"
-    user = "${var.username}"
-    password = "${var.password}"
-    host = "${var.raspberrypi_ip}"
+    user = "${var.su-username}"
+    password = "${var.su-password}"
+    host = "${var.rpi_ip4_temporary}"
   }
 
   provisioner "remote-exec" {
     inline = [
       # SET HOSTNAME
-      "sudo hostnamectl set-hostname ${var.new_hostname}",
+      "sudo hostnamectl set-hostname ${var.rpi_hostname}",
 	  
 	  # SET FQDN IN /etc/host
-      "echo '127.0.1.1 ${var.new_hostname}' | sudo tee -a /etc/hosts",
+      "echo '127.0.1.1 ${var.rpi_hostname}.mesh.local' | sudo tee -a /etc/hosts",
      
 	  # NETWORKING - SET STATIC IP
-      "echo 'interface eth0\nstatic ip_address=${var.static_ip_and_mask}\nstatic routers=${var.static_router}\nstatic domain_name_servers=${var.static_dns}' | cat >> /etc/dhcpcd.conf",
+      "echo 'interface eth0\nstatic ip_address=${var.rpi_ip4}/${var.rpi_ip4_netprefix}\nstatic routers=${var.rpi_ip4_gateway}\nstatic domain_name_servers=${var.rpi_ip4_dns}' | cat >> /etc/dhcpcd.conf",
 	 
       # DATE TIME CONFIG
-      "sudo timedatectl set-timezone ${var.timezone}",
+      "sudo timedatectl set-timezone Europe/Zurich",
       "sudo timedatectl set-ntp true",
       
       # SYSTEM AND PACKAGE UPDATES
