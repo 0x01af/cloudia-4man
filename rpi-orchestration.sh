@@ -9,15 +9,18 @@ while getopts ":u:p:h:" flag; do
   esac
 done
 
-[ "$username" == "" ] && [ "$password" == "" ] && [ "$hosts" == "" ] && { echo "ERROR - You have to define each parameter.\n\nUsage: $0 -u username -p password -hl host2,host3,hostN"; exit 1; }
+[ "$username" == "" ] && [ "$password" == "" ] && [ "$hosts" == "" ] && { printf "ERROR - You have to define each parameter.\n\nUsage: $0 -u username -p password -h host2,host3,hostN\n\n"; exit 1; }
 
-maindir = $(pwd)
+maindir=$(pwd)
 
-for host in hosts 
+# Iterate each host
+# based on: https://stackoverflow.com/questions/10586153/how-to-split-a-string-into-an-array-in-bash
+IFS=',' read -r -a hosta <<< "$hosts"
+for host in "${hosta[@]}"
 do
 
   if [ ! -d "$maindir/rpi-configs/$host" ]; then
-    echo "ERROR - Configuration is missing: $host\n";
+    printf "ERROR - Configuration is missing: $host\n";
 	# based on: https://linuxize.com/post/bash-break-continue/
     continue
   fi
