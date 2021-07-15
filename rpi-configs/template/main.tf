@@ -8,6 +8,14 @@
 
 module "rpi_basic" {
   source = "../../rpi_basic"
+  
+  rpi_ip4_temporary = "192.168.0.10"
+  
+  rpi_hostname = "hostname-new"
+  rpi_ip4 = "192.168.0.20"
+  rpi_ip4_netprefix = "24"
+  rpi_ip6 = "2a02:"
+
 }
 
 # module "rpi_k3s_master" {
