@@ -4,17 +4,18 @@
 # Provisioning Services by default run only at resource creation, additional runs without cleanup may introduce problems.
 # https://www.terraform.io/docs/provisioners/index.html
 
-# provider "" { }
-
 module "rpi_basic" {
   source = "../../tf-modules/rpi_basic"
+  
+  su_username = "${var.su_username}"
+  su_password = "${var.su_password}"
   
   rpi_ip4_temporary = "192.168.123.Y"
   
   rpi_hostname = "hostname-new"
   rpi_ip4 = "192.168.123.X/27"
   rpi_ip6 = "2a02:169:67f5:1af::X/64"
-
+  
 }
 
 # module "rpi_k3s_master" {

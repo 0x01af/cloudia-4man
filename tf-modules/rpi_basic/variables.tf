@@ -1,5 +1,5 @@
 #
-# GENERAL
+# MODULE - arguments
 #
 variable "su_username" {
   description = "Superuser's Username"
@@ -11,7 +11,6 @@ variable "su_password" {
   type        = string
   sensitive   = true
 }
-
 #
 # RPI - configurable parameter
 #

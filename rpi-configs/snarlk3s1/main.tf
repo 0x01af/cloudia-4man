@@ -7,6 +7,9 @@
 module "rpi_basic" {
   source = "../../tf-modules/rpi_basic"
   
+  su_username = "${var.su_username}"
+  su_password = "${var.su_password}"
+  
   rpi_ip4_temporary = "192.168.123.118"
   
   rpi_hostname = "snarlk3s1"

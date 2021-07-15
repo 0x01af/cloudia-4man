@@ -10,8 +10,8 @@ terraform {
 resource "null_resource" "rpi_basic" {
   connection {
     type = "ssh"
-    user = "${var.su-username}"
-    password = "${var.su-password}"
+    user = "${var.su_username}"
+    password = "${var.su_password}"
     host = "${var.rpi_ip4_temporary}"
   }
   

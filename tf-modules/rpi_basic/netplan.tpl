@@ -7,10 +7,10 @@ network:
       dhcp6: false
       dhcp4: false
       addresses:
-        - ${rpi_ip4}
-        - "${rpi_ip6}"
-      gateway4: ${rpi_ip4_gateway}
-      gateway6: "${rpi_ip6_gateway}"
+        - $${var.rpi_ip4}
+        - "$${var.rpi_ip6}"
+      gateway4: $${var.rpi_ip4_gateway}
+      gateway6: "$${var.rpi_ip6_gateway}"
       nameservers:
-        search: [${rpi_dns_domain}]
-        addresses: [${rpi_ip4_dns}, "${rpi_ip6_dns}"]
+        search: [$${var.rpi_dns_domain}]
+        addresses: [$${var.rpi_ip4_dns}, "$${var.rpi_ip6_dns}"]
