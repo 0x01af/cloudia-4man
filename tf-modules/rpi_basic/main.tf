@@ -16,8 +16,24 @@ resource "null_resource" "rpi_basic" {
   }
   
   provisioner "file" {
-    content     = templatefile("${path.module}/netplan.tpl", {})
-    destination = "/etc/netplan/99_config.yaml"
+    content     = templatefile("${path.module}/netplan.tpl", {
+                    rpi_ip4 = var.rpi_ip4,
+                    rpi_ip6 = var.rpi_ip6,
+                    rpi_ip4_gateway = var.rpi_ip4_gateway,
+                    rpi_ip6_gateway = var.rpi_ip6_gateway,
+                    rpi_dns_domain = var.rpi_dns_domain,
+                    rpi_ip4_dns = var.rpi_ip4_dns,
+                    rpi_ip6_dns = var.rpi_ip6_dns
+                  })
+    destination = "/var/tmp/rpi_basic_99_config.yaml"
+  }
+  
+  provisioner "file" {
+    content     = templatefile("${path.module}/keyboard.tpl", {
+                    kbmodel = "pc105",
+                    kblayout = "ch"
+                  })
+    destination = "/var/tmp/rpi_basic_keyboard"
   }
   
   provisioner "remote-exec" {
@@ -28,8 +44,14 @@ resource "null_resource" "rpi_basic" {
       # SET FQDN IN /etc/host
       "echo '127.0.1.1 ${var.rpi_hostname}.${var.rpi_dns_domain}' | sudo tee -a /etc/hosts",
       
+      # MOVE NETWORK CONFIG
+      "sudo mv /var/tmp/rpi_basic_99_config.yaml /etc/netplan/99_config.yaml",
+      
       # SET TIMEZONE
       "sudo timedatectl set-timezone Europe/Zurich",
+      
+      # MOVE KEYBOARD DEFINITION
+      "sudo mv /var/tmp/rpi_basic_keyboard /etc/default/keyboard",
       
       # SET NTP SERVER
       # based on: https://superuser.com/questions/723441/how-to-replace-line-in-file-with-pattern-with-sed

@@ -1,0 +1,5 @@
+XKBMODEL="${kbmodel}"
+XKBLAYOUT="${kblayout}"
+XKBVARIANT=
+XKBOPTIONS=
+BACKSPACE=guess

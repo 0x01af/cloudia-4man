@@ -34,7 +34,7 @@ do
   terraform plan -var "su_username=$username" -var "su_password=$password" -out=$host.tfplan -input=false
 
   # Apply terraform job
-  # terraform apply  -var "su_username=$username" -var "su_password=$password" -input=false $host.tfplan
+  terraform apply -input=false $host.tfplan
   
   cd "$maindir"
 
