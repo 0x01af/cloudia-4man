@@ -18,6 +18,14 @@ module "rpi_basic" {
   
 }
 
-# module "rpi_k3s_master" {
-#  source = "../../tf-modules/rpi_k3s_master"
-#}
+module "rpi_k3s_server" {
+  source = "../../tf-modules/rpi_k3s_server"
+  
+  su_username = "${var.su_username}"
+  su_password = "${var.su_password}"
+  
+  rpi_ip4 = "192.168.123.21/25"
+  
+  k3s_token = "k3s-cluster-1"
+  k3s_data_dir = "/mnt/nvme1/k3s/data"
+}
