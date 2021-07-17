@@ -21,6 +21,9 @@ module "rpi_basic" {
 module "rpi_k3s_server" {
   source = "../../tf-modules/rpi_k3s_server"
   
+  # based on: https://medium.com/hashicorp-engineering/creating-module-dependencies-in-terraform-0-13-4322702dac4a
+  depends_on = [ module.rpi_basic ]
+  
   su_username = "${var.su_username}"
   su_password = "${var.su_password}"
   

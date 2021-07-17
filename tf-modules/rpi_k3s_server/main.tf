@@ -12,7 +12,7 @@ resource "null_resource" "rpi_k3s_server" {
     type = "ssh"
     user = "${var.su_username}"
     password = "${var.su_password}"
-    host = regex("([0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3})", ${var.rpi_ip4})
+    host = "${var.rpi_ip4}"
   }
   
   provisioner "file" {
@@ -27,7 +27,7 @@ resource "null_resource" "rpi_k3s_server" {
     inline = [
       
       # ENABLE CONTAINER FEATURES
-      "echo ' cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1' | sudo tee -a /boot/cmdline.txt",
+      "echo ' cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1' | sudo tee -a /boot/firmware/cmdline.txt",
       
       # PREPARE K3S DATA DIR
       "sudo mkdir ${var.k3s_data_dir}",
@@ -36,7 +36,7 @@ resource "null_resource" "rpi_k3s_server" {
       "sudo mv /var/tmp/rpi_k3s_master_config.yaml /etc/rancher/k3s/config.yaml",
       
       # INSTALL K3S (but disable service to be able initializing HA cluster)
-      "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC="server" sh -
+      "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -",
       
       # REBOOT
       # Changed from 'sudo reboot' to 'sudo shutdown -r +0' to address exit status issue encountered
