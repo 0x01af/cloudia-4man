@@ -1,8 +1,5 @@
-# cloudia-orchestration
-donely
-Cloudia ist fertig, fertig mit dem Bereitstellen, Konfigurieren und Installieren der gewollten IT-Ressourcen.
-
-'''donely : Esperanto - fertig : deutsch'''
+# cloudia-4man - Cloudia, Miss Foreman
+Cloudia, Miss Foreman: Als Bauleiterin sorgt Cloudia für das Bereitstellen, Konfigurieren und Installieren der gewollten IT-Ressourcen.
 
 ## Funktionalität
 
