@@ -4,14 +4,14 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 ## Functionality
 
 * Provisioning Service: typically a once-only job
-** Raspberry Pi with Ubuntu
-** Raspberry Pi with Raspberry Pi OS
+  * Raspberry Pi with Ubuntu
+  * Raspberry Pi with Raspberry Pi OS
 * Configuration & Deployment Management: needs to be repeatedly done
-** OS Ubuntu
-** OS Raspberry Pi OS
-** K3s
-** Zigbee2MQTT
-** ioBroker (Kubernetes)
+  * OS Ubuntu
+  * OS Raspberry Pi OS
+  * K3s
+  * Zigbee2MQTT
+  * ioBroker (Kubernetes)
 
 ## Architecture
 
