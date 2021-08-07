@@ -1,12 +1,14 @@
 
 
-# Version Kuberentes K3s Installation
+# V2021-1: Kubernetes K3s Installation
 
 ## traefik (ingress controller)
 
 
+## (load balancer)
 
-# Version Kubernetes Enhancement
+
+# V2021-2: Kubernetes Enhancement
 
 
 ## cert-manager (operator)
