@@ -27,13 +27,11 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 
 ### New infrastructure component
 1. Define a new infrastructure component based on the template in folder /inventory
-   a. copy the folder /0-template and change its name to target's hostname
-   b. set parameters of config file base.cfg like hostname, domain, roles, etc.
+   1. copy the folder /0-template and change its name to target's hostname
+   2. set parameters of config file base.cfg like hostname, domain, roles, etc.
 2. Run Orchestration Service shell script cloudia-4man.sh
-   a. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
+   1. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
       run provisioning service, and start configuration & deployment management.
-
-
 
 # Further reading
 * https://blog.devgenius.io/provisioning-vs-configuration-management-with-terraform-4bf07b9c79db
