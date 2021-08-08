@@ -1,0 +1,9 @@
+---
+
+# Defaults for task 'Change timezone'
+timezone: 'Europe/Zurich'
+
+# Defaults for task 'Change keyboard layout'
+keyboard:
+  model: 'pc105'
+  layout: 'ch'
