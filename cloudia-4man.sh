@@ -31,5 +31,4 @@ terraform apply
 
 
 # Starting configuration & deployment management
-ansible-playbook backend/ansible/cloudia-4man-playbook.yml -i inventory/cloudia-4man-ansible-inventory.yaml
-
+ansible-playbook backend/ansible/playbook-main.yml -i inventory/ansible-inventory.yaml
