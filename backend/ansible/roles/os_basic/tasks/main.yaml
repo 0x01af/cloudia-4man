@@ -9,7 +9,7 @@
 
 - name: 'Change keyboard layout'
   become: yes
-  template:
+  ansible.builtin.template:
     src: ../template/keyboard.j2
     dest: /etc/default/keyboard
     force: yes
@@ -17,29 +17,10 @@
     group: root
     mode: 'u=rw,go=r'
 
-- name: 'Template out Netplan YAML to configure networking'
-  template:
-    src: ../templates/netplan.99_config.yaml.j2
-    dest: /etc/netplan/99_config.yaml
-  when: ansible_os_family == 'Ubuntu'
+- name: 'os_basic tasks for OS RedHat'
+  import_tasks: os_basic_redhat.yml
+  when: ansible_facts['os_family']|lower == 'redhat'
 
-- name: 'Applying Netplan Configuration'
-  command: netplan apply
-  become: yes
-  become_method: sudo
-  when: ansible_os_family == 'Ubuntu'
-
-- name: 'Upgrade the OS (apt-get dist-upgrade)'
-  apt:
-    upgrade: dist
-    update_cache: yes
-  become: yes
-  when: ansible_os_family == 'Ubuntu'
- 
-- name: 'Update all packages to latest versions'
-  apt:
-    name: "*"
-    state: latest
-    update_cache: yes
-  when: ansible_os_family == 'Ubuntu'
-  become: yes
+- name: 'os_basic tasks for OS Ubuntu'
+  import_tasks: os_basic_ubuntu.yml
+  when: ansible_facts['os_family']|lower == 'ubuntu'
