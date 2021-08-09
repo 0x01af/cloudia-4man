@@ -13,3 +13,5 @@ ip6:
   gateway: '2001:DB8::1'
   dns_server: '2001:DB8::1'
 dns_domain: 'example.org'
+k3s:
+  data_dir: /mnt/nvme1/k3s/data
