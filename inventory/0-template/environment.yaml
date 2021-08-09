@@ -1,6 +1,6 @@
 ---
 
-# Inventory Template for a K3s cluster environment
+# Template for a K3s cluster environment
 # - add each server based on their role to the predefined groups <k3s_servers> and <k3s_nodes>
 # - for each k3s cluster create a group named by cluster-name, and add related servers as children of this group
 k3s_servers:
