@@ -1,5 +1,15 @@
 ---
 
 # Template for server1
-attribute1: value
-attribute2: value
+ip4_init: '192.168.0.12' # Initial ip4, which will be used by Provisioning Service
+ip4:
+  address: '192.168.0.24'
+  cidr: '/24'
+  gateway: '192.168.0.1'
+  dns_server: '192.168.0.1'
+ip6:
+  address: '2001:DB8::24'
+  cidr: '/64'
+  gateway: '2001:DB8::1'
+  dns_server: '2001:DB8::1'
+dns_domain: 'example.org'
