@@ -4,7 +4,7 @@
 # - Ubuntu
 
 - name: 'Change time zone'
-  timezone:
+  community.general.timezone:
     name: "{{time_zone}}"
 
 - name: 'Change keyboard layout'
@@ -17,10 +17,11 @@
     group: root
     mode: 'u=rw,go=r'
 
-- name: 'os_basic tasks for OS RedHat'
-  import_tasks: os_basic_redhat.yml
-  when: ansible_facts['os_family']|lower == 'redhat'
-
 - name: 'os_basic tasks for OS Ubuntu'
   import_tasks: os_basic_ubuntu.yml
   when: ansible_facts['os_family']|lower == 'ubuntu'
+
+# - name: 'os_basic tasks for OS RedHat'
+#  import_tasks: os_basic_redhat.yml
+#  when: ansible_facts['os_family']|lower == 'redhat'
+
