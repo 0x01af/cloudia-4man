@@ -26,14 +26,26 @@ C4M_CONFIG = {
 # Running provisioning service
 mkdir /inventory/{$environment}/states/{$server}
 cd /inventory/{$environment}/states/{$server}
-# - write terraform module file
-terraform init
-terraform plan
-terraform apply
+# - write terraform file "main.tf"
+# Content:
+module "os_linux" {
+  source = "../../../../backend/terraform/os_linux"
+  
+  su_username = "${var.su_username}"
+  su_password = "${var.su_password}"
+  
+  ip4_init = "{$ip4_init}"
+  
+  hostname = "{$server}"
+}
+#
+
+terraform init -input=false
+terraform plan -var "su_username=$username" -var "su_password=$password" -out=$server.tfplan -input=false
+terraform apply -input=false $server.tfplan
 
 
 # Starting configuration & deployment management
 ansible-playbook backend/ansible/playbook-main.yml -i inventory/{$environment}/environment.yaml
-
 
 # Updating inventory
