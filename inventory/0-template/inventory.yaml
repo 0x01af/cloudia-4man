@@ -1,6 +1,6 @@
 ---
 
-# Inventory Template for K3s cluster
+# Inventory Template for a K3s cluster environment
 all:
   hosts:
     <server1>:
