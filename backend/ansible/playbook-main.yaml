@@ -1,4 +1,4 @@
 ---
 
-- import_playbook: os_ubuntu.yml
+- import_playbook: os_basic.yml
 - import_playbook: k3s.yml
