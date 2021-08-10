@@ -7,6 +7,13 @@
   roles:
     - role: raspberrypi_4_device
 
+#- import_playbook: zigbee2mqtt.yaml
+- hosts: zigbee2mqtt_proxies
+  gather_facts: yes
+  roles:
+    - role: os_basic
+    - role: zigbee2mqtt_proxy
+
 #- import_playbook: plain.yaml
 - hosts: plain_servers
   gather_facts: yes
