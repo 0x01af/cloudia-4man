@@ -1,14 +1,20 @@
 ---
 # hosts: always multiply of main role name
 
-#- import_playbook: plain.yml
+#- import_playbook: raspberrypi.yaml
+- hosts: raspberrypi_4_devices
+  gather_facts: no
+  roles:
+    - role: raspberrypi_4_device
+
+#- import_playbook: plain.yaml
 - hosts: plain_servers
   gather_facts: yes
   become: yes
   roles:
     - role: os_basic
 
-# - import_playbook: k3s.yml
+# - import_playbook: k3s.yaml
 - hosts: k3s_servers
   gather_facts: yes
   become: yes
