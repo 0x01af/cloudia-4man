@@ -1,0 +1,10 @@
+module "os_linux" {
+  source = "../../../../backend/terraform/os_linux"
+  
+  su_username = "${var.su_username}"
+  su_password = "${var.su_password}"
+  
+  ip4_init = "{$ip4_init}"
+  
+  hostname = "{$server}"
+}
