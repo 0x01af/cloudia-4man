@@ -1,0 +1,8 @@
+---
+
+- task: 'Preparing Terraform project'
+  ansible.builtin.template:
+    
+- task: 'Provisioning Raspberry Pi 4 device'
+  community.general.terraform:
+    
