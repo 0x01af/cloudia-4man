@@ -1,12 +1,6 @@
 ---
 # hosts: always multiply of main role name
 
-#- import_playbook: raspberrypi.yaml
-- hosts: raspberrypi_4_devices
-  gather_facts: no
-  roles:
-    - role: raspberrypi_4_device
-
 #- import_playbook: zigbee2mqtt.yaml
 - hosts: zigbee2mqtt_proxies
   gather_facts: yes
