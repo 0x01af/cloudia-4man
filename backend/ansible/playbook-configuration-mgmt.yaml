@@ -17,11 +17,13 @@
 
 # - import_playbook: k3s.yaml
 - hosts: k3s_servers
+  serial: 1
   gather_facts: yes
   become: yes
   roles:
     - role: os_basic
     - role: k3s_server
+      # task for first server: when: inventory_hostname == k3s_servers[0]
 
 - hosts: k3s_nodes
   gather_facts: yes
