@@ -1,0 +1,8 @@
+---
+# hosts: always multiply of main role name
+
+#- import_playbook: raspberrypi.yaml
+- hosts: raspberrypi_4_devices
+  gather_facts: no
+  roles:
+    - role: raspberrypi_4_device
