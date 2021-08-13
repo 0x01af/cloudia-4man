@@ -8,13 +8,8 @@ terraform {
 }
 
 # Variables
-variable "su_username" {
+variable "username" {
   description = "Superuser's Username"
-  type        = string
-  sensitive   = true
-}
-variable "su_password" {
-  description = "Superuser's Password"
   type        = string
   sensitive   = true
 }
@@ -22,7 +17,6 @@ variable "ip4_init" {
   description = "IPv4 address, that has been initially assigned by DHCP."
   type        = string
 }
-
 variable "hostname" {
   description = "Hostname of the machine"
   type        = string
@@ -32,8 +26,8 @@ variable "hostname" {
 resource "null_resource" "raspberrypi_4_device" {
   connection {
     type = "ssh"
-    user = "${var.su_username}"
-    password = "${var.su_password}"
+    user = "${var.username}"
+    private_key = "${file("~/.ssh/id_rsa")}"
     host = "${var.ip4_init}"
   }
   
