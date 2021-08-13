@@ -1,10 +1,11 @@
-module "os_linux" {
-  source = "../../../../backend/terraform/os_linux"
+{{ ansible_managed | comment }}
+
+module "raspberrypi_4_device" {
+  source = "../../../../backend/terraform/raspberrypi_4_device"
   
   su_username = "${var.su_username}"
   su_password = "${var.su_password}"
   
-  ip4_init = "{$ip4_init}"
-  
-  hostname = "{$server}"
+  ip4_init = "{{ ip4_init }}"
+  hostname = "{{ inventory_hostname }}"
 }
