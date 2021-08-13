@@ -1,5 +1,11 @@
 ---
 
+# Template for Raspberry Pi 4 devices
+# - add each device - that is a Raspberry Pi 4 device - to the predefined group <raspberrypi_4_devices>
+raspberrypi_4_devices:
+  hosts:
+    <server>[1:3]:
+
 # Template for a K3s cluster environment
 # - add each server based on their role to the predefined groups <k3s_servers> and <k3s_nodes>
 # - for each k3s cluster create a group named by cluster-name, and add related servers as children of this group
@@ -15,7 +21,7 @@ k3s_cluster1:
     <server>[4:6]:
 
 # Template for Zigbee2MQTT proxies
-# - add each server - which has a ZigBee Z-stack USB stick attached - to the predefined group <zigbee2mqtt_proxies>
+# - add each server - that has a ZigBee Z-stack USB stick attached - to the predefined group <zigbee2mqtt_proxies>
 zigbee2mqtt_proxies:
   hosts:
     <server1>:
