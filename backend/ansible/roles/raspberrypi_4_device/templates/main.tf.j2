@@ -3,9 +3,7 @@
 module "raspberrypi_4_device" {
   source = "../../../../backend/terraform/raspberrypi_4_device"
   
-  su_username = "${var.su_username}"
-  su_password = "${var.su_password}"
-  
+  username = "{{ ansible_user }}"
   ip4_init = "{{ ip4_init }}"
   hostname = "{{ inventory_hostname }}"
 }
