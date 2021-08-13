@@ -1,0 +1,8 @@
+---
+
+# Tasks for K3s server
+- task: 'Download and install K3s server (first server)'
+  when: inventory_hostname == k3s_cluster | k3s_servers[0] ???
+  
+- task: 'Download and install K3s server (additional server)'
+  when: inventory_hostname <> k3s_servers[0]
