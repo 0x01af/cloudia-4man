@@ -29,7 +29,7 @@ variable "hostname" {
 }
 
 # Module
-resource "null_resource" "os_linux" {
+resource "null_resource" "os_linux_configure_hostname" {
   connection {
     type = "ssh"
     user = "${var.su_username}"
@@ -38,6 +38,8 @@ resource "null_resource" "os_linux" {
   }  
   provisioner "remote-exec" {
     inline = [
+      # UPDATE /ETC/HOSTS
+      "echo '127.0.0.1 ${var.hostname}' | sudo tee -a /etc/hosts",
       # SET HOSTNAME
       "sudo hostnamectl set-hostname ${var.hostname}"
       ]
