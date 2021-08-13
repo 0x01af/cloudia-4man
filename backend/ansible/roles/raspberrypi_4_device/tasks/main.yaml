@@ -1,8 +1,12 @@
 ---
 
-- task: 'Preparing Terraform project'
-  ansible.builtin.template:
+- task: 'Preparing Terraform project (locally)'
+  local_action:
+    module: ansible.builtin.template:
+    src: ../template/main.tf.j2
+    dest: {{ inventory_dir }}/tf_raspberrypi_4_device/{{ inventory_host }}/main.tf
     
 - task: 'Provisioning Raspberry Pi 4 device'
   community.general.terraform:
+  {{ inventory_dir }}/tf_raspberrypi_4_device/{{ inventory_host }}/main.tf
     
