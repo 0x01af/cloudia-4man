@@ -1,4 +1,5 @@
 ---
+# More information about dictionary variables (https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#dictionary-variables)
 
 # Template for server1
 ip4_init: '192.168.0.12' # Initial ip4, which will be used by Provisioning Service
