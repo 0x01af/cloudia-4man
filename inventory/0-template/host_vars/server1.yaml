@@ -15,6 +15,6 @@ ip6:
   dns_server: '2001:DB8::1'
 dns_domain: 'example.org'
 k3s:
-  role: server | server-strictly | agent # K3s server contains also the component <agent> by default. <server-strictly> prevents that behavior.
+  role: 'server' | 'server-strictly' | 'agent' # K3s server contains also the component <agent> by default. <server-strictly> prevents that behavior. Default is 'server'.
   data_dir: /mnt/nvme1/k3s/data
   # datastore: etcd
