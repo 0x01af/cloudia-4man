@@ -1,8 +1,49 @@
 ---
 
-# Tasks for K3s node
+# Download right k3s version
+# inspired by: https://github.com/PyratLabs/ansible-role-k3s/blob/main/tasks/build/get-version.yml
+
+# 
+- name: Ensure the default release channel is set
+  ansible.builtin.set_fact:
+    k3s.release_channel: "{{ k3s.release_version | default('stable') }}"
+  check_mode: false
+
+# LATEST
+- name: Get the latest release version from k3s.io
+  ansible.builtin.uri:
+    url: "{{ k3s_api_releases }}"
+    return_content: true
+    body_format: json
+  register: k3s_latest_release
+  no_log: true
+  check_mode: false
+
+- name: Ensure the release version is set as a fact
+  ansible.builtin.set_fact:
+    k3s_release_version: "{{ item.latest }}"
+  loop: "{{ k3s_latest_release.json.data }}"
+  check_mode: false
+  when:
+    - item.name == k3s_release_channel
+    - item.type == "channel"
+
+
+- task: 'Check variable k3s.version about keyword'
+
+- task: 'Download K3s in right version'
+
+
+# Install K3s as server
+- import_tasks:
+  when: k3s.role == 'server' or k3s.role == 'server-strictly' or default?
+  
 - task: 'Download and install K3s server (first server)'
   when: inventory_hostname == k3s_cluster | k3s_servers[0] ???
   
 - task: 'Download and install K3s server (additional server)'
   when: inventory_hostname <> k3s_servers[0]
+
+# Install K3s as agent
+- import_tasks:
+  when: k3s.role == 'agent'
