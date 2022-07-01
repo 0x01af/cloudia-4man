@@ -1,0 +1,10 @@
+---
+# Role: device_rpi4
+# Raspberry Pi 4 device-specific configuration
+
+- name: "GPU Memory 
+    lineinfile:
+      path: /boot/config.txt
+      line: 'gpu_mem=16'
+      state: present
+    tags: [ gpu_memory ]
