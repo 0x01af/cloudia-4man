@@ -11,6 +11,11 @@
   become: yes
   become_method: sudo
 
+# SYSTEM AND PACKAGE UPDATES
+# "sudo apt-get update -y",
+# "sudo apt-get upgrade -y",
+# "sudo apt-get dist-upgrade -y",
+# "sudo apt --fix-broken install -y",
 - name: 'Upgrade the OS (apt-get dist-upgrade)'
   ansible.builtin.apt:
     upgrade: dist
@@ -23,3 +28,5 @@
     state: latest
     update_cache: yes
   become: yes
+
+
