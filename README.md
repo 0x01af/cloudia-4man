@@ -13,6 +13,8 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
   * Zigbee2MQTT
   * ioBroker (Kubernetes)
 
+###
+* https://elvisciotti.medium.com/install-and-configure-a-raspberry-in-seconds-with-ansible-scrips-a0639ef38e1b
 
 ## Architecture
 
@@ -37,3 +39,4 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 * https://blog.devgenius.io/provisioning-vs-configuration-management-with-terraform-4bf07b9c79db
 * Why Terraform and Ansible? -> https://serverfault.com/questions/1022690/is-it-possible-to-run-ansible-on-a-bare-metal
 * Using YAML instead INI -> https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases
+
