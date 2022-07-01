@@ -1,9 +1,0 @@
-{{ ansible_managed | comment }}
-
-module "raspberrypi_4_device" {
-  source = "../../../../backend/terraform/raspberrypi_4_device"
-  
-  username = "{{ ansible_user }}"
-  ip4_init = "{{ ip4_init }}"
-  hostname = "{{ inventory_hostname }}"
-}
