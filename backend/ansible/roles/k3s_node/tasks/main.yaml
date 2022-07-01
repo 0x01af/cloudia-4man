@@ -47,7 +47,9 @@
   when: inventory_hostname == k3s_cluster | k3s_servers[0] ???
   # INSTALL K3S (but disable service to be able initializing HA cluster)
   # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
-  
+  # GET K3S KUBECONFIG
+  # kubeconfig: /etc/rancher/k3s/k3s.yaml
+
 - task: 'Download and install K3s server (additional server)'
   when: inventory_hostname <> k3s_servers[0]
   # INSTALL K3S (but disable service to be able initializing HA cluster)
