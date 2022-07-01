@@ -34,6 +34,11 @@
 - task: 'Download K3s in right version'
 
 
+- task: 'Prepare K3s configuration file'
+# location: /etc/rancher/k3s/config.yaml
+# token: ${k3s_token}
+# data-dir: ${k3s_data_dir}
+
 # Install K3s as server
 - import_tasks:
   when: k3s.role == 'server' or k3s.role == 'server-strictly' or default?
