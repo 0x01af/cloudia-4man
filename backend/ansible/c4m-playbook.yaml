@@ -7,10 +7,12 @@
 #
 # keep in mind:
 # - roles are ordered: first role will be applied first.
+# - playbook are ordered: first playbook definition will be applied first.
 # 
 # further readings:
 # - https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
 # - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-roles-to-abstract-your-infrastructure-environment
+# - https://stackoverflow.com/questions/42386801/ansible-how-to-control-the-order-of-the-hosts-when-playbook-is-ran
 
 
 #- import_playbook: zigbee2mqtt.yaml
