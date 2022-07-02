@@ -1,5 +1,17 @@
 ---
-# hosts: always multiply of main role name
+# cloudia-4man (c4m) playbook
+# 
+# inventory: defines configuration items (ci), or groups of configuration items (gci)
+# role: defines configuration tasks for a specific type of configuration item
+# playbook: maps roles to ci or cgi
+#
+# keep in mind:
+# - roles are ordered: first role will be applied first.
+# 
+# further readings:
+# - https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
+# - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-roles-to-abstract-your-infrastructure-environment
+
 
 #- import_playbook: zigbee2mqtt.yaml
 - hosts: zigbee2mqtt_proxies
