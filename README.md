@@ -11,26 +11,25 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
   * OS Raspberry Pi OS
   * K3s
   * Zigbee2MQTT
-  * ioBroker (Kubernetes)
-
-###
-* https://elvisciotti.medium.com/install-and-configure-a-raspberry-in-seconds-with-ansible-scrips-a0639ef38e1b
+  * Home Assistant (as Kubernetes Deployment)
 
 ## Architecture
 
 * Orchestration Service: Shell script
   * controls Provisioning Service and Configuration & Deployment Management
   * manages Inventory (Infrastructure as Code)
-* Provisioning Service: Terraform
+* Provisioning Service: Ansible
   * stages Infrastructure like Bare Metal Server (Raspberry Pi) based on initial state definition
 * Configuration & Deployment Management: Ansible
+  * installs and updes Middleware, Software, and so on based on recommendation
+  * configures Middleware, Software, and so on based on Best-Practice guidelines
 
 ## Functionality
 
 ### New infrastructure component
 1. Define a new infrastructure component based on the template in folder /inventory
-   1. copy the folder /0-template and change its name to target's hostname
-   2. set parameters of config file base.cfg like hostname, domain, roles, etc.
+   1. copy the folder /0-template and name it using your environment name.
+   2. describe your environment within file environment.yaml
 2. Run Orchestration Service shell script cloudia-4man.sh
    1. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
       run provisioning service, and start configuration & deployment management.
