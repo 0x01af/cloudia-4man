@@ -17,8 +17,8 @@
     tags: [ device_rpi4_audio ]
  
  # if USB disk is present
-    - file: { path: /ext-disk, state: directory }
-      tags: [ disk ]
+    - file: { path: /mnt/nvme1, state: directory }
+      tags: [ device_rpi4_nvme1 ]
       
     - name: '/etc/fstab'
       lineinfile:
@@ -26,4 +26,4 @@
         line: 'UUID=240A-1CED  /ext-disk  vfat   auto,nofail,noatime,rw,exec,uid=plex,gid=plex,nouser,async  0 0'
         regexp: ^.*\/ext-disk
       register: fstab
-      tags: [ disk, fstab ]
+      tags: [ device_rpi4_nvme1 ]
