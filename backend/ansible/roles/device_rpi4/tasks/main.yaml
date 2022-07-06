@@ -2,9 +2,28 @@
 # Role: device_rpi4
 # Raspberry Pi 4 device-specific configuration
 
-- name: "GPU Memory 
+- name: 'Adjust GPU Memory'
     lineinfile:
       path: /boot/config.txt
       line: 'gpu_mem=16'
       state: present
-    tags: [ gpu_memory ]
+    tags: [ device_rpi4_gpu ]
+
+- name: 'Disable audio'
+    lineinfile:
+      path: /boot/config.txt
+      line: 'dtparam=audio=off'
+      state: present
+    tags: [ device_rpi4_audio ]
+ 
+ # if USB disk is present
+    - file: { path: /ext-disk, state: directory }
+      tags: [ disk ]
+      
+    - name: '/etc/fstab'
+      lineinfile:
+        path: /etc/fstab
+        line: 'UUID=240A-1CED  /ext-disk  vfat   auto,nofail,noatime,rw,exec,uid=plex,gid=plex,nouser,async  0 0'
+        regexp: ^.*\/ext-disk
+      register: fstab
+      tags: [ disk, fstab ]
