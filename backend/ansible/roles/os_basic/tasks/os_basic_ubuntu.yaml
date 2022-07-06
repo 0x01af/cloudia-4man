@@ -21,12 +21,18 @@
     upgrade: dist
     update_cache: yes
   become: yes
- 
+
+- name: 'Install basic packages'
+  ansible.builtin.apt:
+    update_cache: yes
+    autoremove: yes
+    state: present
+    pkg:
+      - vim
+
 - name: 'Update all packages to latest versions'
   ansible.builtin.apt:
     name: "*"
     state: latest
     update_cache: yes
   become: yes
-
-
