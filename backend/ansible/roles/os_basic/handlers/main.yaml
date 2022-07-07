@@ -1,4 +1,5 @@
 ---
+# inspired by https://earlruby.org/2019/07/rebooting-a-host-with-ansible/
 - name: 'c4m:os_basic:restart-and-wait'
   ansible.builtin.reboot:
     msg: 'cloudia-4man: Reboot initiated'
