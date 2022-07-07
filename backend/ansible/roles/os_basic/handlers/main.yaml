@@ -1,6 +1,6 @@
 ---
-- name: 'Reboot host and wait for it to restart'
-  reboot:
+- name: 'c4m:os_basic:restart-and-wait'
+  ansible.builtin.reboot:
     msg: 'cloudia-4man: Reboot initiated'
     connect_timeout: 5
     reboot_timeout: 600
