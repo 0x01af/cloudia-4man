@@ -16,11 +16,13 @@
 # "sudo apt-get upgrade -y",
 # "sudo apt-get dist-upgrade -y",
 # "sudo apt --fix-broken install -y",
+# further information: https://itsfoss.com/apt-get-linux-guide/
 - name: 'Upgrade the OS (apt-get dist-upgrade)'
   ansible.builtin.apt:
     upgrade: dist
     update_cache: yes
   become: yes
+  notify: c4m:os_basic:restart-and-wait
 
 - name: 'Install basic packages'
   ansible.builtin.apt:
