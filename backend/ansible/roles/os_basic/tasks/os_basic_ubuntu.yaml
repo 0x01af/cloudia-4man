@@ -1,5 +1,4 @@
 ---
-
 - name: 'Template out Netplan YAML to configure networking'
   ansible.builtin.template:
     src: ../templates/netplan.99_config.yaml.j2
