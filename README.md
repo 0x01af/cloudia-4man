@@ -9,9 +9,9 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 * Configuration & Deployment Management: needs to be repeatedly done
   * OS Ubuntu
   * OS Raspberry Pi OS
-  * K3s
+  * Canonical Microcloud
   * Zigbee2MQTT
-  * Home Assistant (as Kubernetes Deployment)
+  * Home Assistant (installed on OS Ubuntu)
 
 ## Architecture
 
