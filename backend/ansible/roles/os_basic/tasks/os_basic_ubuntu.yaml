@@ -18,6 +18,9 @@
 # further information:
 # - https://itsfoss.com/apt-get-linux-guide/
 # - https://adamtheautomator.com/ansible-apt/
+# proof needed:
+# sudo apt install unattended-upgrades
+# sudo dpkg-reconfigure unattended-upgrades
 - name: 'Upgrade the OS (apt-get dist-upgrade)'
   ansible.builtin.apt:
     upgrade: dist
