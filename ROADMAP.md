@@ -1,6 +1,14 @@
 
 
-# V2021-1: Kubernetes K3s Installation
+
+# V2025-1: Kubernetes K3s Installation
+
+## K3s server
+
+https://github.com/k3s-io/k3s-ansible
+
+## Longhorn
+
 
 ## traefik (ingress controller)
 
@@ -8,7 +16,7 @@
 ## (load balancer)
 
 
-# V2021-2: Kubernetes Enhancement
+# V2025-2: Kubernetes Enhancement
 
 
 ## cert-manager (operator)
