@@ -13,6 +13,14 @@ C4M_CONFIG = {
 # Checking prerequisite
 # - ansible: if not existing, should it install it
 
+
+## Main Functions
+# Install: Neues Gerät / Software installieren -> updates inventory
+# Update: Geräte/Software aktualisieren
+# Change: Geräte/Software verändern
+# Remove: Geräte/Software entfernen
+
+
 # NOT NEEDED: Detecting new infrastructure component
 # - scan directory "/inventory"
 # - new environment found, if a subfolder of "/inventory" isn't listed in file "/inventory/.c4m-inventory.yaml"
