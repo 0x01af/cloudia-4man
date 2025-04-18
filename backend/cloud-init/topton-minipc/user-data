@@ -1,0 +1,44 @@
+#cloud-config
+autoinstall:
+  version: 1
+
+# inspired by: https://www.jimangel.io/posts/automate-ubuntu-22-04-lts-bare-metal/
+  ssh:
+    install-server: true
+    # option "allow-pw" defaults to `true` if authorized_keys is empty, `false` otherwise.
+    allow-pw: false
+
+  # "[late-commands] are run in the installer environment with the installed system mounted at /target."
+  late-commands:
+    # randomly generate the hostname & show the IP at boot
+    - echo ubuntu-host-$(openssl rand -hex 3) > /target/etc/hostname
+    # dump the IP out at login screen
+    - echo "Ubuntu 22.04 LTS \nIP - $(hostname -I)\n" > /target/etc/issue
+    # storage was a pain in the ass and merged multiple things, I just want a 100% use of the fs. (alt option: https://gist.github.com/anedward01/b68e00bb2dcfa4f1335cd4590cbc8484#file-user-data-L97-L199)
+    - curtin in-target --target=/target -- lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+    - curtin in-target --target=/target -- resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+    # shut-down the host to avoid an infinite installer loop
+    - shutdown -h now
+
+  user-data:
+    disable_root: true
+    timezone: America/Chicago
+    package_upgrade: false
+    users:
+      - name: jangel
+        primary_group: users
+        groups: sudo
+        lock_passwd: true
+        # don't need PW since using SSH, leaving this in though...
+        # password is "changeme" - created with `docker run -it --rm alpine mkpasswd --method=SHA-512`
+        # passwd: "$5$IWwNqL9VUSDoc4Jv$DEUGR.cZQcbz/QvdCOmU13fX5ZW0rANg8LqkAtX3nBA"
+        shell: /bin/bash
+        # use cat ~/.ssh/id_rsa.pub or generate to get your public key
+        ssh_authorized_keys:
+          - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDTK3YYoKho9SvTejt9430NRwu5ZQpwtAQGBbX8piLvLfsrJzzXxWljTvmC63VMAbCy3ii/Z4yReeCt4h7JiFNf+4ggfUmG+SN+6WvRlfKdaQBXKqojNNxVDg/M73CYF/CYjifJYombA1WIFYoZwMSnd4pzuS7pSiMFKEYTznmImgqa40uZfK6My98KTFpbuebeRvF1u/2Q2ISEYRQmHbm79NAj2WPoI73vNDtkKOPn8NU13xQgC4EMlk/Yu0p36THYlMl30iJePhFgNNBTxXBZL41+nn6W9wgfwo78VDNSa0A2Cambad/lYEerSWevsPATU7bf2an7RsDJhvCx58hI4BMl0KQ3/R0MT2OSGU+GHjBzL/T9UHIxN1FynzmwYpI96MEmEqETjG2DzboO93Oo5EkuX/e6wo/ptQ1g9Qarmk66E0shYpTtwQn2mz0Lhv8PD9C/CbZl9QqcQ43yah1MD9PH/OaCj32FpBqDNJp+NuyYbjBDhG5TgGza4yrgww8= jimangel@Jims-MacBook-Pro.local"
+          - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7ljLsqYsf/ESyBLUvqyRKo3UZJh/zWHifTjxrEcMcBtGNiu5HMa9oAP2B03iBAu5NGLUXIFDibykq2IeSADrbM/7zzi9bcAMSH6HICRhRzyoxhZ8lMRiH4u3eL0RJLtbH6vQIptJvOrnJgrG85tt5mIfSn1+u9qfCaWTZzEOqNLY1QaRNWuO08gAevrXKHaChw3Li7su262eB4jNhge/+LFulDLoReiUYTgzoVicf+Lrih/hy8TqHw+AHnNsT+t4Wn9z5fS8fNK3mh+1OJtVGC7nqJQg+C9U09XbQTuTQZk32SYqUYSvR0JBpwFL3N1KI0wKJlguAziOQ/1gvrG6NuJpueE8aT7/px8erBdbjyyOGqzFEDkqxMH8skzLnn0wwmw+HrcG/l9WPcQWgaDFZzIgKN/LxRuJOplA1QQHjeqwrgu6JF0iQX2zjBnawwQ9BOn+/KcdH6bxtX+WShrl7Wa1uS1zsE2d7Pw2rOQVNbAN2X9DTM9rZTMggd5XzXYVyuXctub+gtIDYSe2CSU37d3Fq316ihXTxwreGpdkbdEGIqrPLzUA0AIyxTMskB3BPfxn/B55WF1OHkLIP3/7954/M22YJepXBnKZmkz7ZDF9aqP9UbMlb80vlbbDSIjCvpVNuT5VlLBNU9/WxUFRVM3TSK1HNkrZ7O6OIrzEZkQ== jangel@inwin-6x12-32gb-4650-1"
+        sudo: ALL=(ALL) NOPASSWD:ALL
+    # shutdown after first host initial provisioning
+    power_state:
+      mode: poweroff
+
