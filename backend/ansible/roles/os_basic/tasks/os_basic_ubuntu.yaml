@@ -20,7 +20,7 @@
 # - https://adamtheautomator.com/ansible-apt/
 # proof needed:
 # sudo apt install unattended-upgrades
-# sudo dpkg-reconfigure unattended-upgrades
+# sudo dpkg-reconfigure unattended-upgrade
 - name: 'Upgrade the OS (apt-get dist-upgrade)'
   ansible.builtin.apt:
     upgrade: dist
@@ -44,4 +44,5 @@
     update_cache: yes
     autoremove: yes
   become: yes
-# apt-get autoclean: clean up disk space - https://www.tecmint.com/useful-basic-commands-of-apt-get-and-apt-cache-for-package-management/
+
+# apt-get clean: clean up disk space - https://www.tecmint.com/useful-basic-commands-of-apt-get-and-apt-cache-for-package-management/
