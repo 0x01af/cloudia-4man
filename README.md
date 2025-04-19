@@ -6,12 +6,14 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 * Provisioning Service: typically a once-only job
   * Raspberry Pi with Ubuntu
   * Raspberry Pi with Raspberry Pi OS
+  * Topton Mini PC with Ubuntu
 * Configuration & Deployment Management: needs to be repeatedly done
-  * OS Ubuntu
-  * OS Raspberry Pi OS
-  * Canonical Microcloud
-  * Zigbee2MQTT
-  * Home Assistant (installed on OS Ubuntu)
+  * OS Ubuntu (with tools cURL, and VIM)
+  * (not implemented) OS Raspberry Pi OS
+  * (not implemented) Canonical Microcloud
+  * Suse K3s (as submodule of https://github.com/k3s-io/k3s-ansible)
+  * (not implemented) Zigbee2MQTT
+  * (not implemented) Home Assistant (installed on OS Ubuntu)
 
 ## Architecture
 
