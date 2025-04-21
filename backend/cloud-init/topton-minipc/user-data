@@ -1,7 +1,4 @@
 #cloud-config
-autoinstall:
-  version: 1
-
 # Cloudia's cloud-init
 # --------------------
 # Author: github.com/0x01af
@@ -10,29 +7,16 @@ autoinstall:
 #
 # This is the user-data configuration file for Ubuntu's autoinstall (a cloud-init-like configuration).
 # More information: https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
+autoinstall:
+  version: 1
+  # (0x01af / feature idea): Replace the current autoinstall configuration with one provided by a trusted server
+  # early-commands:
+  #  - wget -O /autoinstall.yaml $TRUSTED_SERVER_URL
 
-# Enable password authentication with the SSH daemon
-ssh_pwauth: true
+  # This example stops on the network screen and allows the user to change the defaults. If a value is provided for an interactive section, it is used as the default.
+  interactive-sections:
+    - network
 
-## Add users and groups to the system, and import keys with the ssh-import-id
-## utility
-groups:
-  - osoz-su
-
-users:
-  - name: osoz-su
-    gecos: Online Services of Z Superuser
-    primary-group: osoz-su
-    shell: /bin/bash
-    sudo: ALL=(ALL) NOPASSWD:ALL
-    groups: [osoz-su, users, adm, audio, cdrom, dialout, dip, floppy, lxd, netdev, plugdev, sudo, video]
-    lock_passwd: false
-    passwd: $1$0v31uXwG$2VykMho3fYcJAwD2KkqYQ.
-    ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsUa+TiDLpHAEq8XWyUSeAku7A5WRhl1AT2wK3ltb12+exqsnvp2NKNmcD3Ind0t4/SHqAIp8ihHAF+oYyv3eFvpCIAL0TrXl/UhgEDcu3/MyLQYYwKeKQ/SjxezLraTBYzHLYne3zBBsX7FqyU1v4TU9OmH8RAS0jYYEM8GeCR4RztFnf9+wgIJjMW0jbBTw42AutKWjcYDOnTxqei2gEEQvnYn36CoawX1tZ/4J8AMvypcZOiJXuw3r8MU1a6o8WLFO9o3pt/pNSBQs9lTFaNFEgeRSOxqpBSikQSfleQ35y/Q3nWk8oZIavptf4vm+XCbswlKAsB/RDGbIq4l57bXwEHg8Y4rx72NO38WruDnkEsZc0CchtTHFiCpcSDd4iKIZFyu9o5zXTkkLwUHIoq64BLhf0X3fdrdLaX9QwqyqB1EMFiWqsAz3TSF0L516zpMWhsbhyXn2JhBl2HseFPI5+yAUOrQnlxCdJvMaH2hWKJeZB8B226TbqbQ+5PGc= oso@snarloso
-
-
-----
   ssh:
     install-server: true
     # option "allow-pw" defaults to `true` if authorized_keys is empty, `false` otherwise.
@@ -52,23 +36,22 @@ users:
 
   user-data:
     disable_root: true
-    timezone: America/Chicago
     package_upgrade: false
+    # Add users and groups to the system, and import keys with the ssh-import-id utility
+    groups:
+      - osoz-su
     users:
-      - name: jangel
-        primary_group: users
-        groups: sudo
-        lock_passwd: true
-        # don't need PW since using SSH, leaving this in though...
-        # password is "changeme" - created with `docker run -it --rm alpine mkpasswd --method=SHA-512`
-        # passwd: "$5$IWwNqL9VUSDoc4Jv$DEUGR.cZQcbz/QvdCOmU13fX5ZW0rANg8LqkAtX3nBA"
+      - name: osoz-su
+        gecos: Online Services of Z Superuser
+        primary-group: osoz-su
         shell: /bin/bash
-        # use cat ~/.ssh/id_rsa.pub or generate to get your public key
-        ssh_authorized_keys:
-          - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDTK3YYoKho9SvTejt9430NRwu5ZQpwtAQGBbX8piLvLfsrJzzXxWljTvmC63VMAbCy3ii/Z4yReeCt4h7JiFNf+4ggfUmG+SN+6WvRlfKdaQBXKqojNNxVDg/M73CYF/CYjifJYombA1WIFYoZwMSnd4pzuS7pSiMFKEYTznmImgqa40uZfK6My98KTFpbuebeRvF1u/2Q2ISEYRQmHbm79NAj2WPoI73vNDtkKOPn8NU13xQgC4EMlk/Yu0p36THYlMl30iJePhFgNNBTxXBZL41+nn6W9wgfwo78VDNSa0A2Cambad/lYEerSWevsPATU7bf2an7RsDJhvCx58hI4BMl0KQ3/R0MT2OSGU+GHjBzL/T9UHIxN1FynzmwYpI96MEmEqETjG2DzboO93Oo5EkuX/e6wo/ptQ1g9Qarmk66E0shYpTtwQn2mz0Lhv8PD9C/CbZl9QqcQ43yah1MD9PH/OaCj32FpBqDNJp+NuyYbjBDhG5TgGza4yrgww8= jimangel@Jims-MacBook-Pro.local"
-          - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC7ljLsqYsf/ESyBLUvqyRKo3UZJh/zWHifTjxrEcMcBtGNiu5HMa9oAP2B03iBAu5NGLUXIFDibykq2IeSADrbM/7zzi9bcAMSH6HICRhRzyoxhZ8lMRiH4u3eL0RJLtbH6vQIptJvOrnJgrG85tt5mIfSn1+u9qfCaWTZzEOqNLY1QaRNWuO08gAevrXKHaChw3Li7su262eB4jNhge/+LFulDLoReiUYTgzoVicf+Lrih/hy8TqHw+AHnNsT+t4Wn9z5fS8fNK3mh+1OJtVGC7nqJQg+C9U09XbQTuTQZk32SYqUYSvR0JBpwFL3N1KI0wKJlguAziOQ/1gvrG6NuJpueE8aT7/px8erBdbjyyOGqzFEDkqxMH8skzLnn0wwmw+HrcG/l9WPcQWgaDFZzIgKN/LxRuJOplA1QQHjeqwrgu6JF0iQX2zjBnawwQ9BOn+/KcdH6bxtX+WShrl7Wa1uS1zsE2d7Pw2rOQVNbAN2X9DTM9rZTMggd5XzXYVyuXctub+gtIDYSe2CSU37d3Fq316ihXTxwreGpdkbdEGIqrPLzUA0AIyxTMskB3BPfxn/B55WF1OHkLIP3/7954/M22YJepXBnKZmkz7ZDF9aqP9UbMlb80vlbbDSIjCvpVNuT5VlLBNU9/WxUFRVM3TSK1HNkrZ7O6OIrzEZkQ== jangel@inwin-6x12-32gb-4650-1"
         sudo: ALL=(ALL) NOPASSWD:ALL
+        groups: [osoz-su, users, adm, audio, cdrom, dialout, dip, floppy, lxd, netdev, plugdev, sudo, video]
+        # don't need PW since using SSH, leaving this in though...
+        lock_passwd: true
+        # passwd: ###encrypted passwd###
+        ssh_authorized_keys:
+          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsUa+TiDLpHAEq8XWyUSeAku7A5WRhl1AT2wK3ltb12+exqsnvp2NKNmcD3Ind0t4/SHqAIp8ihHAF+oYyv3eFvpCIAL0TrXl/UhgEDcu3/MyLQYYwKeKQ/SjxezLraTBYzHLYne3zBBsX7FqyU1v4TU9OmH8RAS0jYYEM8GeCR4RztFnf9+wgIJjMW0jbBTw42AutKWjcYDOnTxqei2gEEQvnYn36CoawX1tZ/4J8AMvypcZOiJXuw3r8MU1a6o8WLFO9o3pt/pNSBQs9lTFaNFEgeRSOxqpBSikQSfleQ35y/Q3nWk8oZIavptf4vm+XCbswlKAsB/RDGbIq4l57bXwEHg8Y4rx72NO38WruDnkEsZc0CchtTHFiCpcSDd4iKIZFyu9o5zXTkkLwUHIoq64BLhf0X3fdrdLaX9QwqyqB1EMFiWqsAz3TSF0L516zpMWhsbhyXn2JhBl2HseFPI5+yAUOrQnlxCdJvMaH2hWKJeZB8B226TbqbQ+5PGc= oso@snarloso
     # shutdown after first host initial provisioning
     power_state:
       mode: poweroff
-
