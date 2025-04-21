@@ -13,9 +13,22 @@ autoinstall:
   # early-commands:
   #  - wget -O /autoinstall.yaml $TRUSTED_SERVER_URL
 
-  # This example stops on the network screen and allows the user to change the defaults. If a value is provided for an interactive section, it is used as the default.
-  interactive-sections:
-    - network
+  network:
+    version: 2
+    renderer: networkd
+    ethernets:
+      eth0:
+        accept-ra: false
+        dhcp6: false
+        dhcp4: false
+        addresses:
+          - {{ ip4.address }}
+          - "{{ ip6.address }}"
+        gateway4: {{ ip4.gateway }}
+        gateway6: "{{ ip6.gateway }}"
+        nameservers:
+          search: [{{ dns.domain }}]
+          addresses: [{{ dns.ip4 }}, "{{ dns.ip6 }}"]
 
   ssh:
     install-server: true
