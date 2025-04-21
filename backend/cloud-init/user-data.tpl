@@ -43,6 +43,9 @@ autoinstall:
       # - greater than 200 GiB: 100 GiB root file system
       sizing-policy: scaled
 
+  identity:
+    hostname: {{ hostname }}
+
   ssh:
     install-server: true
     # option "allow-pw" defaults to `true` if authorized_keys is empty, `false` otherwise.
@@ -74,14 +77,9 @@ autoinstall:
 
   # "[late-commands] are run in the installer environment with the installed system mounted at /target."
   late-commands:
-    # randomly generate the hostname & show the IP at boot
-    - echo HOSTNAME > /target/etc/hostname
-    # dump the hostname and IP out at login screen
-    - echo "HOSTNAME $(hostname -I)\n" > /target/etc/issue
-    # storage was a pain in the ass and merged multiple things, I just want a 100% use of the fs. (alt option: https://gist.github.com/anedward01/b68e00bb2dcfa4f1335cd4590cbc8484#file-user-data-L97-L199)
-    - curtin in-target --target=/target -- lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
-    - curtin in-target --target=/target -- resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
-    # show warning about USB installation drives
+    # configure, that hostname and IP will be shown on login screen
+    - echo "$(hostname) - $(hostname -I)\n" > /target/etc/issue
+    # display warning about USB installation drives
     - echo "WARNING: Remove all USB installation drives now!\n"
     - read -p "Press any key to reboot ..." -n 1 -s
 
