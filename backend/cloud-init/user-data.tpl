@@ -1,0 +1,89 @@
+#cloud-config
+# Cloudia's cloud-init
+# --------------------
+# Author: github.com/0x01af
+# Version: v2025-delta
+# inspired by: https://www.jimangel.io/posts/automate-ubuntu-22-04-lts-bare-metal/
+#
+# This is the user-data configuration file for Ubuntu's autoinstall (a cloud-init-like configuration).
+# More information: https://canonical-subiquity.readthedocs-hosted.com/en/latest/reference/autoinstall-reference.html
+autoinstall:
+  version: 1
+  # (0x01af / feature idea): Replace the current autoinstall configuration with one provided by a trusted server
+  # early-commands:
+  #  - wget -O /autoinstall.yaml $TRUSTED_SERVER_URL
+
+  network:
+    version: 2
+    renderer: networkd
+    ethernets:
+      eth0:
+        accept-ra: false
+        dhcp6: false
+        dhcp4: false
+        addresses:
+          - {{ ip4.address }}
+          - "{{ ip6.address }}"
+        gateway4: {{ ip4.gateway }}
+        gateway6: "{{ ip6.gateway }}"
+        nameservers:
+          search: [{{ dns.domain }}]
+          addresses: [{{ dns.ip4 }}, "{{ dns.ip6 }}"]
+
+  storage:
+    layout:
+      # single-disk system: lvm layout is used by default;
+      # multiple-disk system: no default is defined, but Longhorn recommend using LVM to aggregate all the disks;
+      # => forcing the mostly recommended lvm layout
+      name: lvm
+      # Set the sizing-policy fix to scaled (default). If volume group is...
+      # - less than 10 GiB: use all remaining space for the root file system
+      # - between 10–20 GiB: 10 GiB root file system
+      # - between 20–200 GiB: use half of the remaining space for the root file system
+      # - greater than 200 GiB: 100 GiB root file system
+      sizing-policy: scaled
+
+  ssh:
+    install-server: true
+    # option "allow-pw" defaults to `true` if authorized_keys is empty, `false` otherwise.
+    allow-pw: false
+
+  drivers:
+    install: true
+  oem:
+    install: true
+
+  user-data:
+    disable_root: true
+    package_upgrade: false
+    # Add users and groups to the system, and import keys with the ssh-import-id utility
+    groups:
+      - osoz-su
+    users:
+      - name: osoz-su
+        gecos: Online Services of Z Superuser
+        primary-group: osoz-su
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        groups: [osoz-su, users, adm, audio, cdrom, dialout, dip, floppy, lxd, netdev, plugdev, sudo, video]
+        # don't need PW since using SSH, leaving this in though...
+        lock_passwd: true
+        # passwd: ###encrypted passwd###
+        ssh_authorized_keys:
+          - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsUa+TiDLpHAEq8XWyUSeAku7A5WRhl1AT2wK3ltb12+exqsnvp2NKNmcD3Ind0t4/SHqAIp8ihHAF+oYyv3eFvpCIAL0TrXl/UhgEDcu3/MyLQYYwKeKQ/SjxezLraTBYzHLYne3zBBsX7FqyU1v4TU9OmH8RAS0jYYEM8GeCR4RztFnf9+wgIJjMW0jbBTw42AutKWjcYDOnTxqei2gEEQvnYn36CoawX1tZ/4J8AMvypcZOiJXuw3r8MU1a6o8WLFO9o3pt/pNSBQs9lTFaNFEgeRSOxqpBSikQSfleQ35y/Q3nWk8oZIavptf4vm+XCbswlKAsB/RDGbIq4l57bXwEHg8Y4rx72NO38WruDnkEsZc0CchtTHFiCpcSDd4iKIZFyu9o5zXTkkLwUHIoq64BLhf0X3fdrdLaX9QwqyqB1EMFiWqsAz3TSF0L516zpMWhsbhyXn2JhBl2HseFPI5+yAUOrQnlxCdJvMaH2hWKJeZB8B226TbqbQ+5PGc= oso@snarloso
+
+  # "[late-commands] are run in the installer environment with the installed system mounted at /target."
+  late-commands:
+    # randomly generate the hostname & show the IP at boot
+    - echo HOSTNAME > /target/etc/hostname
+    # dump the hostname and IP out at login screen
+    - echo "HOSTNAME $(hostname -I)\n" > /target/etc/issue
+    # storage was a pain in the ass and merged multiple things, I just want a 100% use of the fs. (alt option: https://gist.github.com/anedward01/b68e00bb2dcfa4f1335cd4590cbc8484#file-user-data-L97-L199)
+    - curtin in-target --target=/target -- lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+    - curtin in-target --target=/target -- resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+    # show warning about USB installation drives
+    - echo "WARNING: Remove all USB installation drives now!\n"
+    - read -p "Press any key to reboot ..." -n 1 -s
+
+  # Request the system to reboot automatically after the installation has finished
+  shutdown: reboot
