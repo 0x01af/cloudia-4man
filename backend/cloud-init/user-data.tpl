@@ -29,7 +29,10 @@ autoinstall:
         nameservers:
           search: [{{ dns.domain }}]
           addresses: [{{ dns.ip4 }}, "{{ dns.ip6 }}"]
-
+  
+  apt:
+    fallback: offline-install
+  
   storage:
     layout:
       # single-disk system: lvm layout is used by default;
@@ -48,7 +51,7 @@ autoinstall:
 
   ssh:
     install-server: true
-    # option "allow-pw" defaults to `true` if authorized_keys is empty, `false` otherwise.
+    # option "allow-pw" defaults to "true" if option "authorized-keys" is empty, "false" otherwise. Set to "false", because "user-data" defines "ssh_authorized_keys".
     allow-pw: false
 
   drivers:
@@ -77,11 +80,12 @@ autoinstall:
 
   # "[late-commands] are run in the installer environment with the installed system mounted at /target."
   late-commands:
+    # configure hostname
+    - echo '{{ hostname }}' > /target/etc/hostname
+    - echo '127.0.1.1 {{ hostname }}' > /target/etc/hosts
     # configure, that hostname and IP will be shown on login screen
-    - echo "$(hostname) - $(hostname -I)\n" > /target/etc/issue
+    - echo 'Welcome on machine \n (\4; \6)' > /target/etc/issue
     # display warning about USB installation drives
-    - echo "WARNING: Remove all USB installation drives now!\n"
-    - read -p "Press any key to reboot ..." -n 1 -s
-
-  # Request the system to reboot automatically after the installation has finished
-  shutdown: reboot
+    # - echo 'WARNING: Remove all USB installation drives now!'
+    # - read -p 'Press any key to reboot ...' -n 1 -s
+    - shutdown now
