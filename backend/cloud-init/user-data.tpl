@@ -23,12 +23,12 @@ autoinstall:
         dhcp4: false
         addresses:
           - {{ ip4.address }}
-          - "{{ ip6.address }}"
+          - '{{ ip6.address }}'
         gateway4: {{ ip4.gateway }}
-        gateway6: "{{ ip6.gateway }}"
+        gateway6: '{{ ip6.gateway }}'
         nameservers:
           search: [{{ dns.domain }}]
-          addresses: [{{ dns.ip4 }}, "{{ dns.ip6 }}"]
+          addresses: [{{ dns.ip4 }}, '{{ dns.ip6 }}']
   
   apt:
     fallback: offline-install
@@ -72,9 +72,8 @@ autoinstall:
         shell: /bin/bash
         sudo: ALL=(ALL) NOPASSWD:ALL
         groups: [osoz-su, users, adm, audio, cdrom, dialout, dip, floppy, lxd, netdev, plugdev, sudo, video]
-        # don't need PW since using SSH, leaving this in though...
-        lock_passwd: true
-        # passwd: ###encrypted passwd###
+        lock_passwd: false
+        passwd: {{ passwd_encrypted }}
         ssh_authorized_keys:
           - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsUa+TiDLpHAEq8XWyUSeAku7A5WRhl1AT2wK3ltb12+exqsnvp2NKNmcD3Ind0t4/SHqAIp8ihHAF+oYyv3eFvpCIAL0TrXl/UhgEDcu3/MyLQYYwKeKQ/SjxezLraTBYzHLYne3zBBsX7FqyU1v4TU9OmH8RAS0jYYEM8GeCR4RztFnf9+wgIJjMW0jbBTw42AutKWjcYDOnTxqei2gEEQvnYn36CoawX1tZ/4J8AMvypcZOiJXuw3r8MU1a6o8WLFO9o3pt/pNSBQs9lTFaNFEgeRSOxqpBSikQSfleQ35y/Q3nWk8oZIavptf4vm+XCbswlKAsB/RDGbIq4l57bXwEHg8Y4rx72NO38WruDnkEsZc0CchtTHFiCpcSDd4iKIZFyu9o5zXTkkLwUHIoq64BLhf0X3fdrdLaX9QwqyqB1EMFiWqsAz3TSF0L516zpMWhsbhyXn2JhBl2HseFPI5+yAUOrQnlxCdJvMaH2hWKJeZB8B226TbqbQ+5PGc= oso@snarloso
 
