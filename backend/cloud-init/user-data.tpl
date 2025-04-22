@@ -84,7 +84,5 @@ autoinstall:
     - echo '127.0.1.1 {{ hostname }}' > /target/etc/hosts
     # configure, that hostname and IP will be shown on login screen
     - echo 'Welcome on machine \n (\4; \6)' > /target/etc/issue
-    # display warning about USB installation drives
-    # - echo 'WARNING: Remove all USB installation drives now!'
-    # - read -p 'Press any key to reboot ...' -n 1 -s
+    # force shutdown
     - shutdown now
