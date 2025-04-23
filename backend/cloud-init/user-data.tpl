@@ -17,15 +17,9 @@ autoinstall:
     version: 2
     renderer: networkd
     ethernets:
-      eth0:
+      enp1s0:
         match:
-          type: physical
-          name:
-            # match all possible nic names of the first interface
-            - eth0
-            - enp1s0
-            - eno1
-            - ens1*
+          name: enp1s0
         accept-ra: false
         dhcp6: false
         dhcp4: false
