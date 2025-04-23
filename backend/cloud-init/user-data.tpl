@@ -88,6 +88,6 @@ autoinstall:
     - echo '{{ hostname }}' > /target/etc/hostname
     - echo '127.0.1.1 {{ hostname }}' > /target/etc/hosts
     # configure, that hostname and IP will be shown on login screen
-    - echo 'Welcome on machine \n (\4; \6)' > /target/etc/issue
+    - echo 'Welcome on machine \\n (\\4; \\6)' > /target/etc/issue
     # force shutdown
     - shutdown now
