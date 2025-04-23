@@ -26,8 +26,11 @@ autoinstall:
         addresses:
           - {{ ip4.address }}
           - '{{ ip6.address }}'
-        gateway4: {{ ip4.gateway }}
-        gateway6: '{{ ip6.gateway }}'
+        routes:
+          - to: default
+            via: {{ ip4.gateway }}
+          - to: default
+            via: '{{ ip6.gateway }}'
         nameservers:
           search: [{{ dns.domain }}]
           addresses: [{{ dns.ip4 }}, '{{ dns.ip6 }}']
