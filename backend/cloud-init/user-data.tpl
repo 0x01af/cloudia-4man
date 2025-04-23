@@ -50,10 +50,7 @@ autoinstall:
       # - between 20–200 GiB: use half of the remaining space for the root file system
       # - greater than 200 GiB: 100 GiB root file system
       sizing-policy: scaled
-
-  identity:
-    hostname: {{ hostname }}
-
+  
   ssh:
     install-server: true
     # option "allow-pw" defaults to "true" if option "authorized-keys" is empty, "false" otherwise. Set to "false", because "user-data" defines "ssh_authorized_keys".
@@ -81,7 +78,7 @@ autoinstall:
         passwd: {{ passwd_encrypted }}
         ssh_authorized_keys:
           - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsUa+TiDLpHAEq8XWyUSeAku7A5WRhl1AT2wK3ltb12+exqsnvp2NKNmcD3Ind0t4/SHqAIp8ihHAF+oYyv3eFvpCIAL0TrXl/UhgEDcu3/MyLQYYwKeKQ/SjxezLraTBYzHLYne3zBBsX7FqyU1v4TU9OmH8RAS0jYYEM8GeCR4RztFnf9+wgIJjMW0jbBTw42AutKWjcYDOnTxqei2gEEQvnYn36CoawX1tZ/4J8AMvypcZOiJXuw3r8MU1a6o8WLFO9o3pt/pNSBQs9lTFaNFEgeRSOxqpBSikQSfleQ35y/Q3nWk8oZIavptf4vm+XCbswlKAsB/RDGbIq4l57bXwEHg8Y4rx72NO38WruDnkEsZc0CchtTHFiCpcSDd4iKIZFyu9o5zXTkkLwUHIoq64BLhf0X3fdrdLaX9QwqyqB1EMFiWqsAz3TSF0L516zpMWhsbhyXn2JhBl2HseFPI5+yAUOrQnlxCdJvMaH2hWKJeZB8B226TbqbQ+5PGc= oso@snarloso
-
+  
   # "[late-commands] are run in the installer environment with the installed system mounted at /target."
   late-commands:
     # configure hostname
