@@ -19,11 +19,13 @@ autoinstall:
     ethernets:
       eth0:
         match:
-          # match all possible nic names of the first interface
-          - eth0
-          - enp1s0
-          - eno1
-          - ens1*
+          type: physical
+          name:
+            # match all possible nic names of the first interface
+            - eth0
+            - enp1s0
+            - eno1
+            - ens1*
         accept-ra: false
         dhcp6: false
         dhcp4: false
