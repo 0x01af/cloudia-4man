@@ -41,9 +41,9 @@
     - role: k3s_server
       # task for first server: when: inventory_hostname == k3s_servers[0]
 
-- hosts: k3s_nodes
+- hosts: k3s_agents
   gather_facts: yes
   become: yes
   roles:
     - role: os_basic
-    - role: k3s_node
+    - role: k3s_agent
