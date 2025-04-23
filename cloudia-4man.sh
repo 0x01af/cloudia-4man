@@ -133,6 +133,6 @@ exit 0
 # cd /inventory/{$environment}/states/{$server}
 
 # Starting provisioning service, and configuration & deployment management
-# ansible-playbook backend/ansible/playbook-main.yml -i inventory/{$environment}/environment.yaml
+# ansible-playbook backend/ansible/c4m-playbook.yml -i inventory/{$environment}/environment.yaml
 
 # Updating inventory
