@@ -2,5 +2,8 @@
 
 # Configuration of K3s Cluster <k3s_cluster1>
 k3s:
-  version: v1.17.4+k3s1
-  token: k3s_cluster1
+  # K3s release
+  version: v1.32.3+k3s1
+  # K3s server token
+  token: "k3s_cluster1"
+  
