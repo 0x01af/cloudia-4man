@@ -8,4 +8,5 @@ k3s:
   token: "k3s_cluster1"
   # Local Path Provisionier: https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage
   storage-local-path: /opt/local-path-provisioner
+  # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
   storage-longhorn-path: /var/lib/longhorn
