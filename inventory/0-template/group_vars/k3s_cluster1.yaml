@@ -6,4 +6,6 @@ k3s:
   version: v1.32.3+k3s1
   # K3s server token
   token: "k3s_cluster1"
-  
+  # Local Path Provisionier: https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage
+  storage-local-path: /opt/local-path-provisioner
+  storage-longhorn-path: /var/lib/longhorn
