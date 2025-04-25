@@ -38,6 +38,11 @@
 # location: /etc/rancher/k3s/config.yaml
 # token: ${k3s_token}
 # data-dir: ${k3s_data_dir}
+# flannel-ipv6-masq: true # https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking
+# cluster-cidr: ${k3s_cluster-cidr}
+# service-cidr: ${k3s_service-cidr}
+# node-cidr-mask-size-ipv4: max /12
+# node-cidr-mask-size-ipv6: max /112
 
 # Install K3s as server
 - import_tasks:
