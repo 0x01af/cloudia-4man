@@ -35,6 +35,7 @@
 - task: 'Check variable k3s.version about keyword'
 
 - task: 'Prepare K3s configuration file'
+# check: If 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded)
 # location: /etc/rancher/k3s/config.yaml
 # token: ${k3s_token}
 # data-dir: ${k3s_data_dir}
