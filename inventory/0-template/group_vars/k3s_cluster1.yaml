@@ -26,5 +26,13 @@ k3s:
       data-path: /var/lib/longhorn
   services:
     traefik:
+      # Recommandation: use NGINX as ingress and reverse-proxy with OWASP
+      # Read more:
+      # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
+      # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
       install: false
-    
+    servicelb:
+      # Recommandation: use MetalLB as (real) load balancer
+      # Read more:
+      # - https://github.com/k3s-io/k3s/discussions/9255
+      install: false
