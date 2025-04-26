@@ -65,3 +65,7 @@
   when: k3s.role == 'agent'
   # INSTALL K3S (but disable service to be able initializing HA cluster)
   # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='agent' sh -"      
+
+# MetalLB: https://metallb.io/#requirements
+# When using the L2 operating mode, traffic on port 7946 (TCP & UDP, other port can be configured) must be allowed between nodes, as required by memberlist.
+# Keep in mind: If kube-proxy changes its default mode "iptables" to "ipvs", than MetalLB needs the additional configuration of "strictARP".
