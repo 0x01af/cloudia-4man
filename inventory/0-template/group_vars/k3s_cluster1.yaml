@@ -8,31 +8,37 @@ k3s:
   token: "k3s_cluster1"
   # Networking:
   network:
+    use: flannel
     flannel:
-      install: true
-      flannel-iface: enp1s0
+      # which interface should be used to talk with other cluster members
+      iface: enp1s0 # -> flannel-iface
       # if dual-stack, than define IPv4 and IPv6 subnets separated by comma ',' (https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking)
       node-cidr-mask-size-ipv4:
       node-cidr-mask-size-ipv6:
       cluster-cidr: 10.42.0.0/16,2001:cafe:42::/56
       service-cidr: 10.43.0.0/16,2001:cafe:43::/112
   storage:
+    use:
+      - local
+      - longhorn
     local:
       # Local Path Provisionier: https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage
       data-path: /opt/local-path-provisioner
     longhorn:
-      install: true
       # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
       data-path: /var/lib/longhorn
-  services:
-    traefik:
-      # Recommandation: use NGINX as ingress and reverse-proxy with OWASP
-      # Read more:
-      # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
-      # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
-      install: false
-    servicelb:
-      # Recommandation: use MetalLB or NGINX as (real) load balancer
-      # Read more:
-      # - https://github.com/k3s-io/k3s/discussions/9255
-      install: false
+  ingress:
+    # An ingress controller routes traffic based on requested URI to the right pod/container.
+    # K3s default: traefik
+    # Recommandation: use NGINX as ingress and reverse-proxy with OWASP
+    # Read more:
+    # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
+    # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
+    use: nginx # nginx | traefik
+  loadbalancer:
+    # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
+    # K3s default: servicelb
+    # Recommandation: use MetalLB as (real) load balancer      
+    # Read more:
+    # - https://github.com/k3s-io/k3s/discussions/9255
+    use: metallb # metallb | servicelb
