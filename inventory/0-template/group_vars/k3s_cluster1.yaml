@@ -42,3 +42,6 @@ k3s:
     # Read more:
     # - https://github.com/k3s-io/k3s/discussions/9255
     use: metallb # metallb | servicelb
+    metallb:
+      vip: 192.168.123.130-192.168.123.139
+      
