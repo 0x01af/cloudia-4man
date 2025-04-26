@@ -69,3 +69,8 @@
 # MetalLB: https://metallb.io/#requirements
 # When using the L2 operating mode, traffic on port 7946 (TCP & UDP, other port can be configured) must be allowed between nodes, as required by memberlist.
 # Keep in mind: If kube-proxy changes its default mode "iptables" to "ipvs", than MetalLB needs the additional configuration of "strictARP".
+# Add Kubernetes Pod Security Admission labels for MetalLB:
+# labels:
+#    pod-security.kubernetes.io/enforce: privileged
+#    pod-security.kubernetes.io/audit: privileged
+#    pod-security.kubernetes.io/warn: privileged
