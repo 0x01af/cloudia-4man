@@ -16,14 +16,6 @@
 # - https://stackoverflow.com/questions/42386801/ansible-how-to-control-the-order-of-the-hosts-when-playbook-is-ran
 # - https://stackoverflow.com/questions/42506865/ansible-play-with-hosts-in-order-i-desire
 
-
-#- import_playbook: zigbee2mqtt.yaml
-- hosts: zigbee2mqtt_proxies
-  gather_facts: yes
-  roles:
-    - role: os_basic
-    - role: zigbee2mqtt_proxy
-
 #- import_playbook: plain.yaml
 - hosts: plain_servers
   gather_facts: yes
@@ -47,3 +39,10 @@
   roles:
     - role: os_basic
     - role: k3s_agent
+
+#- import_playbook: zigbee2mqtt.yaml
+- hosts: zigbee2mqtt_proxies
+  gather_facts: yes
+  roles:
+    - role: os_basic
+    - role: zigbee2mqtt_proxy
