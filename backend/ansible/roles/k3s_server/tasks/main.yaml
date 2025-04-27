@@ -1,6 +1,9 @@
 ---
 # k3s_server:tasks
 # inspired by: https://github.com/k3s-io/k3s-ansible/blob/master/roles/k3s_server/tasks/main.yml
+#
+# other discussed options:
+# - Download and installation: https://github.com/PyratLabs/ansible-role-k3s/blob/main/tasks/build/get-version.yml
 - name: Retrieve installed k3s version
   ansible.builtin.command: k3s --version
   register: _cmd_k3s_version_output
@@ -12,11 +15,11 @@
   ansible.builtin.set_fact:
     k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
 
-# If airgapped, all K3s artifacts are already on the node.
-# We should be downloading and installing the newer version only if we are in one of the following cases :
-# a. no k3s has been executed/installed before (cmd "k3s version" thrown an error)
-# b. installed k3s version is older than expected k3s version (var "k3s.version" in cluster's group_vars)
-- name: Download artifact only if needed
+### Download installation sources
+# CONDITION: Download installation sources, if:
+# a. no K3s has been installed yet (cmd "K3s version" thrown an error)
+# b. installed K3s version is older than expected K3s version (var "k3s.version" in cluster's group_vars)
+- name: Download installation sources
   when: not ansible_check_mode and (k3s.version_installed is undefined or k3s.version_installed is ansible.builtin.version(k3s.version, '<') )
   block:
     - name: Download K3s install script
@@ -28,7 +31,7 @@
         group: root
         mode: "0755"
     
-    - name: Download K3s binary
+    - name: Download K3s binaries
       ansible.builtin.command:
         cmd: /usr/local/bin/k3s-install.sh
       environment:
@@ -36,14 +39,21 @@
         INSTALL_K3S_VERSION: "{{ k3s.version }}"
       changed_when: true
 
-# Download right k3s version
-# inspired by: https://github.com/PyratLabs/ansible-role-k3s/blob/main/tasks/build/get-version.yml
+### Configure all prerequisites of K3s
+# CONDITION: This block should only be executed if no K3s has been installed yet.
+- name: Configure all prerequisites of K3s
+  when: not ansible_check_mode and k3s.version_installed is undefined
+  become: true # run with sudo
+  # become_user: root -> run as root (default)
+  # ignore_errors: true
+  block:
+    - name: Configure prerequistes for K3s network flannel
+      ansible.builtin.include_role:
+        name: k3s_cluster
+        tasks_from: network_flannel
 
-# ENABLE CONTAINER FEATURES
-# "echo ' cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1' | sudo tee -a /boot/firmware/cmdline.txt",
-# 
 
-- task: 'Prepare K3s configuration file'
+- name: 'Prepare K3s configuration file'
 # check: If 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded)
 # location: /etc/rancher/k3s/config.yaml
 # token: ${k3s_token}
@@ -54,11 +64,15 @@
 # node-cidr-mask-size-ipv4: max /12
 # node-cidr-mask-size-ipv6: max /112
 
-### Configure all prerequisites of K3s
+###
 # k3s.network.flannel
 # flannel-iface:
 # 1. check, if interface exists -> if not, exit
 # 2. check, if interface has defined ip-subnet configured -> if not, configure it
+- name: Configure prerequistes for K3s option --flannel-iface
+  import_tasks: debian.yml
+  when: ansible_facts['os_family']|lower == 'debian'
+  
 - name: Read current netplan configuratoin
   find:
     paths: /etc/netplan/
@@ -126,3 +140,8 @@
 #    pod-security.kubernetes.io/enforce: privileged
 #    pod-security.kubernetes.io/audit: privileged
 #    pod-security.kubernetes.io/warn: privileged
+
+
+# ENABLE CONTAINER FEATURES
+# "echo ' cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1' | sudo tee -a /boot/firmware/cmdline.txt",
+# 
