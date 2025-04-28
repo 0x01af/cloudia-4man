@@ -13,7 +13,9 @@
 - name: Store installed k3s version as additional fact
   when: not ansible_check_mode and _cmd_k3s_version_output.rc == 0
   ansible.builtin.set_fact:
-    k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+    k3s: "{{ k3s | ansible.builtin.combine({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
+    # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
 
 ### Download installation sources
 # CONDITION: Download installation sources, if:
@@ -84,6 +86,13 @@
         # node-cidr-mask-size-ipv6: max /112
     - name: 'Prepare K3s basic services manifests'
         # mkdir -p /var/lib/rancher/k3s/server/manifests/
+        # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
+        # - name: Copy config values
+        #   ansible.builtin.copy:
+        #     content: "{{ server_config_yaml }}"
+        #     dest: "/etc/rancher/k3s/config.yaml"
+        #     mode: "0644"
+        #   when: k3s.loadbalancer.use is not "traefik"
 
 ###
 # k3s.network.flannel
