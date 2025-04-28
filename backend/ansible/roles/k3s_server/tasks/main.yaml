@@ -87,10 +87,10 @@
     - name: 'Prepare K3s basic services manifests'
         # mkdir -p /var/lib/rancher/k3s/server/manifests/
         # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
-        # - name: Copy config values
+        # - name: Disable traefik
         #   ansible.builtin.copy:
-        #     content: "{{ server_config_yaml }}"
-        #     dest: "/etc/rancher/k3s/config.yaml"
+        #     content: ""
+        #     dest: "/var/lib/rancher/k3s/server/manifests/traefik.yaml.skip"
         #     mode: "0644"
         #   when: k3s.loadbalancer.use is not "traefik"
 
