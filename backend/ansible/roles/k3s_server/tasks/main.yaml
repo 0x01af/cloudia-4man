@@ -61,6 +61,20 @@
         tasks_from: k3s_cluster_config
         # check: If 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded)
         # location: /etc/rancher/k3s/config.yaml
+        # - name: Setup optional config file
+        #   when: server_config_yaml is defined
+        #   block:
+        #     - name: Make config directory
+        #       ansible.builtin.file:
+        #         path: "/etc/rancher/k3s"
+        #         mode: "0755"
+        #         state: directory
+        #      - name: Copy config values
+        #       ansible.builtin.copy:
+        #         content: "{{ server_config_yaml }}"
+        #         dest: "/etc/rancher/k3s/config.yaml"
+        #         mode: "0644"
+        #         register: _server_config_result
         # token: ${k3s_token}
         # data-dir: ${k3s_data_dir}
         # flannel-ipv6-masq: true # https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking
@@ -127,6 +141,9 @@
   # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
   # GET K3S KUBECONFIG
   # kubeconfig: /etc/rancher/k3s/k3s.yaml
+  # NEW 2025:
+  # if kube-vip in use, than: --tls-san
+  
 
 - task: 'Download and install K3s server (additional server)'
   when: inventory_hostname <> k3s_servers[0]
