@@ -6,6 +6,9 @@ k3s:
   version: v1.32.3+k3s1
   # K3s server token
   token: "k3s_cluster1"
+  api:
+    loadbalancer: kube-vip # none | external | kube-vip (https://kube-vip.io/docs/usage/k3s/)
+    endpoint: "192.168.1.10" # none: option doesn't affect anything
   # Networking:
   network:
     use: flannel
@@ -38,10 +41,13 @@ k3s:
   loadbalancer:
     # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
     # K3s default: servicelb
-    # Recommandation: use MetalLB as (real) load balancer      
+    # Recommandation: use Kube-VIP as (real) load balancer for services AND control plane
     # Read more:
+    # - https://kube-vip.io/
     # - https://github.com/k3s-io/k3s/discussions/9255
-    use: metallb # metallb | servicelb
-    metallb:
-      vip: 192.168.123.130-192.168.123.139
+    use: kube-vip # kube-vip | metallb | servicelb
+    kube-vip:
+      
+    # metallb:
+    #  vip: 192.168.123.130-192.168.123.139
       
