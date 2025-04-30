@@ -10,18 +10,18 @@ k3s:
     loadbalancer: kube-vip # none | external | kube-vip (https://kube-vip.io/docs/usage/k3s/)
     endpoint: "192.168.1.10" # none: option doesn't affect anything
   # Networking:
-  network:
-    use: flannel
+  networking:
+    cluster-cidr: 10.42.0.0/16,2001:cafe:42::/56
+    service-cidr: 10.43.0.0/16,2001:cafe:43::/112
+    addons: flannel # none
     flannel:
       # which interface should be used to talk with other cluster members
       iface: enp1s0 # -> flannel-iface
       # if dual-stack, than define IPv4 and IPv6 subnets separated by comma ',' (https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking)
       node-cidr-mask-size-ipv4:
       node-cidr-mask-size-ipv6:
-      cluster-cidr: 10.42.0.0/16,2001:cafe:42::/56
-      service-cidr: 10.43.0.0/16,2001:cafe:43::/112
   storage:
-    use:
+    provisioners:
       - local
       - longhorn
     local:
@@ -37,7 +37,7 @@ k3s:
     # Read more:
     # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
     # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
-    use: nginx # nginx | traefik
+    controller: nginx # nginx | traefik
   loadbalancer:
     # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
     # K3s default: servicelb
