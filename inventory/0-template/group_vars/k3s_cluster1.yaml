@@ -7,8 +7,8 @@ k3s:
   # K3s server token
   token: "k3s_cluster1"
   api:
-    loadbalancer: kube-vip # none | external | kube-vip (https://kube-vip.io/docs/usage/k3s/)
-    endpoint: "192.168.1.10" # none: option doesn't affect anything
+    loadbalancer: kube-vip # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
+    endpoint: "192.168.1.10" # if loadbalancer = "none", than first server in environment will be used ("{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}")
   # Networking:
   networking:
     cluster-cidr: 10.42.0.0/16,2001:cafe:42::/56
@@ -47,6 +47,7 @@ k3s:
     # - https://github.com/k3s-io/k3s/discussions/9255
     use: kube-vip # kube-vip | metallb | servicelb
     kube-vip:
+      # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
       
     # metallb:
     #  vip: 192.168.123.130-192.168.123.139
