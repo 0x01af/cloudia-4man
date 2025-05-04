@@ -8,7 +8,7 @@ k3s:
   token: "k3s_cluster1"
   api:
     loadbalancer: kube-vip # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
-    endpoint: "192.168.1.10" # if loadbalancer = "none", than first server in environment will be used ("{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}")
+    endpoint: "k3s-cluster1.mesh.local" # if loadbalancer = "none", than first server in environment will be used ("{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}")
   # Networking:
   networking:
     cluster-cidr: 10.42.0.0/16,2001:cafe:42::/56
@@ -16,7 +16,7 @@ k3s:
     addons: flannel # none
     flannel:
       # which interface should be used to talk with other cluster members
-      iface: enp1s0 # -> flannel-iface
+      iface: "enp1s0" # -> flannel-iface
       # if dual-stack, than define IPv4 and IPv6 subnets separated by comma ',' (https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking)
       node-cidr-mask-size-ipv4:
       node-cidr-mask-size-ipv6:
@@ -28,6 +28,7 @@ k3s:
       # Local Path Provisionier: https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage
       data-path: /opt/local-path-provisioner
     longhorn:
+      version: v1.8.1
       # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
       data-path: /var/lib/longhorn
   ingress:
@@ -38,6 +39,8 @@ k3s:
     # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
     # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
     controller: nginx # nginx | traefik
+    nginx:
+      version: v0.0.0
   loadbalancer:
     # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
     # K3s default: servicelb
@@ -48,7 +51,10 @@ k3s:
     use: kube-vip # kube-vip | metallb | servicelb
     kube-vip:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
-      
+      version: v0.4.0
+      api-iface: "enp0s0"
+      api-vip: 192.168.1.10
+      lb-vips: 192.168.123.130-192.168.123.139
     # metallb:
     #  vip: 192.168.123.130-192.168.123.139
       
