@@ -13,19 +13,19 @@
 - name: Prepare configuration to use nginx for ingress
   when: not ansible_check_mode and (k3s.ingress.use == "nginx")
   block:
-    - name: Download kube-vip Cloud Controller manifest
+    - name: Download nginx ingress manifest
       ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+        url: 
         timeout: 120
-        dest: /var/lib/rancher/k3s/server/manifests/kube-vip-cloud-controller.yaml
+        dest: 
       become: yes
     - name: Create kube-vip ConfigMap manifest
       ansible.builtin.template:
         src: ../templates/kube-vip-configmap.yaml.j2
         dest: /var/lib/rancher/k3s/server/manifests/kube-vip-configmap.yaml
       become: yes
-    - name: Prevent configuration of K3s load balancer servicelb
+    - name: Prevent configuration of K3s ingress traefik
       ansible.builtin.file:
-        path: /var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip
+        path: /var/lib/rancher/k3s/server/manifests/traefik.yaml.skip
         state: touch
       become: yes
