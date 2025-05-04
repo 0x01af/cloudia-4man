@@ -49,14 +49,25 @@
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
+    - name: Prepare local storage for installation
+      # /var/lib/rancher/k3s/server
+      # /etc/rancher/k3s/
+      # storage: ???
     - name: Configure prerequistes for K3s network flannel
       ansible.builtin.include_role:
-        name: k3s_cluster
-        tasks_from: k3s_cluster_network_flannel
-    - name: Configure prerequistes for K3s storage
+        name: k3s_components
+        tasks_from: flannel
+      when: k3s.network.use == "flannel"
+    - name: Configure prerequistes for K3s storage local-storage
       ansible.builtin.include_role:
         name: k3s_cluster
-        tasks_from: k3s_cluster_storage
+        tasks_from: local-storage
+      when: '"local" in k3s.storage.use'
+    - name: Configure prerequistes for K3s storage longhonr
+      ansible.builtin.include_role:
+        name: k3s_cluster
+        tasks_from: longhron
+      when: '"longhorn" in k3s.storage.use'
     - name: 'Prepare K3s configuration file'
       ansible.builtin.include_role:
         name: k3s_cluster
