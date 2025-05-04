@@ -50,6 +50,10 @@
   # ignore_errors: true
   block:
     - name: Prepare local storage for installation
+      community.general.lvol:
+        vg: firefly
+        lv: k3s-data
+        size: 256g
       # /var/lib/rancher/k3s/server
       # /var/lib/kubelet/pods
       # /etc/rancher/k3s/
