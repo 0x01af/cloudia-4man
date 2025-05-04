@@ -18,9 +18,12 @@
         url: https://kube-vip.io/manifests/rbac.yaml
         timeout: 120
         dest: /var/lib/rancher/k3s/server/manifests/kube-vip-rbac.yaml
-        owner: root
-        group: root
-        mode: "0755"
+      become: yes
+    - name: Create kube-vip DeamonSet manifest
+      ansible.builtin.template:
+        src: ../templates/kube-vip-deamonset.yaml.j2
+        dest: /var/lib/rancher/k3s/server/manifests/kube-vip-deamonset.yaml
+      become: yes
 
 ### Prepare configuration to use kube-vip for service load balancing
 # CONDITION: Environment defines the usage of kube-vip for service load balancing
@@ -32,11 +35,9 @@
         url: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
         timeout: 120
         dest: /var/lib/rancher/k3s/server/manifests/kube-vip-cloud-controller.yaml
-        owner: root
-        group: root
-        mode: "0755"
-    
+      become: yes    
     - name: Prevent configuration of K3s load balancer servicelb
       ansible.builtin.file:
         path: /var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip
         state: touch
+      become: yes
