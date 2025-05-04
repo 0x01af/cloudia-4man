@@ -1,0 +1,31 @@
+---
+# k3s_components:nginx:tasks
+# based on: 
+#
+- name: If K3s manifest folder does not exist, create K3s manifest folder
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    mode: "0755"
+
+### Prepare configuration to use nginx for ingress
+# CONDITION: Environment defines the usage of nginx for ingress
+- name: Prepare configuration to use nginx for ingress
+  when: not ansible_check_mode and (k3s.ingress.use == "nginx")
+  block:
+    - name: Download kube-vip Cloud Controller manifest
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+        timeout: 120
+        dest: /var/lib/rancher/k3s/server/manifests/kube-vip-cloud-controller.yaml
+      become: yes
+    - name: Create kube-vip ConfigMap manifest
+      ansible.builtin.template:
+        src: ../templates/kube-vip-configmap.yaml.j2
+        dest: /var/lib/rancher/k3s/server/manifests/kube-vip-configmap.yaml
+      become: yes
+    - name: Prevent configuration of K3s load balancer servicelb
+      ansible.builtin.file:
+        path: /var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip
+        state: touch
+      become: yes
