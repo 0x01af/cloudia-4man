@@ -21,6 +21,7 @@ k3s:
       node-cidr-mask-size-ipv4:
       node-cidr-mask-size-ipv6:
   storage:
+    disk-size: 256g
     provisioners:
       - local
       - longhorn
