@@ -19,13 +19,18 @@
 - name: Prepare configuration to use flannel for network
   when: not ansible_check_mode and _cmd_ip_link_show_flannel_iface.rc == 0 and k3s.network.use == "flannel"
   block:
+    - name: Generate nic parameters for flannel
+      ansible.builtin.set_fact:
+        _fact_nic_primary: "{{ ansible_interfaces | select(ansible_interfaces | map(attribute='ipv4') | map('contains', ansible_host)) | first | default(omit) }}"
+        _fact_nic_primary_ipaddress: "{{ ansible_{{ _fact_nic_primary }}.ipv4.address | default({}) }}"
+        _fact_nic_flannel_ipaddress: "169.254.{{ _fact_nic_primary_ipaddress.split('.')[2] | default('1') }}.{{ _fact_nic_primary_ipaddress.split('.')[3] | default('1') }}"
+        _fact_nic_flannel_ipprefix: "{{ ansible_{{ _fact_nic_primary }}.ipv4.prefix | default('24') }}"
+      # when: ansible_host is defined and ansible_interfaces is defined
     - name: Create netplan configuration for flannel
       become: true
       template:
         src: netplan.50-k3s-network-flannel.yaml.j2
         dest: /etc/netplan/50-k3s-network-flannel.yaml
-      when: 
     - name: Apply netplan configuration for flannel
       become: true
       command: netplan apply
-      when: _cmd_ip_link_show_flannel_iface.rc == 0
