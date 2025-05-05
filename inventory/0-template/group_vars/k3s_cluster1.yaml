@@ -11,27 +11,27 @@ k3s:
     endpoint: "k3s-cluster1.mesh.local" # if loadbalancer = "none", than first server in environment will be used ("{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}")
   # Networking:
   networking:
-    cluster-cidr: 10.42.0.0/16,2001:cafe:42::/56
-    service-cidr: 10.43.0.0/16,2001:cafe:43::/112
+    cluster_cidr: 10.42.0.0/16,2001:cafe:42::/56
+    service_cidr: 10.43.0.0/16,2001:cafe:43::/112
     addons: flannel # none
     flannel:
       # which interface should be used to talk with other cluster members
       iface: "enp1s0" # -> flannel-iface
       # if dual-stack, than define IPv4 and IPv6 subnets separated by comma ',' (https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking)
-      node-cidr-mask-size-ipv4:
-      node-cidr-mask-size-ipv6:
+      node_cidr_mask_size_ipv4:
+      node_cidr_mask_size_ipv6:
   storage:
-    disk-size: 256g
+    disk_size: 256g
     provisioners:
       - local
       - longhorn
     local:
       # Local Path Provisionier: https://github.com/rancher/local-path-provisioner/blob/master/README.md#usage
-      data-path: /opt/local-path-provisioner
+      data_path: /opt/local-path-provisioner
     longhorn:
       version: v1.8.1
       # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
-      data-path: /var/lib/longhorn
+      data_path: /var/lib/longhorn
   ingress:
     # An ingress controller routes traffic based on requested URI to the right pod/container.
     # K3s default: traefik
@@ -53,9 +53,9 @@ k3s:
     kube-vip:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
       version: v0.4.0
-      api-iface: "enp0s0"
-      api-vip: 192.168.1.10
-      lb-range: 192.168.123.130-192.168.123.139
+      api_iface: "enp0s0"
+      api_vip: 192.168.1.10
+      lb_range: 192.168.123.130-192.168.123.139
     # metallb:
     #  vip: 192.168.123.130-192.168.123.139
       
