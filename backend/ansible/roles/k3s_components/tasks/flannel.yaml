@@ -8,13 +8,24 @@
     state: directory
     mode: "0755"
 
+- name: Check, if interface exists for flannel
+  command: "ip link show {{ k3s.network.flannel.iface }}"
+  register: _cmd_ip_link_show_flannel_iface
+  ignore_errors: true
+  changed_when: false
+
 ### Prepare configuration to use flannel for network
 # CONDITION: Environment defines the usage of flannel for network
 - name: Prepare configuration to use flannel for network
-  when: not ansible_check_mode and (k3s.network.use == "flannel")
+  when: not ansible_check_mode and _cmd_ip_link_show_flannel_iface.rc == 0 and k3s.network.use == "flannel"
   block:
-    # - name: Create kube-vip ConfigMap manifest
-    #  ansible.builtin.template:
-    #    src: ../templates/kube-vip-configmap.yaml.j2
-    #    dest: /var/lib/rancher/k3s/server/manifests/kube-vip-configmap.yaml
-    #  become: yes
+    - name: Create netplan configuration for flannel
+      become: true
+      template:
+        src: netplan.50-k3s-network-flannel.yaml.j2
+        dest: /etc/netplan/50-k3s-network-flannel.yaml
+      when: 
+    - name: Apply netplan configuration for flannel
+      become: true
+      command: netplan apply
+      when: _cmd_ip_link_show_flannel_iface.rc == 0
