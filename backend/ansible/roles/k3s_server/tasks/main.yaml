@@ -17,6 +17,25 @@
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
     # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
 
+### Prepare OS and HW for K3s
+- name: Prepare system for K3s
+  when: not ansible_check_mode and k3s.version_installed is undefined
+  become: true # run with sudo
+  # become_user: root -> run as root (default)
+  # ignore_errors: true
+  block:
+    - name: Prepare system disk for K3s
+      community.general.lvol:
+        vg: ubuntu-vg
+        lv: k3s-data-lv
+        size: {{ k3s.storage.disk-size }}
+      # /var/lib/rancher/k3s/server
+      # /var/lib/kubelet/pods
+      # /etc/rancher/k3s/
+      # /run/k3s : temporäre Daten
+      # storage: ???
+    - 
+
 ### Download installation sources
 # CONDITION: Download installation sources, if:
 # a. no K3s has been installed yet (cmd "K3s version" thrown an error)
