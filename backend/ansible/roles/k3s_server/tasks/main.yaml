@@ -19,22 +19,19 @@
 
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
-  when: not ansible_check_mode and k3s.version_installed is undefined
+  when: k3s.version_installed is undefined
   become: true # run with sudo
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
     - name: Prepare system disk for K3s
       community.general.lvol:
-        vg: "{{ ansible_distribution + '-vg' | default('ubuntu-vg') }}"
+        vg: "{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}"
         lv: "k3s-data-lv"
         size: "{{ k3s.storage.disk-size }}"
-      # /var/lib/rancher/k3s/server
-      # /var/lib/kubelet/pods
-      # /etc/rancher/k3s/
-      # /run/k3s : temporäre Daten
-      # storage: ???
-    - 
+        force: false # never shrink (or remove)
+    - name: Prepare network interfaces for K3s
+      
 
 ### Download installation sources
 # CONDITION: Download installation sources, if:
@@ -78,7 +75,7 @@
         name: k3s_cluster
         tasks_from: local-storage
       when: '"local" in k3s.storage.use'
-    - name: Configure prerequistes for K3s storage longhonr
+    - name: Configure prerequistes for K3s storage longhorn
       ansible.builtin.include_role:
         name: k3s_cluster
         tasks_from: longhron
@@ -120,50 +117,8 @@
         #     mode: "0644"
         #   when: k3s.loadbalancer.use is not "traefik"
 
-###
-# k3s.network.flannel
-# flannel-iface:
-# 1. check, if interface exists -> if not, exit
-# 2. check, if interface has defined ip-subnet configured -> if not, configure it
-- name: Configure prerequistes for K3s option --flannel-iface
-  import_tasks: debian.yml
-  when: ansible_facts['os_family']|lower == 'debian'
+
   
-- name: Read current netplan configuratoin
-  find:
-    paths: /etc/netplan/
-    patterns: '*.yaml'
-    excludes: '*disabled*'
-  register: netplan_config_files
-
-- name: Lese den Inhalt der aktiven Netplan Konfigurationsdatei
-  slurp:
-    src: "{{ netplan_config_files.files.0.path }}"
-  register: current_netplan_config
-  when: netplan_config_files.files | length > 0
-
-- name: Dekodiere den YAML Inhalt
-  set_fact:
-    current_netplan_data: "{{ current_netplan_config.content | b64decode | from_yaml }}"
-  when: current_netplan_config.content is defined
-
-- name: Füge das neue Interface zur Konfiguration hinzu
-  set_fact:
-    updated_netplan_data: "{{ current_netplan_data | default({}) | combine({'network': {'ethernets': current_netplan_data.network.ethernets | default({}) | combine({'eth1': {'dhcp4': true}})}}) }}"
-  when: current_netplan_data is defined
-
-- name: Schreibe die aktualisierte Netplan Konfiguration
-  copy:
-    content: "{{ updated_netplan_data | to_yaml }}"
-    dest: /etc/netplan/99-ansible-added.yaml
-    owner: root
-    group: root
-    mode: '0644'
-  when: updated_netplan_data is defined
-
-- name: Wende die neue Netplan Konfiguration an
-  command: netplan apply
-  become: true
 
 
 ### Install K3s as server
