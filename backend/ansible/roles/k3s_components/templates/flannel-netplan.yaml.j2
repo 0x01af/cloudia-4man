@@ -9,4 +9,4 @@ network:
       dhcp6: false
       dhcp4: false
       addresses:
-        - "{{ _flannel_iface_ip }}/{{ _flannel_iface_subnet }}"
+        - "{{ _fact_nic_flannel_ipaddress }}/{{ _fact_nic_flannel_ipprefix }}"
