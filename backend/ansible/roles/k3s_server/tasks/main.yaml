@@ -119,7 +119,12 @@
     - name: 'Prepare K3s basic services manifests'
         # mkdir -p /var/lib/rancher/k3s/server/manifests/
         # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
-        
+       #- name: Disable traefik
+       #   ansible.builtin.copy:
+       #     content: ""
+       #     dest: "/var/lib/rancher/k3s/server/manifests/traefik.yaml.skip"
+       #     mode: "0644"
+       # when: k3s.loadbalancer.use is not "traefik"        
 
 - task: 'Download and install K3s server (first server)'
   when: inventory_hostname == k3s_cluster | k3s_servers[0] ???
