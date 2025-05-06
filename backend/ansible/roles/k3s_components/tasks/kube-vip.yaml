@@ -41,7 +41,7 @@
         src: ../templates/kube-vip-configmap.yaml.j2
         dest: /var/lib/rancher/k3s/server/manifests/kube-vip-configmap.yaml
       become: yes
-    - name: Prevent configuration of K3s load balancer servicelb
+    - name: Prevent default configuration of K3s load balancer servicelb
       ansible.builtin.file:
         path: /var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip
         state: touch
