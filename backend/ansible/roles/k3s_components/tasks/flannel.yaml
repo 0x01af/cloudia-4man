@@ -29,8 +29,10 @@
     - name: Create netplan configuration for flannel
       become: true
       template:
-        src: netplan.50-k3s-network-flannel.yaml.j2
+        src: flannel-netplan.yaml.j2
         dest: /etc/netplan/50-k3s-network-flannel.yaml
     - name: Apply netplan configuration for flannel
       become: true
       command: netplan apply
+    - name: K3s configuration
+      
