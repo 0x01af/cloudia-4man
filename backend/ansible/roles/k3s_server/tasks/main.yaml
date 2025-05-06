@@ -80,7 +80,16 @@
         name: k3s_components
         tasks_from: longhorn
       when: '"longhorn" in k3s.storage.use'
-    - name: 'Prepare K3s configuration file'
+    
+
+
+  
+
+
+### Install K3s as server
+- import_tasks:
+  when: k3s.role == 'server' or k3s.role == 'server-strictly' or default?
+- name: 'Prepare K3s configuration file'
       ansible.builtin.include_role:
         name: k3s_cluster
         tasks_from: k3s_cluster_config
@@ -110,21 +119,8 @@
     - name: 'Prepare K3s basic services manifests'
         # mkdir -p /var/lib/rancher/k3s/server/manifests/
         # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
-        # - name: Disable traefik
-        #   ansible.builtin.copy:
-        #     content: ""
-        #     dest: "/var/lib/rancher/k3s/server/manifests/traefik.yaml.skip"
-        #     mode: "0644"
-        #   when: k3s.loadbalancer.use is not "traefik"
 
 
-  
-
-
-### Install K3s as server
-- import_tasks:
-  when: k3s.role == 'server' or k3s.role == 'server-strictly' or default?
-  
 - task: 'Download and install K3s server (first server)'
   when: inventory_hostname == k3s_cluster | k3s_servers[0] ???
   # INSTALL K3S (but disable service to be able initializing HA cluster)
