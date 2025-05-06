@@ -1,12 +1,8 @@
 {{ ansible_managed | comment }}
 
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    {{ k3s.network.flannel.iface }}:
-      accept-ra: false
-      dhcp6: false
-      dhcp4: false
-      addresses:
-        - "{{ _fact_nic_flannel_ipaddress }}/{{ _fact_nic_flannel_ipprefix }}"
+### K3s config for flannel on server: https://docs.k3s.io/cli/server
+# server
+flannel-backend: "vxlan"
+flannel-ipv6-masq: true
+# agent
+flannel-iface: {{  }}
