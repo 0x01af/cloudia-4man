@@ -34,5 +34,9 @@
     - name: Apply netplan configuration for flannel
       become: true
       command: netplan apply
-    - name: K3s configuration
+    - name: Add K3s config file for flannel
+      become: true
+      template:
+        src: flannel-k3s-config.yaml.j2
+        dest: /etc/rancher/k3s/config.yaml.d/50-k3s-network-flannel.yaml
       
