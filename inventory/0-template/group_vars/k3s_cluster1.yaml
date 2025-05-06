@@ -7,7 +7,7 @@ k3s:
   # K3s server token
   token: "k3s_cluster1"
   api:
-    loadbalancer: kube-vip # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
+    loadbalancer: "kube-vip" # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
     endpoint: "k3s-cluster1.mesh.local" # if loadbalancer = "none", than first server in environment will be used ("{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}")
   # Networking:
   networking:
@@ -15,8 +15,8 @@ k3s:
     service_cidr: 10.43.0.0/16,2001:cafe:43::/112
     addon: flannel # none
     flannel:
-      # which interface should be used to talk with other cluster members
-      iface: "enp1s0" # -> flannel-iface
+      # flannel-iface: which interface should be used to talk with other cluster members
+      iface: "enp1s0"
       # if dual-stack, than define IPv4 and IPv6 subnets separated by comma ',' (https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking)
       node_cidr_mask_size_ipv4:
       node_cidr_mask_size_ipv6:
@@ -45,7 +45,7 @@ k3s:
   loadbalancer:
     # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
     # K3s default: servicelb
-    # Recommandation: use Kube-VIP as (real) load balancer for services AND control plane
+    # Recommandation: use Kube-VIP as (real) load balancer for services AND control plane (if configured under section "api")
     # Read more:
     # - https://kube-vip.io/
     # - https://github.com/k3s-io/k3s/discussions/9255
@@ -54,8 +54,8 @@ k3s:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
       version: v0.4.0
       api_iface: "enp0s0"
-      api_vip: 192.168.1.10
-      lb_range: 192.168.123.130-192.168.123.139
+      api_vip: "192.168.1.10"
+      lb_range: "192.168.123.130-192.168.123.139"
     # metallb:
-    #  vip: 192.168.123.130-192.168.123.139
+    #  lb_range: "192.168.123.130-192.168.123.139"
       
