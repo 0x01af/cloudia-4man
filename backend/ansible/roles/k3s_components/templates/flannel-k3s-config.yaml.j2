@@ -3,6 +3,6 @@
 ### K3s config for flannel on server: https://docs.k3s.io/cli/server
 # server
 flannel-backend: "vxlan"
-flannel-ipv6-masq: true
+# flannel-ipv6-masq: true
 # agent
-flannel-iface: {{  }}
+flannel-iface: "{{ k3s.network.flannel.iface }}"
