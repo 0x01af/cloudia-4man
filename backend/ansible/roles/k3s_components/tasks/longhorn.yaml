@@ -1,0 +1,13 @@
+
+
+
+  - name: Prepare data folders for longhorn
+    ansible.builtin.file:
+      path: "{{ k3s.storage.longhorn.path }}"
+      state: directory
+      mode: "0755"
+  - name: Prepare data folders for longhorn
+     ansible.builtin.file:
+       src: "{{ k3s.storage.longhorn.path }}"
+       dest: "/k3s-data/longhorn"
+       state: link
