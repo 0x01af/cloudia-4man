@@ -24,28 +24,28 @@
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
-    - name: Create logical volume on system disk for K3s
+    - name: Create logical volume on system disk for K3s data
       community.general.lvol:
         vg: "{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}"
         lv: "k3s-data-lv"
-        size: "{{ k3s.storage.disk_size }}"
+        size: "{{ k3s.storage.data_size }}"
         force: false # never shrink (or remove)
-     - name: Format logical volume on system disk for K3s
+     - name: Format logical volume on system disk for K3s data
        community.general.filesystem:
          fstype: ext4
          dev: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
-     - name: Create mountpoint of logical volume for K3s
+     - name: Create mountpoint of logical volume for K3s data
        ansible.builtin.file:
          path: /k3s-data
          state: directory
          mode: '0755'
-     - name: Mount logical volume for K3s
+     - name: Mount logical volume for K3s data
        ansible.posix.mount:
          path: /k3s-data
          src: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
          fstype: ext4
          state: mounted
-     - name: Prepare folders for K3s
+     - name: Prepare folders for K3s data
        ansible.builtin.file:
          path: "{{ item.folder }}"
          state: directory
