@@ -1,13 +1,25 @@
+---
+# k3s_components:longhorn:tasks
+# based on: 
+#
+- name: If K3s manifest folder does not exist, create K3s manifest folder
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    mode: "0755"
 
-
-
-  - name: Prepare data folders for longhorn
-    ansible.builtin.file:
-      path: "{{ k3s.storage.longhorn.path }}"
-      state: directory
-      mode: "0755"
-  - name: Prepare data folders for longhorn
-     ansible.builtin.file:
-       src: "{{ k3s.storage.longhorn.path }}"
-       dest: "/k3s-data/longhorn"
-       state: link
+### Prepare configuration to use longhorn for storage
+# CONDITION: Environment defines the usage of longhorn for storage
+- name: Prepare configuration to use longhorn for storage
+  when: not ansible_check_mode and "longhorn" in k3s.storage.provisioner
+  block:
+    - name: Prepare data folders for longhorn
+      ansible.builtin.file:
+        path: "{{ k3s.storage.longhorn.path }}"
+        state: directory
+        mode: "0755"
+    - name: Prepare data folders for longhorn
+      ansible.builtin.file:
+        src: "{{ k3s.storage.longhorn.path }}"
+        dest: "/k3s-data/longhorn"
+        state: link
