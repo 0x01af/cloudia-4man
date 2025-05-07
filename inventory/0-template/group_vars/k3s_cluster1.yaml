@@ -16,7 +16,7 @@ k3s:
     service_cidr: 10.43.0.0/16,2001:cafe:43::/112
     node_cidr_mask_size_ipv4:
     node_cidr_mask_size_ipv6:
-    addon: flannel # none
+    addon: "flannel" # none
     flannel:
       # flannel-iface: which interface should be used to talk with other cluster members
       iface: "enp1s0"
@@ -40,7 +40,7 @@ k3s:
     # Read more:
     # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
     # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
-    controller: nginx # nginx | traefik
+    controller: "nginx" # nginx | traefik
     nginx:
       version: v0.0.0
   loadbalancer:
@@ -50,7 +50,7 @@ k3s:
     # Read more:
     # - https://kube-vip.io/
     # - https://github.com/k3s-io/k3s/discussions/9255
-    addon: kube-vip # kube-vip | metallb | servicelb
+    addon: "kube-vip" # kube-vip | metallb | servicelb
     kube-vip:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
       version: v0.4.0
