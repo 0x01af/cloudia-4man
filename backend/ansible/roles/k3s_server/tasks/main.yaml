@@ -114,15 +114,16 @@
         name: k3s_components
         tasks_from: longhorn
       when: '"longhorn" in k3s.storage.provisioners'
+    - name: Configure prerequistes for K3s ingress controller nginx
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: nginx
+      when: k3s.ingress.controller == "nginx"
     - name: Configure prerequistes for K3s loadbalancer kube-vip
       ansible.builtin.include_role:
         name: k3s_components
         tasks_from: kube-vip
       when: k3s.api.loadbalancer == "kube-vip" or k3s.loadbalancer.addon == "kube-vip"
-
-
-  
-
 
 ### Install K3s as server
 - import_tasks:
@@ -185,14 +186,6 @@
   # INSTALL K3S (but disable service to be able initializing HA cluster)
   # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='agent' sh -"      
 
-# MetalLB: https://metallb.io/#requirements
-# When using the L2 operating mode, traffic on port 7946 (TCP & UDP, other port can be configured) must be allowed between nodes, as required by memberlist.
-# Keep in mind: If kube-proxy changes its default mode "iptables" to "ipvs", than MetalLB needs the additional configuration of "strictARP".
-# Add Kubernetes Pod Security Admission labels for MetalLB:
-# labels:
-#    pod-security.kubernetes.io/enforce: privileged
-#    pod-security.kubernetes.io/audit: privileged
-#    pod-security.kubernetes.io/warn: privileged
 
 
 # ENABLE CONTAINER FEATURES
