@@ -36,9 +36,9 @@
          dev: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
      - name: Create mountpoint of logical volume for K3s data
        ansible.builtin.file:
-         path: /k3s-data
+         path: "/k3s-data"
          state: directory
-         mode: '0755'
+         mode: "0755"
      - name: Mount logical volume for K3s data
        ansible.posix.mount:
          path: /k3s-data
@@ -53,7 +53,7 @@
          loop:
            - { folder: "/k3s-data/k3s" }
            - { folder: "/k3s-data/k3s-pods" }
-     - name: Prepare folders for K3s
+     - name: Prepare folders for K3s data
        ansible.builtin.file:
          src: "{{ item.src }}"
          dest: "{{ item.dest }}"
