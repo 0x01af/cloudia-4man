@@ -73,16 +73,16 @@
 # b. installed K3s version is older than expected K3s version (var "k3s.version" in cluster's group_vars)
 - name: Download installation sources
   when: not ansible_check_mode and (k3s.version_installed is undefined or k3s.version_installed is ansible.builtin.version(k3s.version, '<') )
+  become: true
   block:
     - name: Download K3s install script
       ansible.builtin.get_url:
         url: https://get.k3s.io/
         timeout: 120
         dest: /usr/local/bin/k3s-install.sh
-        owner: root
-        group: root
-        mode: "0755"
-    
+        # owner: root
+        # group: root
+        mode: "0755"    
     - name: Download K3s binaries
       ansible.builtin.command:
         cmd: /usr/local/bin/k3s-install.sh
@@ -165,26 +165,27 @@
        #     mode: "0644"
        # when: k3s.loadbalancer.use is not "traefik"        
 
-- task: 'Download and install K3s server (first server)'
+- name: 'Install K3s server (first server)'
   when: inventory_hostname == k3s_cluster | k3s_servers[0] ???
   # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
+  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
   # GET K3S KUBECONFIG
   # kubeconfig: /etc/rancher/k3s/k3s.yaml
   # NEW 2025:
   # if kube-vip in use, than: --tls-san
+  # if more than 2 server, than: --cluster-init
   
 
-- task: 'Download and install K3s server (additional server)'
+- name: 'Install K3s server (additional server)'
   when: inventory_hostname <> k3s_servers[0]
   # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
+  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
 
 # Install K3s as agent
-- import_tasks:
+- name: 'import_tasks:
   when: k3s.role == 'agent'
   # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "curl -sfL https://get.k3s.io | INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='agent' sh -"      
+  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='agent' sh -"      
 
 
 
