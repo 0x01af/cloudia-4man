@@ -1,13 +1,25 @@
+---
+# k3s_components:local-path-provisioner:tasks
+# based on: 
+#
+- name: If K3s manifest folder does not exist, create K3s manifest folder
+  ansible.builtin.file:
+    path: /var/lib/rancher/k3s/server/manifests
+    state: directory
+    mode: "0755"
 
-
-
-  - name: Prepare data folders for local-path-provisioner
-    ansible.builtin.file:
-      path: "{{ k3s.storage.local.path }}"
-      state: directory
-      mode: "0755"
-  - name: Prepare data folders for local-path-provisioner
-     ansible.builtin.file:
-       src: "{{ k3s.storage.local.path }}"
-       dest: "/k3s-data/local-path-provisioner"
-       state: link
+### Prepare configuration to use local-path-provisioner for storage
+# CONDITION: Environment defines the usage of local-path-provisioner for storage
+- name: Prepare configuration to use local-path-provisioner for storage
+  when: not ansible_check_mode and "local" in k3s.storage.provisioner
+  block:
+    - name: Prepare data folders for local-path-provisioner
+      ansible.builtin.file:
+        path: "{{ k3s.storage.local.path }}"
+        state: directory
+        mode: "0755"
+    - name: Prepare data folders for local-path-provisioner
+      ansible.builtin.file:
+        src: "{{ k3s.storage.local.path }}"
+        dest: "/k3s-data/local-path-provisioner"
+        state: link
