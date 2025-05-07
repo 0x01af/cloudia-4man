@@ -1,0 +1,13 @@
+
+
+
+  - name: Prepare data folders for local-path-provisioner
+    ansible.builtin.file:
+      path: "{{ k3s.storage.local.path }}"
+      state: directory
+      mode: "0755"
+  - name: Prepare data folders for local-path-provisioner
+     ansible.builtin.file:
+       src: "{{ k3s.storage.local.path }}"
+       dest: "/k3s-data/local-path-provisioner"
+       state: link
