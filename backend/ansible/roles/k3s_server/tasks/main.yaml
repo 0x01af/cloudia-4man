@@ -103,18 +103,22 @@
       ansible.builtin.include_role:
         name: k3s_components
         tasks_from: flannel
-      when: k3s.network.use == "flannel"
-    - name: Configure prerequistes for K3s storage local-storage
+      when: k3s.network.addon == "flannel"
+    - name: Configure prerequistes for K3s storage local-path-provisioner
       ansible.builtin.include_role:
         name: k3s_components
-        tasks_from: local-storage
-      when: '"local" in k3s.storage.use'
+        tasks_from: local-path-provisioner
+      when: '"local" in k3s.storage.provisioners'
     - name: Configure prerequistes for K3s storage longhorn
       ansible.builtin.include_role:
         name: k3s_components
         tasks_from: longhorn
-      when: '"longhorn" in k3s.storage.use'
-    
+      when: '"longhorn" in k3s.storage.provisioners'
+    - name: Configure prerequistes for K3s loadbalancer kube-vip
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: kube-vip
+      when: k3s.api.loadbalancer == "kube-vip" or k3s.loadbalancer.addon == "kube-vip"
 
 
   
