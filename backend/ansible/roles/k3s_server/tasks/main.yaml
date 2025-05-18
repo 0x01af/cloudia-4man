@@ -172,7 +172,7 @@
         # mkdir -p /var/lib/rancher/k3s/server/manifests/
         # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
         
-
+########
 - name: 'Install K3s server (first server)'
   when: inventory_hostname == groups[groups | select('match', '^k3s_cluster')][0]
   # INSTALL K3S (but disable service to be able initializing HA cluster)
@@ -244,7 +244,7 @@
         enabled: true
 
     - name: Pause to allow first server startup
-      when: (groups[server_group] | length) > 1
+      when: (groups[groups | select('match', '^k3s_cluster')] | length) > 1
       ansible.builtin.pause:
         seconds: 10
 
@@ -323,6 +323,12 @@
         - name: Store Master node-token
           ansible.builtin.set_fact:
             token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
+
+########
+  - name: 'Install K3s server (additional server)'
+  when: inventory_hostname <> groups[groups | select('match', '^k3s_cluster')][0]
+  # INSTALL K3S (but disable service to be able initializing HA cluster)
+  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
 
 - name: Start other server if any and verify status
   when:
@@ -429,10 +435,6 @@
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
 
 
-  - name: 'Install K3s server (additional server)'
-  when: inventory_hostname <> groups[groups | select('match', '^k3s_cluster')][0]
-  # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
 
 
 # ENABLE CONTAINER FEATURES
