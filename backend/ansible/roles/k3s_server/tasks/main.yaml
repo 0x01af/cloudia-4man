@@ -129,9 +129,21 @@
         tasks_from: kube-vip
       when: k3s.api.loadbalancer == "kube-vip" or k3s.loadbalancer.addon == "kube-vip"
 
-
-
 ### Install K3s as server
+# Configuration:
+# - K3s environment variables for installation "INSTALL_K3S_": used by install-script
+# - K3s environment variables for configuratoin "K3S_": /etc/systemd/system/k3s.service.env
+# --- Environment variables which begin with K3S_ will be preserved for the systemd and openrc services to use.
+# - K3s configuration flags "--xyz-": /etc/rancher/k3s/config.yaml & /etc/rancher/k3s/config.yaml.d/*.yaml
+# --- In addition to configuring K3s with environment variables and CLI arguments, K3s can also use a config file. (https://docs.k3s.io/installation/configuration#configuration-file)
+# --- Options are documented on this page as CLI flags, but can also be passed as configuration file options (https://docs.k3s.io/cli/server). 
+# - [good to know, not imported] K3s Containerd Base Template: #/var/lib/rancher/k3s/agent/etc/containerd/config-v3.toml.tmpl -> Extend with instruction: https://docs.k3s.io/advanced#base-template
+# Defintiion:
+# - Use ansible environment variables for installation
+# - Use configuration files for configuration
+
+
+
 - import_tasks:
   when: k3s.role == 'server' or k3s.role == 'server-strictly' or default?
 - name: Copy config values
