@@ -179,7 +179,12 @@
         # service-cidr: ${k3s_service-cidr}
         # node-cidr-mask-size-ipv4: max /12
         # node-cidr-mask-size-ipv6: max /112
-
+    # - name: Add service environment variables
+    #  when: extra_service_envs is defined
+    #  ansible.builtin.lineinfile:
+    #    path: "{{ systemd_dir }}/k3s.service.env"
+    #    line: "{{ item }}"
+    #  with_items: "{{ extra_service_envs }}"
 
         
 ########
@@ -211,13 +216,6 @@
         group: root
         mode: "0644"
       register: service_file_ha
-
-    - name: Add service environment variables
-      when: extra_service_envs is defined
-      ansible.builtin.lineinfile:
-        path: "{{ systemd_dir }}/k3s.service.env"
-        line: "{{ item }}"
-      with_items: "{{ extra_service_envs }}"
 
     - name: Delete any existing token from the environment if different from the new one
       ansible.builtin.lineinfile:
