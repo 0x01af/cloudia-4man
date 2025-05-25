@@ -5,28 +5,43 @@
 # other discussed options:
 # - Download and installation: https://github.com/PyratLabs/ansible-role-k3s/blob/main/tasks/build/get-version.yml
 ### Define general settings
-- name: Retrieve installed k3s version
-  ansible.builtin.command: k3s --version
-  register: _cmd_k3s_version_output
-  changed_when: false
-  ignore_errors: true
-
-- name: Store installed k3s version as additional fact
-  when: not ansible_check_mode and _cmd_k3s_version_output.rc == 0
-  ansible.builtin.set_fact:
-    k3s: "{{ k3s | ansible.builtin.combine({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
-    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
-    # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
-
-- name: 
-  when: inventory_hostname == groups[groups | select('match', '^k3s_cluster')][0]
-  # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
-  # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
-
+- name: Define installed K3s version ### vielleicht an schluss schieben
+  when: not ansible_check_mode and k3s.version_installed is undefined
   block:
-    - name: Copy K3s service file [Single]
-      when: groups[server_group] | length == 1 or use_external_database
+    - name: Retrieve installed k3s version
+      ansible.builtin.command: k3s --version
+      register: _cmd_k3s_version_output
+      changed_when: false
+      ignore_errors: true
+    - name: Store installed k3s version as additional fact
+      when: _cmd_k3s_version_output.rc == 0
+      ansible.builtin.set_fact:
+        k3s: "{{ k3s | ansible.builtin.combine({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
+        # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+
+- name: Define K3s datastore configuration
+  when: not ansible_check_mode and k3s.datastore is undefined
+  # https://docs.k3s.io/datastore
+  # Option a: Single server with SQLite datastore
+  # Option b: Three or more server with etcd datastore
+  # Option c: Any server with external database datastore (than k3s.datastore has been defined)
+  # If two server are defined, second server will be downgraded to agent
+  block:
+    - name: Set datastore for single server environment (SQLite)
+      when: groups[groups | select('match', '^k3s_cluster') | first] | length == 1
+      ansible.builtin.set_fact:
+        k3s: "{{ k3s | ansible.builtin.combine({'datastore': 'sqlite'}) }}"
+
+    - name: Set datastore for two server environment (SQLite)
+      when: groups[groups | select('match', '^k3s_cluster') | first] | length == 2
+      ansible.builtin.set_fact:
+        k3s: "{{ k3s | ansible.builtin.combine({'datastore': 'sqlite'}) }}"
+      
+    - name: Set datastore for three or more server environment (etcd)
+      when: groups[groups | select('match', '^k3s_cluster') | first] | length >= 3
+      ansible.builtin.set_fact:
+        k3s: "{{ k3s | ansible.builtin.combine({'datastore': 'etcd'}) }}"
 
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
