@@ -43,7 +43,7 @@
   block:
     - name: Prepare folder for K3s configuration
       ansible.builtin.file:
-      path: "/etc/rancher/k3s"
+      path: "/etc/rancher/k3s/config.yaml.d"
       mode: "0755"
       state: directory
     - name: Create logical volume on system disk for K3s data
@@ -93,8 +93,8 @@
         regexp: '\.\s+<\(k3s completion bash\)'
         line: ". <(k3s completion bash)  # Added by k3s-ansible"
 
-### Download installation sources
-# CONDITION: Download installation sources, if:
+### Download installation sources and install binareies
+# CONDITION: Download installation sources and install binaries, if:
 # a. no K3s has been installed yet (cmd "K3s version" thrown an error)
 # b. installed K3s version is older than expected K3s version (var "k3s.version" in cluster's group_vars)
 - name: Download installation sources
@@ -109,7 +109,9 @@
         # owner: root
         # group: root
         mode: "0755"    
-    - name: Download K3s binaries
+    - name: Install K3s binaries
+      # INSTALL K3S (but disable service to be able initializing HA cluster)
+      # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -" 
       ansible.builtin.command:
         cmd: /usr/local/bin/k3s-install.sh
       environment:
@@ -165,21 +167,23 @@
 # Defintiion:
 # - Use ansible environment variables for installation
 # - Use configuration files for configuration
-
 - name: Write config for any K3s server
-  # token: ${k3s_token}
-  # data-dir: ${k3s_data_dir}
-  ###
+  # token: write token to configuration file
+  # data-dir: nothing to do, because data-dir have been redirected on system level (see above)
+##### needs to be done
   # cluster-cidr: ${k3s_cluster-cidr}
   # service-cidr: ${k3s_service-cidr}
   # node-cidr-mask-size-ipv4: max /12
   # node-cidr-mask-size-ipv6: max /112
+  # flannel-ipv6-masq: true # https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking
+##### /needs to be done
   block:
     - name: Delete any existing token from the environment if different from the new one
       ansible.builtin.lineinfile:
         state: absent
         path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
         regexp: "^token: \\s*(?!{{ k3s.token | default('') | regex_escape }}\\s*$)"
+      register: _k3s_config
     # Add the token to the environment if it has been provided.
     - name: Add token as an environment variable
       when: k3s.token is defined
@@ -187,6 +191,7 @@
       ansible.builtin.lineinfile:
         path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
         line: "token: {{ k3s.token }}"
+      register: _k3s_config
 
 - name: Write config for HA embedded architecture (3 or more servers, etcd datastore)
   # if 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded) => --cluster-init
@@ -199,107 +204,48 @@
         content: "cluster-init: true"
         dest: "/etc/rancher/k3s/config.yaml.d/01-ha-embedded.yaml"
         mode: "0644"
-      register: _k3s_cluster_init
+      register: _k3s_config
     - name: Write config for subsequent servers
       when: inventory_hostname != groups[k3s_servers][0]
       ansible.builtin.copy:
         content: "server: 'https://{{ api_endpoint }}:{{ api_port }}'"
         dest: "/etc/rancher/k3s/config.yaml.d/01-ha-embedded.yaml"
         mode: "0644"
-      register: _k3s_cluster_init
+      register: _k3s_config
+
+- name: Write K3s service file
+  ansible.builtin.template:
+    src: "k3s-server.service.j2"
+    dest: "{{ systemd_dir }}/k3s.service"
+    owner: root
+    group: root
+    mode: "0644"
+  register: _k3s_service
+
+### (Re-)Start K3s service
+- name: Restart K3s service
+  when:
+    - ansible_facts.services['k3s.service'] is defined
+    - ansible_facts.services['k3s.service'].state == 'running'
+    - _k3s_service.changed or _k3s_config.changed
+  ansible.builtin.systemd:
+    name: k3s
+    daemon_reload: true
+    state: restarted
+- name: Enable and check K3s service
+  when: ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running'
+  ansible.builtin.systemd:
+    name: k3s
+    daemon_reload: true
+    state: started
+    enabled: true
 
 
+####
+# GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
 
- #### 
-- name: Copy config values
-  ansible.builtin.copy:
-     content: "{{ server_config_yaml }}"
-     dest: "/etc/rancher/k3s/config.yaml"
-     mode: "0644"
-  register: _server_config_result
-- name: 'Prepare K3s configuration file'
-      ansible.builtin.include_role:
-        name: k3s_cluster
-        tasks_from: k3s_cluster_config
-        # if more than 2 server, than: 
-        
-        # - name: Setup optional config file
-        #   when: server_config_yaml is defined
-        #   block:
-        #     
-        #      - name: Copy config values
-        #       ansible.builtin.copy:
-        #         content: "{{ server_config_yaml }}"
-        #         dest: "/etc/rancher/k3s/config.yaml"
-        #         mode: "0644"
-        #         register: _server_config_result
-        # 
-        # flannel-ipv6-masq: true # https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking
-        
-
-        
-### Install K3s as server
-- name: 'Install K3s server (first server)'
-  when: inventory_hostname == groups[k3s_servers][0]
-  # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
-  # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
-  block:
-    - name: Copy K3s service file
-      ansible.builtin.template:
-        src: "k3s-server.service.j2"
-        dest: "{{ systemd_dir }}/k3s.service"
-        owner: root
-        group: root
-        mode: "0644"
-
- ###
-
-  block:
-    - name: Copy K3s service file [Single]
-      when: groups[k3s_servers] | length == 1 or use_external_database
-      ansible.builtin.template:
-        src: "k3s-single.service.j2"
-        dest: "{{ systemd_dir }}/k3s.service"
-        owner: root
-        group: root
-        mode: "0644"
-      register: service_file_single
-
-    - name: Copy K3s service file [HA]
-      when:
-        - groups[k3s_servers] | length >= 3
-        - not use_external_database
-      ansible.builtin.template:
-        src: "k3s-cluster-init.service.j2"
-        dest: "{{ systemd_dir }}/k3s.service"
-        owner: root
-        group: root
-        mode: "0644"
-      register: service_file_ha
-
-
-
-    - name: Restart K3s service
-      when:
-        - ansible_facts.services['k3s.service'] is defined
-        - ansible_facts.services['k3s.service'].state == 'running'
-        - service_file_single.changed or service_file_ha.changed or _server_config_result.changed
-      ansible.builtin.systemd:
-        name: k3s
-        daemon_reload: true
-        state: restarted
-
-    - name: Enable and check K3s service
-      when: ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running'
-      ansible.builtin.systemd:
-        name: k3s
-        daemon_reload: true
-        state: started
-        enabled: true
-
-    - name: Pause to allow first server startup
-      when: (groups[groups | select('match', '^k3s_cluster')] | length) > 1
+- name: Pause to allow first server startup
+      when: (groups[k3s_servers] | length) > 1
       ansible.builtin.pause:
         seconds: 10
 
@@ -321,7 +267,8 @@
         remote_src: true
       register: copy_k3s_yaml_file
 
-    - name: Apply K3S kubeconfig to control node
+
+- name: Apply K3S kubeconfig to control node
       when:
         - kubectl_installed.rc == 0
         - copy_k3s_yaml_file.changed
@@ -363,89 +310,18 @@
           changed_when:
             - mv_result.rc == 0
 
-    - name: Get the token if randomly generated
-      when: token is not defined
-      block:
-        - name: Wait for token
-          ansible.builtin.wait_for:
-            path: /var/lib/rancher/k3s/server/token
 
-        - name: Read node-token from master
-          ansible.builtin.slurp:
-            src: /var/lib/rancher/k3s/server/token
-          register: node_token
-
-        - name: Store Master node-token
-          ansible.builtin.set_fact:
-            token: "{{ node_token.content | b64decode | regex_replace('\n', '') }}"
 
 ########
   - name: 'Install K3s server (additional server)'
-  when: inventory_hostname <> groups[groups | select('match', '^k3s_cluster')][0]
-  # INSTALL K3S (but disable service to be able initializing HA cluster)
-  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
+    when: inventory_hostname <> groups[k3s_servers][0]
+ 
 
 - name: Start other server if any and verify status
   when:
-    - (groups[server_group] | length) > 1
-    - inventory_hostname != groups[server_group][0] and ansible_host != groups[server_group][0]
+    - (groups[k3s_servers] | length) > 1
+    - inventory_hostname != groups[k3s_servers][0] and ansible_host != groups[k3s_servers][0]
   block:
-    - name: Get the token from the first server
-      ansible.builtin.set_fact:
-        token: "{{ hostvars[groups[server_group][0]].token }}"
-
-    - name: Delete any existing token from the environment if different from the new one
-      ansible.builtin.lineinfile:
-        state: absent
-        path: "{{ systemd_dir }}/k3s.service.env"
-        regexp: "^K3S_TOKEN=\\s*(?!{{ token }}\\s*$)"
-
-    - name: Add the token for joining the cluster to the environment
-      no_log: true # avoid logging the server token
-      ansible.builtin.lineinfile:
-        path: "{{ systemd_dir }}/k3s.service.env"
-        line: "{{ item }}"
-      with_items:
-        - "K3S_TOKEN={{ token }}"
-
-    - name: Copy K3s service file [HA]
-      when: not use_external_database
-      ansible.builtin.template:
-        src: "k3s-ha.service.j2"
-        dest: "{{ systemd_dir }}/k3s.service"
-        owner: root
-        group: root
-        mode: "0644"
-      register: service_file_ha
-
-    - name: Copy K3s service file [External DB]
-      when: use_external_database
-      ansible.builtin.template:
-        src: "k3s-single.service.j2"
-        dest: "{{ systemd_dir }}/k3s.service"
-        owner: root
-        group: root
-        mode: "0644"
-      register: service_file_external_db
-
-    - name: Restart K3s service
-      when:
-        - ansible_facts.services['k3s.service'] is defined
-        - ansible_facts.services['k3s.service'].state == 'running'
-        - service_file_ha.changed or service_file_external_db.changed or _server_config_result.changed
-      ansible.builtin.systemd:
-        name: k3s
-        daemon_reload: true
-        state: restarted
-
-    - name: Enable and check K3s service
-      when: ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running'
-      ansible.builtin.systemd:
-        name: k3s
-        daemon_reload: true
-        state: started
-        enabled: true
-
     - name: Verify that all server nodes joined
       when: not ansible_check_mode and (groups[server_group] | length) > 1
       ansible.builtin.command:
