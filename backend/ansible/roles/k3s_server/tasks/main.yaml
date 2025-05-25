@@ -29,17 +29,17 @@
   # If two server are defined, second server will be downgraded to agent
   block:
     - name: Set datastore for single server environment (SQLite)
-      when: groups[groups | select('match', '^k3s_cluster') | first] | length == 1
+      when: groups[k3s_servers] | length == 1
       ansible.builtin.set_fact:
         k3s: "{{ k3s | ansible.builtin.combine({'datastore': 'sqlite'}) }}"
 
     - name: Set datastore for two server environment (SQLite)
-      when: groups[groups | select('match', '^k3s_cluster') | first] | length == 2
+      when: groups[k3s_servers] | length == 2
       ansible.builtin.set_fact:
         k3s: "{{ k3s | ansible.builtin.combine({'datastore': 'sqlite'}) }}"
       
     - name: Set datastore for three or more server environment (etcd)
-      when: groups[groups | select('match', '^k3s_cluster') | first] | length >= 3
+      when: groups[k3s_servers] | length >= 3
       ansible.builtin.set_fact:
         k3s: "{{ k3s | ansible.builtin.combine({'datastore': 'etcd'}) }}"
 
