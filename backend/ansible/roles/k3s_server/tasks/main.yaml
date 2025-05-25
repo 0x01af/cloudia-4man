@@ -41,6 +41,11 @@
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
+    - name: Prepare folder for K3s configuration
+      ansible.builtin.file:
+      path: "/etc/rancher/k3s"
+      mode: "0755"
+      state: directory
     - name: Create logical volume on system disk for K3s data
       community.general.lvol:
         vg: "{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}"
@@ -160,7 +165,32 @@
 # Defintiion:
 # - Use ansible environment variables for installation
 # - Use configuration files for configuration
+
+- name: Write config for any K3s server
+  # token: ${k3s_token}
+  # data-dir: ${k3s_data_dir}
+  ###
+  # cluster-cidr: ${k3s_cluster-cidr}
+  # service-cidr: ${k3s_service-cidr}
+  # node-cidr-mask-size-ipv4: max /12
+  # node-cidr-mask-size-ipv6: max /112
+  block:
+    - name: Delete any existing token from the environment if different from the new one
+      ansible.builtin.lineinfile:
+        state: absent
+        path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
+        regexp: "^token: \\s*(?!{{ k3s.token | default('') | regex_escape }}\\s*$)"
+    # Add the token to the environment if it has been provided.
+    - name: Add token as an environment variable
+      when: k3s.token is defined
+      no_log: true # avoid logging the server token
+      ansible.builtin.lineinfile:
+        path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
+        line: "token: {{ k3s.token }}"
+
 - name: Write config for HA embedded architecture (3 or more servers, etcd datastore)
+  # if 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded) => --cluster-init
+  # if kube-vip in use, than: --tls-san
   when: (groups[k3s_servers] | length >= 3)
   block:
     - name: Write config for first server
@@ -178,7 +208,9 @@
         mode: "0644"
       register: _k3s_cluster_init
 
-  
+
+
+ #### 
 - name: Copy config values
   ansible.builtin.copy:
      content: "{{ server_config_yaml }}"
@@ -190,29 +222,20 @@
         name: k3s_cluster
         tasks_from: k3s_cluster_config
         # if more than 2 server, than: 
-        # if 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded) => --cluster-init
-        # if kube-vip in use, than: --tls-san
+        
         # - name: Setup optional config file
         #   when: server_config_yaml is defined
         #   block:
-        #     - name: Make config directory
-        #       ansible.builtin.file:
-        #         path: "/etc/rancher/k3s"
-        #         mode: "0755"
-        #         state: directory
+        #     
         #      - name: Copy config values
         #       ansible.builtin.copy:
         #         content: "{{ server_config_yaml }}"
         #         dest: "/etc/rancher/k3s/config.yaml"
         #         mode: "0644"
         #         register: _server_config_result
-        # token: ${k3s_token}
-        # data-dir: ${k3s_data_dir}
+        # 
         # flannel-ipv6-masq: true # https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking
-        # cluster-cidr: ${k3s_cluster-cidr}
-        # service-cidr: ${k3s_service-cidr}
-        # node-cidr-mask-size-ipv4: max /12
-        # node-cidr-mask-size-ipv6: max /112
+        
 
         
 ### Install K3s as server
@@ -221,6 +244,16 @@
   # INSTALL K3S (but disable service to be able initializing HA cluster)
   # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
   # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
+  block:
+    - name: Copy K3s service file
+      ansible.builtin.template:
+        src: "k3s-server.service.j2"
+        dest: "{{ systemd_dir }}/k3s.service"
+        owner: root
+        group: root
+        mode: "0644"
+
+ ###
 
   block:
     - name: Copy K3s service file [Single]
@@ -245,20 +278,7 @@
         mode: "0644"
       register: service_file_ha
 
-    - name: Delete any existing token from the environment if different from the new one
-      ansible.builtin.lineinfile:
-        state: absent
-        path: "{{ systemd_dir }}/k3s.service.env"
-        regexp: "^K3S_TOKEN=\\s*(?!{{ token | default('') | regex_escape }}\\s*$)"
 
-    # Add the token to the environment if it has been provided.
-    # Otherwise, let the first server create one on the first run.
-    - name: Add token as an environment variable
-      no_log: true # avoid logging the server token
-      ansible.builtin.lineinfile:
-        path: "{{ systemd_dir }}/k3s.service.env"
-        line: "K3S_TOKEN={{ token }}"
-      when: token is defined
 
     - name: Restart K3s service
       when:
