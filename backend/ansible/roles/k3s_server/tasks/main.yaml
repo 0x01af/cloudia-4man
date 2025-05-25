@@ -4,6 +4,7 @@
 #
 # other discussed options:
 # - Download and installation: https://github.com/PyratLabs/ansible-role-k3s/blob/main/tasks/build/get-version.yml
+### Define general settings
 - name: Retrieve installed k3s version
   ansible.builtin.command: k3s --version
   register: _cmd_k3s_version_output
@@ -16,6 +17,16 @@
     k3s: "{{ k3s | ansible.builtin.combine({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
     # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
     # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+
+- name: 
+  when: inventory_hostname == groups[groups | select('match', '^k3s_cluster')][0]
+  # INSTALL K3S (but disable service to be able initializing HA cluster)
+  # "INSTALL_K3S_SKIP_ENABLE=TRUE INSTALL_K3S_EXEC='server' sh -"      
+  # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
+
+  block:
+    - name: Copy K3s service file [Single]
+      when: groups[server_group] | length == 1 or use_external_database
 
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
