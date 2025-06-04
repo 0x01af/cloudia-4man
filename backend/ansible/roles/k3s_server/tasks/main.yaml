@@ -196,7 +196,7 @@
 - name: Write config for HA embedded architecture (3 or more servers, etcd datastore)
   # if 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded) => --cluster-init
   # if kube-vip in use, than: --tls-san
-  when: (groups[k3s_servers] | length >= 3)
+  when: (groups[k3s_servers] | length) >= 3
   block:
     - name: Write config for first server
       when: inventory_hostname == groups[k3s_servers][0]
@@ -216,7 +216,7 @@
 - name: Write K3s service file
   ansible.builtin.template:
     src: "k3s-server.service.j2"
-    dest: "{{ systemd_dir }}/k3s.service"
+    dest: "{{ systemd_dir }}/k3s-server.service"
     owner: root
     group: root
     mode: "0644"
@@ -225,31 +225,28 @@
 ### (Re-)Start K3s service
 - name: Restart K3s service
   when:
-    - ansible_facts.services['k3s.service'] is defined
-    - ansible_facts.services['k3s.service'].state == 'running'
+    - ansible_facts.services['k3s-server.service'] is defined
+    - ansible_facts.services['k3s-server.service'].state == 'running'
     - _k3s_service.changed or _k3s_config.changed
   ansible.builtin.systemd:
-    name: k3s
+    name: k3s-server
     daemon_reload: true
     state: restarted
 - name: Enable and check K3s service
-  when: ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running'
+  when: ansible_facts.services['k3s-server.service'] is not defined or ansible_facts.services['k3s-server.service'].state != 'running'
   ansible.builtin.systemd:
-    name: k3s
+    name: k3s-server
     daemon_reload: true
     state: started
     enabled: true
-
+- name: Pause to allow first server startup
+  when: (groups[k3s_servers] | length) >= 3
+  ansible.builtin.pause:
+    seconds: 10
 
 ####
 # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
-
-- name: Pause to allow first server startup
-      when: (groups[k3s_servers] | length) > 1
-      ansible.builtin.pause:
-        seconds: 10
-
-    - name: Check whether kubectl is installed on control node
+- name: Check whether kubectl is installed on control node
       ansible.builtin.command: 'kubectl'
       register: kubectl_installed
       ignore_errors: true
