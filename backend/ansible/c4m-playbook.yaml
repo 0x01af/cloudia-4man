@@ -15,6 +15,14 @@
 # - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-roles-to-abstract-your-infrastructure-environment
 # - https://stackoverflow.com/questions/42386801/ansible-how-to-control-the-order-of-the-hosts-when-playbook-is-ran
 # - https://stackoverflow.com/questions/42506865/ansible-play-with-hosts-in-order-i-desire
+- name: Check cloudia-4man requirements
+  hosts: all
+  pre_tasks:
+    - name: Verify Ansible is version 2.11 or above. (If this fails you may need to update Ansible)
+      ansible.builtin.assert:
+        that: ansible_version.full is version_compare('2.11', '>=')
+        msg: >
+          "Ansible is out of date. See here for more info: https://docs.technotim.live/posts/ansible-automation/"
 
 #- import_playbook: plain.yaml
 - hosts: plain_servers
