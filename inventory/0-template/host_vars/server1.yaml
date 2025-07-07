@@ -3,7 +3,7 @@
 
 # Template for server1
 os_basic:
-  iface: en0ps0
+  iface: enp1s0
   ip4:
     address: '192.168.0.24'
     cidr: '/24'
