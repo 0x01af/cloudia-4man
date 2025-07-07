@@ -6,11 +6,11 @@ os_basic:
   iface: enp1s0
   ip4:
     address: '192.168.0.24'
-    cidr: '/24'
+    cidr: '24'
     gateway: '192.168.0.1'
   ip6:
     address: '2001:DB8::24'
-    cidr: '/64'
+    cidr: '64'
     gateway: '2001:DB8::1'
   dns:
     domains:
