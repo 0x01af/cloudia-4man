@@ -1,4 +1,10 @@
 ---
+- name: 'Clean-up cloud-init configuration'
+  ansible.builtin.file:
+    path: /etc/netplan/50-cloud-init.yaml
+    state: absent
+  become: yes
+
 - name: 'Template out Netplan YAML to configure networking'
   ansible.builtin.template:
     src: ../templates/os-basic-netplan.yaml.j2
