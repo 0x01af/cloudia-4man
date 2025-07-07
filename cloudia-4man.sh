@@ -135,4 +135,7 @@ exit 0
 # Starting provisioning service, and configuration & deployment management
 # ansible-playbook backend/ansible/c4m-playbook.yml -i inventory/{$environment}/environment.yaml
 
+## do os_basic_only: like os updates and so on.
+# ansible-playbook backend/ansible/c4m-playbook.yml -i inventory/{$environment}/environment.yaml --tags "os_basic_only"
+
 # Updating inventory
