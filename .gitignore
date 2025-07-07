@@ -1,0 +1,3 @@
+inventory/*
+!inventory/0-template/
+!inventory/0-template/**
