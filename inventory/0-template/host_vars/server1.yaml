@@ -3,14 +3,15 @@
 
 # Template for server1
 os_basic:
-ip4:
-  address: '192.168.0.24'
-  cidr: '/24'
-  gateway: '192.168.0.1'
-  dns_server: '192.168.0.1'
-ip6:
-  address: '2001:DB8::24'
-  cidr: '/64'
-  gateway: '2001:DB8::1'
-  dns_server: '2001:DB8::1'
-dns_domain: 'example.org'
+  iface: en0ps0
+  ip4:
+    address: '192.168.0.24'
+    cidr: '/24'
+    gateway: '192.168.0.1'
+    dns_server: '192.168.0.1'
+  ip6:
+    address: '2001:DB8::24'
+    cidr: '/64'
+    gateway: '2001:DB8::1'
+    dns_server: '2001:DB8::1'
+  dns_domain: 'example.org'
