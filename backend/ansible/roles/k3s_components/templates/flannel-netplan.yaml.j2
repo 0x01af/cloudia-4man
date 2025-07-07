@@ -9,4 +9,4 @@ network:
       dhcp6: false
       dhcp4: false
       addresses:
-        - "{{ _flannel_ipaddress }}/{{ _flannel_ipprefix }}"
+        - "{{ _k3s_network_flannel_ipaddress }}/{{  _k3s_network_flannel_ipprefix }}"
