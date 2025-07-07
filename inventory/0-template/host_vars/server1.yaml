@@ -2,6 +2,7 @@
 # More information about dictionary variables (https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#dictionary-variables)
 
 # Template for server1
+os_basic:
 ip4:
   address: '192.168.0.24'
   cidr: '/24'
