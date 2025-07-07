@@ -21,8 +21,8 @@
   block:
     - name: Generate nic parameters for flannel
       ansible.builtin.set_fact:
-        _flannel_ipaddress: "169.254.{{ {{ os_basic.ip4.address }}.split('.')[2] | default('1') }}.{{ {{ os_basic.ip4.address }}.split('.')[3] | default('1') }}"
-        _flannel_ipprefix: "{{ os_basic.ip4.cidr | default('24') }}"
+        _k3s_network_flannel_ipaddress: "169.254.{{ {{ os_basic.ip4.address }}.split('.')[2] | default('1') }}.{{ {{ os_basic.ip4.address }}.split('.')[3] | default('1') }}"
+        _k3s_network_flannel_ipprefix: "{{ os_basic.ip4.cidr | default('24') }}"
       # when: ansible_host is defined and ansible_interfaces is defined
     - name: Create netplan configuration for flannel
       become: true
