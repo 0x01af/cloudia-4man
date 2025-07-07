@@ -51,7 +51,7 @@ k3s:
     # - https://kube-vip.io/
     # - https://github.com/k3s-io/k3s/discussions/9255
     addon: "kube-vip" # kube-vip | metallb | servicelb
-    kube-vip:
+    kube_vip:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
       version: v0.4.0
       api_iface: "enp0s0"
