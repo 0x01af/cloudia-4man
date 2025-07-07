@@ -24,8 +24,8 @@ autoinstall:
         dhcp6: false
         dhcp4: false
         addresses:
-          - '{{ os_basic.ip4.address }}'
-          - '{{ os_basic.ip6.address }}'
+          - '{{ os_basic.ip4.address }}/{{ os_basic.ip4.cidr }}'
+          - '{{ os_basic.ip6.address }}/{{ os_basic.ip6.cidr }}'
         routes:
           - to: default
             via: '{{ os_basic.ip4.gateway }}'
