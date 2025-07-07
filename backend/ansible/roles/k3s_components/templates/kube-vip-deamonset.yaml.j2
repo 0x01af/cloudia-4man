@@ -35,7 +35,7 @@ spec:
         - name: port
           value: "6443"
         - name: vip_interface
-          value: {{ k3s.loadbalancer.kube-vip.api-iface }}
+          value: {{ k3s.loadbalancer.kube_vip.api_iface }}
         - name: vip_cidr
           value: "32"
         - name: cp_enable
@@ -55,7 +55,7 @@ spec:
         - name: vip_retryperiod
           value: "1"
         - name: address
-          value: {{ k3s.loadbalancer.kube-vip.api-vip }}
+          value: {{ k3s.loadbalancer.kube_vip.api_vip }}
         image: ghcr.io/kube-vip/kube-vip:v0.9.1
         imagePullPolicy: Always
         name: kube-vip
