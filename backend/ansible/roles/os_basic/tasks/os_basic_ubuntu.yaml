@@ -1,8 +1,8 @@
 ---
 - name: 'Template out Netplan YAML to configure networking'
   ansible.builtin.template:
-    src: ../templates/netplan.99_config.yaml.j2
-    dest: /etc/netplan/99_config.yaml
+    src: ../templates/os-basic-netplan.yaml.j2
+    dest: /etc/netplan/10-os-basic-network.yaml
   become: yes
 
 - name: 'Applying Netplan Configuration'
