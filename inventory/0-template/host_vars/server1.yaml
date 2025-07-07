@@ -2,7 +2,6 @@
 # More information about dictionary variables (https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#dictionary-variables)
 
 # Template for server1
-ip4_init: '192.168.0.12' # Initial ip4, which will be used by Provisioning Service
 ip4:
   address: '192.168.0.24'
   cidr: '/24'
@@ -14,7 +13,3 @@ ip6:
   gateway: '2001:DB8::1'
   dns_server: '2001:DB8::1'
 dns_domain: 'example.org'
-k3s:
-  role: 'server' | 'server-strictly' | 'agent' # K3s server contains also the component <agent> by default. <server-strictly> prevents that behavior. Default is 'server'.
-  data_dir: /mnt/nvme1/k3s/data
-  # datastore: etcd
