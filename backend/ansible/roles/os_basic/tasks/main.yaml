@@ -10,7 +10,7 @@
 - name: 'Change keyboard layout'
   become: yes
   ansible.builtin.template:
-    src: ../template/keyboard.j2
+    src: ../template/os-basic-keyboard.j2
     dest: /etc/default/keyboard
     force: yes
     owner: root
