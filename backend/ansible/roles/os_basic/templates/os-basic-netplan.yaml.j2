@@ -4,15 +4,21 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    eth0:
+    enp1s0:
+      match:
+        name: enp1s0
       accept-ra: false
       dhcp6: false
       dhcp4: false
       addresses:
-        - {{ ip4.address }}
-        - "{{ ip6.address }}"
-      gateway4: {{ ip4.gateway }}
-      gateway6: "{{ ip6.gateway }}"
+        - '{{ ip4.address }}'
+        - '{{ ip6.address }}'
+      routes:
+        - to: default
+          via: '{{ ip4.gateway }}'
+        - to: default
+          via: '{{ ip6.gateway }}'
       nameservers:
         search: [{{ dns.domain }}]
-        addresses: [{{ dns.ip4 }}, "{{ dns.ip6 }}"]
+        addresses: ['{{ dns.ip4 }}', '{{ dns.ip6 }}']
+  
