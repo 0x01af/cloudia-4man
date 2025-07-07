@@ -17,23 +17,23 @@ autoinstall:
     version: 2
     renderer: networkd
     ethernets:
-      enp1s0:
+      {{ os_basic.iface }}:
         match:
-          name: enp1s0
+          name: {{ os_basic.iface }}
         accept-ra: false
         dhcp6: false
         dhcp4: false
         addresses:
-          - '{{ ip4.address }}'
-          - '{{ ip6.address }}'
+          - '{{ os_basic.ip4.address }}'
+          - '{{ os_basic.ip6.address }}'
         routes:
           - to: default
-            via: '{{ ip4.gateway }}'
+            via: '{{ os_basic.ip4.gateway }}'
           - to: default
-            via: '{{ ip6.gateway }}'
+            via: '{{ os_basic.ip6.gateway }}'
         nameservers:
-          search: [{{ dns.domain }}]
-          addresses: ['{{ dns.ip4 }}', '{{ dns.ip6 }}']
+          search: {{ os_basic.dns.domains }} | to_json }}
+          addresses: {{ os_basic.dns.servers | to_json }}
   
   apt:
     fallback: offline-install
