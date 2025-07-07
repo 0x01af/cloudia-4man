@@ -32,7 +32,7 @@ autoinstall:
           - to: default
             via: '{{ os_basic.ip6.gateway }}'
         nameservers:
-          search: {{ os_basic.dns.domains }} | to_json }}
+          search: {{ os_basic.dns.domains | to_json }}
           addresses: {{ os_basic.dns.servers | to_json }}
   
   apt:
