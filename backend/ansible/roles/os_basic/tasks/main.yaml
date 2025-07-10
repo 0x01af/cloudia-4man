@@ -5,7 +5,7 @@
 
 - name: 'Change time zone'
   community.general.timezone:
-    name: "{{ os_basic.time_zone }}"
+    name: "{{ os_local.time_zone }}"
 - name: 'Restart time-dependent services'
   ansible.builtin.service:
     name: cron
