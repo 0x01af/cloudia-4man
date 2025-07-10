@@ -5,7 +5,7 @@
 
 - name: 'Change time zone'
   community.general.timezone:
-    name: "{{time_zone}}"
+    name: "{{ time_zone }}"
 
 - name: 'Change keyboard layout'
   become: yes
