@@ -52,40 +52,40 @@
         lv: "k3s-data-lv"
         size: "{{ k3s.storage.data_size }}"
         force: false # never shrink (or remove)
-     - name: Format logical volume on system disk for K3s data
-       community.general.filesystem:
-         fstype: ext4
-         dev: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
-     - name: Create mountpoint of logical volume for K3s data
-       ansible.builtin.file:
-         path: "/k3s-data"
-         state: directory
-         mode: "0755"
-     - name: Mount logical volume for K3s data
-       ansible.posix.mount:
-         path: /k3s-data
-         src: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
-         fstype: ext4
-         state: mounted
-     - name: Prepare folders for K3s data
-       ansible.builtin.file:
-         path: "{{ item.folder }}"
-         state: directory
-         mode: "0755"
-         loop:
-           - { folder: "/k3s-data/k3s" }
-           - { folder: "/k3s-data/k3s-pods" }
-     - name: Prepare folders for K3s data
-       ansible.builtin.file:
-         src: "{{ item.src }}"
-         dest: "{{ item.dest }}"
-         state: link
-         loop:
-           - { src: "/var/lib/rancher/k3s", dest: "/k3s-data/k3s" }
-           - { src: "/var/lib/kubelet/pods", dest: "/k3s-data/k3s-pods" }
-         # ln -s /datadrive/k3s /var/lib/rancher/k3s
-         # ln -s /datadrive/k3s-pods /var/lib/kubelet/pods
-         # not done ln -s /datadrive/k3s-run /run/k3s
+    - name: Format logical volume on system disk for K3s data
+      community.general.filesystem:
+        fstype: ext4
+        dev: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
+    - name: Create mountpoint of logical volume for K3s data
+      ansible.builtin.file:
+        path: "/k3s-data"
+        state: directory
+        mode: "0755"
+    - name: Mount logical volume for K3s data
+      ansible.posix.mount:
+        path: /k3s-data
+        src: "/dev/{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
+        fstype: ext4
+        state: mounted
+    - name: Prepare folders for K3s data
+      ansible.builtin.file:
+        path: "{{ item.folder }}"
+        state: directory
+        mode: "0755"
+        loop:
+          - { folder: "/k3s-data/k3s" }
+          - { folder: "/k3s-data/k3s-pods" }
+    - name: Prepare folders for K3s data
+      ansible.builtin.file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        state: link
+        loop:
+          - { src: "/var/lib/rancher/k3s", dest: "/k3s-data/k3s" }
+          - { src: "/var/lib/kubelet/pods", dest: "/k3s-data/k3s-pods" }
+        # ln -s /datadrive/k3s /var/lib/rancher/k3s
+        # ln -s /datadrive/k3s-pods /var/lib/kubelet/pods
+        # not done ln -s /datadrive/k3s-run /run/k3s
     - name: Prepare user bashrc for K3s autocomplete
       when: ansible_user is defined
       ansible.builtin.lineinfile:
