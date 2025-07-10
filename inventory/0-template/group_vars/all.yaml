@@ -3,8 +3,8 @@
 # cloudia-4man Basic Configuration
 ansible_user: "your-superuser"
 
-# Operating System Basic Configuration
-os_basic:
+# Operating System Local Configuration
+os_local:
   time_zone: "Europe/Zurich"
   keyboard:
     model: "pc105"
