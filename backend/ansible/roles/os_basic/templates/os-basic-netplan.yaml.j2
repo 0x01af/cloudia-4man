@@ -4,19 +4,19 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    {{ os_basic.iface }}:
+    {{ os_network.iface }}:
       accept-ra: false
       dhcp6: false
       dhcp4: false
       addresses:
-        - '{{ os_basic.ip4.address }}/{{ os_basic.ip4.cidr }}'
-        - '{{ os_basic.ip6.address }}/{{ os_basic.ip6.cidr }}'
+        - '{{ os_network.ip4.address }}/{{ os_network.ip4.cidr }}'
+        - '{{ os_network.ip6.address }}/{{ os_network.ip6.cidr }}'
       routes:
         - to: default
-          via: '{{ os_basic.ip4.gateway }}'
+          via: '{{ os_network.ip4.gateway }}'
         - to: default
-          via: '{{ os_basic.ip6.gateway }}'
+          via: '{{ os_network.ip6.gateway }}'
       nameservers:
-        search: {{ os_basic.dns.domains | to_json }}
-        addresses: {{ os_basic.dns.servers | to_json }}
+        search: {{ os_network.dns.domains | to_json }}
+        addresses: {{ os_network.dns.servers | to_json }}
   
