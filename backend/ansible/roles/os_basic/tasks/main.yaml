@@ -6,6 +6,10 @@
 - name: 'Change time zone'
   community.general.timezone:
     name: "{{ time_zone }}"
+- name: 'Restart time-dependent services'
+  ansible.builtin.service:
+    name: cron
+    state: restarted
 
 - name: 'Change keyboard layout'
   become: yes
