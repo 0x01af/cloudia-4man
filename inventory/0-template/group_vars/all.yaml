@@ -6,4 +6,9 @@ ansible_user: "your-superuser"
 # Operating System Basic Configuration
 os_basic:
   time_zone: "Europe/Zurich"
-  
+  keyboard:
+    model: "pc105"
+    layout: "ch"
+    variant: ""
+    options: ""
+    backspace: "guess"
