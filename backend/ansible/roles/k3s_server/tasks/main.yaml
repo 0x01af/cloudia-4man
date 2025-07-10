@@ -43,9 +43,9 @@
   block:
     - name: Prepare folder for K3s configuration
       ansible.builtin.file:
-      path: "/etc/rancher/k3s/config.yaml.d"
-      mode: "0755"
-      state: directory
+        path: "/etc/rancher/k3s/config.yaml.d"
+        mode: "0755"
+        state: directory
     - name: Create logical volume on system disk for K3s data
       community.general.lvol:
         vg: "{{ ansible_facts['os_family']|lower + '-vg' | default('ubuntu-vg') }}"
