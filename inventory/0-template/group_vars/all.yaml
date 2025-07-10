@@ -2,3 +2,8 @@
 
 # cloudia-4man Basic Configuration
 ansible_user: "your-superuser"
+
+# Operating System Basic Configuration
+os_basic:
+  time_zone: "Europe/Zurich"
+  
