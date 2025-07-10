@@ -1,8 +1,8 @@
 ---
 # More information about dictionary variables (https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#dictionary-variables)
 
-# Template for server1
-os_basic:
+# Operating System Network configuration for server1
+os_network:
   iface: enp1s0
   ip4:
     address: '192.168.0.24'
