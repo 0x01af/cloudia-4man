@@ -244,76 +244,66 @@
   ansible.builtin.pause:
     seconds: 10
 
-####
+###########
 # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
 - name: Check whether kubectl is installed on control node
-      ansible.builtin.command: 'kubectl'
-      register: kubectl_installed
-      ignore_errors: true
-      delegate_to: 127.0.0.1
-      become: false
-      changed_when: false
+  ansible.builtin.command: 'kubectl'
+  register: kubectl_installed
+  ignore_errors: true
+  become: false
+  changed_when: false
 
-    # Copy the k3s config to a second file to detect changes.
-    # If no changes are found, we can skip copying the kubeconfig to the control node.
-    - name: Copy k3s.yaml to second file
-      ansible.builtin.copy:
-        src: /etc/rancher/k3s/k3s.yaml
-        dest: /etc/rancher/k3s/k3s-copy.yaml
-        mode: "0600"
-        remote_src: true
-      register: copy_k3s_yaml_file
-
+# Copy the k3s config to a second file to detect changes.
+# If no changes are found, we can skip copying the kubeconfig to the control node.
+- name: Copy k3s.yaml to second file
+  ansible.builtin.copy:
+    src: /etc/rancher/k3s/k3s.yaml
+    dest: /etc/rancher/k3s/k3s-copy.yaml
+    mode: "0600"
+    remote_src: true
+  register: copy_k3s_yaml_file
 
 - name: Apply K3S kubeconfig to control node
-      when:
-        - kubectl_installed.rc == 0
-        - copy_k3s_yaml_file.changed
-      block:
-        - name: Copy kubeconfig to control node
-          ansible.builtin.fetch:
-            src: /etc/rancher/k3s/k3s.yaml
-            dest: "{{ kubeconfig }}"
-            flat: true
-
-        - name: Change server address in kubeconfig on control node
-          ansible.builtin.shell: |
-            KUBECONFIG={{ kubeconfig }} kubectl config set-cluster default --server=https://{{ api_endpoint }}:{{ api_port }}
-          delegate_to: 127.0.0.1
-          become: false
-          register: csa_result
-          changed_when:
-            - csa_result.rc == 0
-
-        - name: Setup kubeconfig context on control node - {{ cluster_context }}
-          when: kubeconfig == "~/.kube/config.new"
-          ansible.builtin.replace:
-            path: "{{ kubeconfig }}"
-            regexp: 'default'
-            replace: '{{ cluster_context }}'
-          delegate_to: 127.0.0.1
-          become: false
-
-        - name: Merge with any existing kubeconfig on control node
-          when: kubeconfig == "~/.kube/config.new"
-          ansible.builtin.shell: |
-            TFILE=$(mktemp)
-            KUBECONFIG={{ kubeconfig }}:~/.kube/config kubectl config set-context {{ cluster_context }} --user={{ cluster_context }} --cluster={{ cluster_context }}
-            KUBECONFIG={{ kubeconfig }}:~/.kube/config kubectl config view --flatten > ${TFILE}
-            mv ${TFILE} ~/.kube/config
-          delegate_to: 127.0.0.1
-          become: false
-          register: mv_result
-          changed_when:
-            - mv_result.rc == 0
-
-
-
+  when:
+    - kubectl_installed.rc == 0
+    - copy_k3s_yaml_file.changed
+  block:
+    - name: Copy kubeconfig to control node
+      ansible.builtin.fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: "{{ kubeconfig }}"
+        flat: true
+    - name: Change server address in kubeconfig on control node
+      ansible.builtin.shell: |
+        KUBECONFIG={{ kubeconfig }} kubectl config set-cluster default --server=https://{{ api_endpoint }}:{{ api_port }}
+      delegate_to: 127.0.0.1
+      become: false
+      register: csa_result
+      changed_when:
+        - csa_result.rc == 0
+    - name: Setup kubeconfig context on control node - {{ cluster_context }}
+      when: kubeconfig == "~/.kube/config.new"
+      ansible.builtin.replace:
+        path: "{{ kubeconfig }}"
+        regexp: 'default'
+        replace: '{{ cluster_context }}'
+      delegate_to: 127.0.0.1
+      become: false
+    - name: Merge with any existing kubeconfig on control node
+      when: kubeconfig == "~/.kube/config.new"
+      ansible.builtin.shell: |
+        TFILE=$(mktemp)
+        KUBECONFIG={{ kubeconfig }}:~/.kube/config kubectl config set-context {{ cluster_context }} --user={{ cluster_context }} --cluster={{ cluster_context }}
+        KUBECONFIG={{ kubeconfig }}:~/.kube/config kubectl config view --flatten > ${TFILE}
+        mv ${TFILE} ~/.kube/config
+      delegate_to: 127.0.0.1
+      become: false
+      register: mv_result
+      changed_when:
+        - mv_result.rc == 0
 ########
-  - name: 'Install K3s server (additional server)'
-    when: inventory_hostname <> groups[k3s_servers][0]
- 
-
+#  - name: 'Install K3s server (additional server)'
+#    when: inventory_hostname <> groups[k3s_servers][0]
 - name: Start other server if any and verify status
   when:
     - (groups[k3s_servers] | length) > 1
@@ -333,14 +323,12 @@
 - name: Setup kubectl for user
   when: user_kubectl
   block:
-
     - name: Create directory .kube
       ansible.builtin.file:
         path: ~{{ ansible_user }}/.kube
         state: directory
         owner: "{{ ansible_user }}"
         mode: "u=rwx,g=rx,o="
-
     - name: Copy config file to user home directory
       ansible.builtin.copy:
         src: /etc/rancher/k3s/k3s.yaml
@@ -348,23 +336,17 @@
         remote_src: true
         owner: "{{ ansible_user }}"
         mode: "u=rw,g=,o="
-
     - name: Configure default KUBECONFIG for user
       ansible.builtin.lineinfile:
         path: ~{{ ansible_user }}/.bashrc
         regexp: 'export KUBECONFIG=~/.kube/config'
         line: 'export KUBECONFIG=~/.kube/config # Added by k3s-ansible'
         state: present
-
     - name: Configure kubectl autocomplete
       ansible.builtin.lineinfile:
         path: ~{{ ansible_user }}/.bashrc
         regexp: '\.\s+<\(kubectl completion bash\)'
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
-
-
-
-
 
 # ENABLE CONTAINER FEATURES
 # "echo ' cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1' | sudo tee -a /boot/firmware/cmdline.txt",
