@@ -1,0 +1,4 @@
+---
+
+# cloudia-4man Basic Configuration
+ansible_user: "your-superuser"

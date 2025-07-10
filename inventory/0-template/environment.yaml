@@ -8,7 +8,7 @@ plain_servers:
 
 # Template for a K3s cluster environment
 # - for each k3s cluster create a group named by cluster-name, and add related servers as children of their corresponding role
-k3s_cluster1:
+k3s_cluster:
   children:
     k3s_servers:
       hosts:
