@@ -8,14 +8,16 @@ k3s:
   token: "k3s_cluster1"
   api:
     loadbalancer: "kube-vip" # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
-    endpoint: "k3s-cluster1.mesh.local" # if loadbalancer = "none", than first server in environment will be used ("{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}")
+    endpoint: "k3s-cluster1.mesh.local" # if loadbalancer = "none", than first server in environment will be used.
+    vip: "192.168.1.10"
+    # port: "6443" # if changed, please be aware about possible incompatiblities by other K8s components/operators and so on.
   # Networking:
   networking:
     # if dual-stack, than define IPv4 and IPv6 subnets separated by comma ',' (https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking)
-    cluster_cidr: 10.42.0.0/16,2001:cafe:42::/56
-    service_cidr: 10.43.0.0/16,2001:cafe:43::/112
-    node_cidr_mask_size_ipv4:
-    node_cidr_mask_size_ipv6:
+    # cluster_cidr: 10.42.0.0/16,2001:cafe:42::/56
+    # service_cidr: 10.43.0.0/16,2001:cafe:43::/112
+    # node_cidr_mask_size_ipv4:
+    # node_cidr_mask_size_ipv6:
     addon: "flannel" # none
     flannel:
       # flannel-iface: which interface should be used to talk with other cluster members
@@ -55,7 +57,6 @@ k3s:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
       version: v0.4.0
       api_iface: "enp0s0"
-      api_vip: "192.168.1.10"
       lb_range: "192.168.123.130-192.168.123.139"
     # metallb:
     #  lb_range: "192.168.123.130-192.168.123.139"
