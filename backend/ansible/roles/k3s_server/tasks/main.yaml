@@ -195,23 +195,33 @@
 
 - name: Write config for HA embedded architecture (3 or more servers, etcd datastore)
   # if 3 or more servers are defined, use HA embedded cluster (https://docs.k3s.io/datastore/ha-embedded) => --cluster-init
-  # if kube-vip in use, than: --tls-san
+  # if Load Balancer for  in use, than: --tls-san
   when: (groups[k3s_servers] | length) >= 3
   block:
     - name: Write config for first server
       when: inventory_hostname == groups[k3s_servers][0]
       ansible.builtin.copy:
         content: "cluster-init: true"
-        dest: "/etc/rancher/k3s/config.yaml.d/01-ha-embedded.yaml"
+        dest: "/etc/rancher/k3s/config.yaml.d/10-ha-embedded.yaml"
+        mode: "0644"
+      register: _k3s_config
+    - name: Write config for first server, if API is loadbalanced
+      when: inventory_hostname == groups[k3s_servers][0]
+      ansible.builtin.template:
+        src: k3s-server-20-api-loadbalanced.yaml.j2
+        dest: "/etc/rancher/k3s/config.yaml.d/20-api-loadbalanced.yaml"
+        owner: root
+        group: root
         mode: "0644"
       register: _k3s_config
     - name: Write config for subsequent servers
       when: inventory_hostname != groups[k3s_servers][0]
       ansible.builtin.copy:
-        content: "server: 'https://{{ api_endpoint }}:{{ api_port }}'"
-        dest: "/etc/rancher/k3s/config.yaml.d/01-ha-embedded.yaml"
+        content: "server: 'https://{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}:{{ k3s.api.port | default('6443') }}'"
+        dest: "/etc/rancher/k3s/config.yaml.d/10-ha-embedded.yaml"
         mode: "0644"
       register: _k3s_config
+
 
 - name: Write K3s service file
   ansible.builtin.template:
