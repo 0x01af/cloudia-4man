@@ -23,3 +23,5 @@
         src: "{{ k3s.storage.longhorn.data_path }}"
         dest: "/k3s-data/longhorn"
         state: link
+
+# https://longhorn.io/docs/1.9.0/advanced-resources/os-distro-specific/csi-on-k3s/
