@@ -26,7 +26,7 @@
       become: yes
     - name: Create kube-vip DeamonSet manifest
       ansible.builtin.template:
-        src: ../templates/kube-vip-deamonset.yaml.j2
+        src: kube-vip-deamonset.yaml.j2
         dest: /var/lib/rancher/k3s/server/manifests/kube-vip-deamonset.yaml
         owner: root
         group: root
@@ -49,7 +49,7 @@
       become: yes
     - name: Create kube-vip ConfigMap manifest
       ansible.builtin.template:
-        src: ../templates/kube-vip-configmap.yaml.j2
+        src: kube-vip-configmap.yaml.j2
         dest: /var/lib/rancher/k3s/server/manifests/kube-vip-configmap.yaml
         owner: root
         group: root
