@@ -55,9 +55,10 @@ k3s:
     addon: "kube-vip" # kube-vip | metallb | servicelb
     kube_vip:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
-      version: v0.4.0
-      api_iface: "enp0s0"
+      lb_version: v0.4.0
       lb_range: "192.168.123.130-192.168.123.139"
+      api_version: v0.9.1
+      api_iface: "enp0s0"
     # metallb:
     #  lb_range: "192.168.123.130-192.168.123.139"
       
