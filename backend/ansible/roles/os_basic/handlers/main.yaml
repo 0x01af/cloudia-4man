@@ -10,4 +10,6 @@
     test_command: whoami
 
 - name: 'c4m:os_basic:netplan-apply'
-  
+  ansible.builtin.command: netplan apply
+  become: yes
+  become_method: sudo
