@@ -6,10 +6,7 @@
 - name: 'Change time zone'
   community.general.timezone:
     name: "{{ os_local.time_zone }}"
-- name: 'Restart time-dependent services'
-  ansible.builtin.service:
-    name: cron
-    state: restarted
+  notify: c4m:os_basic:time-related-services-restart
 
 - name: 'Change keyboard layout'
   become: yes
