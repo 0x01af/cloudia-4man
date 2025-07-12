@@ -10,11 +10,7 @@
     src: os-basic-netplan.yaml.j2
     dest: /etc/netplan/10-os-basic-network.yaml
   become: yes
-
-- name: 'Applying Netplan Configuration'
-  ansible.builtin.command: netplan apply
-  become: yes
-  become_method: sudo
+  notify: c4m:os_basic:netplan-apply
 
 # SYSTEM AND PACKAGE UPDATES
 # "sudo apt-get update -y",
