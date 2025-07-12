@@ -13,3 +13,10 @@
   ansible.builtin.command: netplan apply
   become: yes
   become_method: sudo
+
+- name: 'c4m:os_basic:time-dependent-services-restart'
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: restarted
+    loop:
+      - cron
