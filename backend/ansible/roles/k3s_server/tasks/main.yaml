@@ -262,19 +262,40 @@
       ansible.builtin.file:
         path: ~/.kube
         state: directory
-        mode: "0755"
+        mode: "0700"
       delegate_to: localhost
     - name: Download kubeconfig
       ansible.builtin.fetch:
         src: /etc/rancher/k3s/k3s.yaml
-        dest: ~/.kube/config
+        dest: ~/.kube/config-{{ k3s.api.endpoint }}.original
         flat: true
+      register: _control_node_kubeconfig_original
+    - name: Prepare kubeconfig for control node
+      when: _control_node_kubeconfig_original.changed
+      block:
+        - name: Copy K3s kubeconfig original to final
+          ansible.builtin.copy:
+            src: ~/.kube/config-{{ k3s.api.endpoint }}.original
+            dest: ~/.kube/config-{{ k3s.api.endpoint }}
+          delegate_to: localhost
+        - name: Set K3s API endpoint for remote access
+          ansible.builtin.replace:
+            path: ~/.kube/config-{{ k3s.api.endpoint }}
+            regexp: 'server: https://[0-9.]+:\d+'
+            replace: 'server: https://{{ k3s.api.endpoint }}:{{ k3s.api.port }}'
+          delegate_to: localhost
     - name: Configure default KUBECONFIG for user
       ansible.builtin.lineinfile:
         path: ~/.bashrc
-        regexp: 'export KUBECONFIG=~/.kube/config'
-        line: 'export KUBECONFIG=~/.kube/config # Added by k3s-ansible'
-        state: present
+        regexp: '^export KUBECONFIG=(.*)$'
+        line: "export KUBECONFIG={{ (_kubeconfig_paths | default([]) + ['~/.kube/config-{{ k3s.api.endpoint }}']) | unique | join(':') }}"
+        backrefs: true
+      vars:
+        _kubeconfig_paths: "{{ lookup('ansible.builtin.file', '~/.bashrc') | \
+                             regex_search('^export KUBECONFIG=(.*)$', '\\1') | \
+                             first | \
+                             default('') | \
+                             split(':') }}"
       delegate_to: localhost
     - name: Configure kubectl autocomplete
       ansible.builtin.lineinfile:
@@ -282,3 +303,30 @@
         regexp: '\.\s+<\(kubectl completion bash\)'
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
       delegate_to: localhost
+    - name: Check whether kubectl is installed on control node
+      ansible.builtin.command: 'kubectl version --client'
+      register: _control_node_kubectl_installed
+      ignore_errors: true
+      delegate_to: localhost
+      become: false
+      changed_when: false
+    - name: Install kubectl, if not already installed
+      when: _control_node_kubectl_installed.rc > 0
+      block:
+        - name: Download latest kubectl
+          ansible.builtin.command: '(cd /tmp && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl")'
+          delegate_to: localhost
+        - name: Install latest kubectl
+          ansible.builtin.command: '(cd /tmp && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl)'
+          delegate_to: localhost
+
+- name: Inform user about KUBECONFIG environment variable
+  ansible.builtin.debug:
+    msg: |
+      K3s Cluster and Kubeconfig has been set up.
+      -------------------------------------------
+      You can now use kubectl to manage your K3s cluster.
+      If you have multiple kubeconfig files, you might need to set the KUBECONFIG environment variable:
+      export KUBECONFIG={{ local_kubeconfig_path }}
+      Or specify it directly:
+      kubectl get nodes
