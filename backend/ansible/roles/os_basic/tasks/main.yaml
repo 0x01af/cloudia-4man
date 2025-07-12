@@ -6,7 +6,7 @@
 - name: 'Change time zone'
   community.general.timezone:
     name: "{{ os_local.time_zone }}"
-  notify: c4m:os_basic:time-related-services-restart
+  notify: c4m:os_basic:time-dependent-services-restart
 
 - name: 'Change keyboard layout'
   become: yes
