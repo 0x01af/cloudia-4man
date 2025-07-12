@@ -258,19 +258,27 @@
 - name: Download kubeconfig of first server to the Ansible control node
   when: inventory_hostname == groups[k3s_servers][0]
   block:
+    - name: Create kubeconfig folder
+      ansible.builtin.file:
+        path: ~/.kube
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
     - name: Download kubeconfig
       ansible.builtin.fetch:
         src: /etc/rancher/k3s/k3s.yaml
         dest: ~/.kube/config
         flat: true
-#    - name: Configure default KUBECONFIG for user
-#      ansible.builtin.lineinfile:
-#        path: ~{{ ansible_user }}/.bashrc
-#        regexp: 'export KUBECONFIG=~/.kube/config'
-#        line: 'export KUBECONFIG=~/.kube/config # Added by k3s-ansible'
-#        state: present
-#    - name: Configure kubectl autocomplete
-#      ansible.builtin.lineinfile:
-#        path: ~{{ ansible_user }}/.bashrc
-#        regexp: '\.\s+<\(kubectl completion bash\)'
-#        line: ". <(kubectl completion bash)  # Added by k3s-ansible"
+    - name: Configure default KUBECONFIG for user
+      ansible.builtin.lineinfile:
+        path: ~/.bashrc
+        regexp: 'export KUBECONFIG=~/.kube/config'
+        line: 'export KUBECONFIG=~/.kube/config # Added by k3s-ansible'
+        state: present
+      delegate_to: localhost
+    - name: Configure kubectl autocomplete
+      ansible.builtin.lineinfile:
+        path: ~/.bashrc
+        regexp: '\.\s+<\(kubectl completion bash\)'
+        line: ". <(kubectl completion bash)  # Added by k3s-ansible"
+      delegate_to: localhost
