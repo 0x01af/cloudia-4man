@@ -5,9 +5,12 @@
 # - install open-iscsi
 - name: If K3s manifest folder does not exist, create K3s manifest folder
   ansible.builtin.file:
-    path: /var/lib/rancher/k3s/server/manifests
+    path: "/var/lib/rancher/k3s/server/manifests"
     state: directory
-    mode: "0755"
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
 
 ### Prepare configuration to use longhorn for storage
 # CONDITION: Environment defines the usage of longhorn for storage
