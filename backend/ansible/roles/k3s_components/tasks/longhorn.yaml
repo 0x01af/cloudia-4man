@@ -15,7 +15,7 @@
 ### Prepare configuration to use longhorn for storage
 # CONDITION: Environment defines the usage of longhorn for storage
 - name: Prepare configuration to use longhorn for storage
-  when: not ansible_check_mode and 'longhorn' in k3s.storage.provisioners
+  when: not ansible_check_mode and "'longhorn' in (k3s.storage.provisioners | default([]))"
   block:
     - name: Prepare data folders for longhorn
       ansible.builtin.file:
@@ -27,20 +27,19 @@
         src: "{{ k3s.storage.longhorn.data_path }}"
         dest: "/k3s-data/longhorn"
         state: link
-
-- name: Install pre-requisites for Longhorn on all K3s nodes based on Debian OS family (Ubuntu/Debian)
-  when: not ansible_check_mode and 'longhorn' in k3s.storage.provisioners and ansible_os_family|lower == 'debian'
-  ansible.builtin.apt:
-    name:
-      - open-iscsi
-      - nfs-common
-    state: present
-    update_cache: yes
-- name: Install pre-requisites for Longhorn on all K3s nodes based on Red Hat OS family (RHEL/CentOS)
-  when: not ansible_check_mode and 'longhorn' in k3s.storage.provisioners and ansible_os_family|lower == 'redhat'
-  ansible.builtin.yum:
-    name:
-      - iscsi-initiator-utils
-      - nfs-utils
-    state: present
-    update_cache: yes
+    - name: Install pre-requisites for Longhorn on all K3s nodes based on Debian OS family (Ubuntu/Debian)
+      when: ansible_os_family|lower == 'debian'
+      ansible.builtin.apt:
+        name:
+          - open-iscsi
+          - nfs-common
+        state: present
+        update_cache: yes
+    - name: Install pre-requisites for Longhorn on all K3s nodes based on Red Hat OS family (RHEL/CentOS)
+      when: ansible_os_family|lower == 'redhat'
+      ansible.builtin.yum:
+        name:
+          - iscsi-initiator-utils
+          - nfs-utils
+        state: present
+        update_cache: yes
