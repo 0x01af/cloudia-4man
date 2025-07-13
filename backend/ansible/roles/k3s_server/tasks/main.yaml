@@ -320,6 +320,17 @@
           ansible.builtin.command: '(cd /tmp && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl)'
           delegate_to: localhost
 
+- name: Verify that all server nodes joined
+  when: not ansible_check_mode and (groups[server_group] | length) > 1
+  ansible.builtin.command:
+    cmd: >
+      kubectl get nodes -l "node-role.kubernetes.io/control-plane=true" -o=jsonpath="{.items[*].metadata.name}"
+    register: _k3s_nodes
+    until: _k3s_nodes.rc == 0 and (_k3s_nodes.stdout.split() | length) == (groups['k3s_servers'] | length)
+    retries: 20
+    delay: 10
+    changed_when: false
+  delegate_to: localhost
 - name: Inform user about KUBECONFIG environment variable
   ansible.builtin.debug:
     msg: |
