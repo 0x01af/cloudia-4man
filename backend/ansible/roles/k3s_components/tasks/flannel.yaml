@@ -4,7 +4,7 @@
 #
 - name: If K3s manifest folder does not exist, create K3s manifest folder
   ansible.builtin.file:
-    path: /var/lib/rancher/k3s/server/manifests
+    path: "/var/lib/rancher/k3s/server/manifests"
     state: directory
     mode: "0755"
 
@@ -27,14 +27,14 @@
     - name: Create netplan configuration for flannel
       become: true
       template:
-        src: flannel-netplan.yaml.j2
-        dest: /etc/netplan/50-k3s-network-flannel.yaml
+        src: "flannel-netplan.yaml.j2"
+        dest: "/etc/netplan/50-k3s-network-flannel.yaml"
     - name: Apply netplan configuration for flannel
       become: true
       command: netplan apply
     - name: Add K3s config file for flannel
       become: true
       template:
-        src: flannel-{{ ansible_parent_role_names[0] }}-config.yaml.j2
-        dest: /etc/rancher/k3s/config.yaml.d/50-k3s-network-flannel.yaml
+        src: "flannel-{{ ansible_parent_role_names[0] }}-config.yaml.j2"
+        dest: "/etc/rancher/k3s/config.yaml.d/50-k3s-network-flannel.yaml"
       
