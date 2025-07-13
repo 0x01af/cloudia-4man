@@ -6,7 +6,10 @@
   ansible.builtin.file:
     path: "/var/lib/rancher/k3s/server/manifests"
     state: directory
-    mode: "0755"
+    owner: root
+    group: root
+    mode: "0644"
+  become: yes
 
 - name: Check, if interface exists for flannel
   command: "ip link show {{ k3s.network.flannel.iface }}"
