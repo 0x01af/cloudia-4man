@@ -138,12 +138,12 @@
       ansible.builtin.include_role:
         name: k3s_components
         tasks_from: local-path-provisioner
-      when: 'local' in k3s.storage.provisioners
+      when: "'local' in (k3s.storage.provisioners | default([]))"
     - name: Configure prerequistes for K3s storage longhorn
       ansible.builtin.include_role:
         name: k3s_components
         tasks_from: longhorn
-      when: 'longhorn' in k3s.storage.provisioners
+      when: "'longhorn' in (k3s.storage.provisioners | default([]))"
     - name: Configure prerequistes for K3s ingress controller nginx
       ansible.builtin.include_role:
         name: k3s_components
