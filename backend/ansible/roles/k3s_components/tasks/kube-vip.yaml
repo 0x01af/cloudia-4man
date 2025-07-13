@@ -14,7 +14,7 @@
 ### Prepare configuration to use kube-vip for control-plane
 # CONDITION: Environment defines the usage of kube-vip for control-plane
 - name: Prepare configuration to use kube-vip for control-plane
-  when: not ansible_check_mode and k3s.api.loadbalancer == "kube-vip"
+  when: not ansible_check_mode and k3s.api.loadbalancer == 'kube-vip'
   block:
     - name: Download kube-vip RBAC manifest
       ansible.builtin.get_url:
@@ -37,7 +37,7 @@
 ### Prepare configuration to use kube-vip for service load balancing
 # CONDITION: Environment defines the usage of kube-vip for service load balancing
 - name: Prepare configuration to use kube-vip for service load balancing
-  when: not ansible_check_mode and k3s.loadbalancer.addon == "kube-vip"
+  when: not ansible_check_mode and k3s.loadbalancer.addon == 'kube-vip'
   block:
     - name: Download kube-vip Cloud Controller manifest
       ansible.builtin.get_url:
