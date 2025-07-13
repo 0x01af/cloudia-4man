@@ -14,7 +14,7 @@
 ### Prepare configuration to use local-path-provisioner for storage
 # CONDITION: Environment defines the usage of local-path-provisioner for storage
 - name: Prepare configuration to use local-path-provisioner for storage
-  when: not ansible_check_mode and "local" in k3s.storage.provisioners
+  when: not ansible_check_mode and 'local' in k3s.storage.provisioners
   block:
     - name: Prepare data folders for local-path-provisioner
       ansible.builtin.file:
