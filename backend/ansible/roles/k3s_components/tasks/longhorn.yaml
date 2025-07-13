@@ -15,7 +15,7 @@
 ### Prepare configuration to use longhorn for storage
 # CONDITION: Environment defines the usage of longhorn for storage
 - name: Prepare configuration to use longhorn for storage
-  when: not ansible_check_mode and "longhorn" in k3s.storage.provisioners
+  when: not ansible_check_mode and 'longhorn' in k3s.storage.provisioners
   block:
     - name: Prepare data folders for longhorn
       ansible.builtin.file:
@@ -29,7 +29,7 @@
         state: link
 
 - name: Install pre-requisites for Longhorn on all K3s nodes based on Debian OS family (Ubuntu/Debian)
-  when: not ansible_check_mode and "longhorn" in k3s.storage.provisioners and ansible_os_family|lower == "debian"
+  when: not ansible_check_mode and 'longhorn' in k3s.storage.provisioners and ansible_os_family|lower == 'debian'
   ansible.builtin.apt:
     name:
       - open-iscsi
@@ -37,7 +37,7 @@
     state: present
     update_cache: yes
 - name: Install pre-requisites for Longhorn on all K3s nodes based on Red Hat OS family (RHEL/CentOS)
-  when: not ansible_check_mode and "longhorn" in k3s.storage.provisioners and ansible_os_family|lower == "redhat"
+  when: not ansible_check_mode and 'longhorn' in k3s.storage.provisioners and ansible_os_family|lower == 'redhat'
   ansible.builtin.yum:
     name:
       - iscsi-initiator-utils
