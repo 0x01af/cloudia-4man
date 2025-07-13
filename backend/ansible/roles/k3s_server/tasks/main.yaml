@@ -300,7 +300,7 @@
     - name: Configure kubectl autocomplete
       ansible.builtin.lineinfile:
         path: "~/.bashrc"
-        regexp: "\.\s+<\(kubectl completion bash\)"
+        regexp: '\.\s+<\(kubectl completion bash\)'
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
       delegate_to: localhost
     - name: Check whether kubectl is installed on control node
