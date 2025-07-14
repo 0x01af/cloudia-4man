@@ -20,7 +20,7 @@
     
 ### Define general settings
 - name: Define installed K3s version ### vielleicht an schluss schieben
-  when: not ansible_check_mode and k3s.version_installed is undefined
+  when: k3s.version_installed is undefined
   block:
     - name: Retrieve installed k3s version
       ansible.builtin.command: "k3s --version"
@@ -98,7 +98,7 @@
 # a. no K3s has been installed yet (cmd "K3s version" thrown an error)
 # b. installed K3s version is older than expected K3s version (var "k3s.version" in cluster's group_vars)
 - name: Download installation sources
-  when: not ansible_check_mode and (k3s.version_installed is undefined or k3s.version_installed is ansible.builtin.version(k3s.version, '<') )
+  when: k3s.version_installed is undefined or k3s.version_installed is ansible.builtin.version(k3s.version, '<')
   become: true
   block:
     - name: Download K3s install script
@@ -124,7 +124,7 @@
 # mkdir -p /var/lib/rancher/k3s/server/manifests/
 # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
 - name: Configure all prerequisites of K3s components
-  when: not ansible_check_mode and k3s.version_installed is undefined
+  when: k3s.version_installed is undefined
   become: true # run with sudo
   # become_user: root -> run as root (default)
   # ignore_errors: true
@@ -321,7 +321,7 @@
           delegate_to: localhost
 
 - name: Verify that all server nodes joined
-  when: not ansible_check_mode and (groups[server_group] | length) > 1
+  when: (groups[server_group] | length) > 1
   ansible.builtin.command:
     cmd: >
       kubectl get nodes -l "node-role.kubernetes.io/control-plane=true" -o=jsonpath="{.items[*].metadata.name}"
