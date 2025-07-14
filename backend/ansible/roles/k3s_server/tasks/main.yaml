@@ -40,6 +40,7 @@
       community.general.filesystem:
         fstype: ext4
         dev: "/dev/{{ ansible_distribution|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
+      when: not ansible_check_mode
     - name: Create mountpoint of logical volume for K3s data
       ansible.builtin.file:
         path: "/k3s-data"
@@ -51,6 +52,7 @@
         src: "/dev/{{ ansible_distribution|lower + '-vg' | default('ubuntu-vg') }}/k3s-data-lv"
         fstype: ext4
         state: mounted
+      when: not ansible_check_mode
     - name: Prepare folders for K3s data
       ansible.builtin.file:
         path: "{{ item.folder }}"
