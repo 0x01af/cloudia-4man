@@ -168,9 +168,9 @@
 ##### /needs to be done
   block:
     - name: If no K3s config is available, create an empty one.
-      
-        state: absent
+       ansible.builtin.file:
         path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
+        state: touch
     - name: Delete any existing token from the environment if different from the new one
       ansible.builtin.lineinfile:
         state: absent
