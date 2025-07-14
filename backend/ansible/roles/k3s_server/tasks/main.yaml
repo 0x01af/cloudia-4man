@@ -167,8 +167,8 @@
   # flannel-ipv6-masq: true # https://docs.k3s.io/networking/basic-network-options#dual-stack-ipv4--ipv6-networking
 ##### /needs to be done
   block:
-    - name: If no K3s config is available, create an empty one.
-       ansible.builtin.file:
+    - name: Create an empty K3s config file, if no file is available
+      ansible.builtin.file:
         path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
         state: touch
     - name: Delete any existing token from the environment if different from the new one
