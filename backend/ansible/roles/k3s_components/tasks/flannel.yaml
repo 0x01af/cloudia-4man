@@ -12,7 +12,7 @@
   become: yes
 
 - name: Check, if interface exists for flannel
-  command: "ip link show {{ k3s.network.flannel.iface }}"
+  command: "ip link show {{ k3s.networking.flannel.iface }}"
   register: _cmd_ip_link_show_flannel_iface
   ignore_errors: true
   changed_when: false
@@ -20,7 +20,7 @@
 ### Prepare configuration to use flannel for network
 # CONDITION: Environment defines the usage of flannel for network
 - name: Prepare configuration to use flannel for network
-  when: _cmd_ip_link_show_flannel_iface.rc == 0 and k3s.network.use == 'flannel'
+  when: _cmd_ip_link_show_flannel_iface.rc == 0 and k3s.networking.use == 'flannel'
   block:
     - name: Generate nic parameters for flannel
       ansible.builtin.set_fact:
