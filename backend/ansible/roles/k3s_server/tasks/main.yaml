@@ -264,6 +264,7 @@
 # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
 - name: Download kubeconfig of first server to the Ansible control node
   when: inventory_hostname == groups['k3s_servers'][0]
+  become: true
   block:
     - name: Create kubeconfig folder
       ansible.builtin.file:
