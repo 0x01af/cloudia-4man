@@ -4,7 +4,7 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    {{ k3s.network.flannel.iface }}:
+    {{ k3s.networking.flannel.iface }}:
       accept-ra: false
       dhcp6: false
       dhcp4: false
