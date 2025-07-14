@@ -27,6 +27,7 @@
         src: "{{ k3s.storage.longhorn.data_path }}"
         dest: "/k3s-data/longhorn"
         state: link
+      when: not ansible_check_mode
     - name: Install pre-requisites for Longhorn on all K3s nodes based on Debian OS family (Ubuntu/Debian)
       when: ansible_os_family|lower == 'debian'
       ansible.builtin.apt:
