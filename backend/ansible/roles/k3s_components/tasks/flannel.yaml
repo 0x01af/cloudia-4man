@@ -28,7 +28,6 @@
         _k3s_network_flannel_ipprefix: "{{ os_network.ip4.cidr | default(24) }}"
       # when: ansible_host is defined and ansible_interfaces is defined
     - name: Create netplan configuration for flannel
-      become: true
       ansible.builtin.template:
         src: "flannel-netplan.yaml.j2"
         dest: "/etc/netplan/50-k3s-network-flannel.yaml"
@@ -37,7 +36,6 @@
         mode: "0644"
       notify: c4m:os_basic:netplan-apply
     - name: Add K3s config file for flannel
-      become: true
       ansible.builtin.template:
         src: "flannel-{{ ansible_parent_role_names[0] }}-config.yaml.j2"
         dest: "/etc/rancher/k3s/config.yaml.d/50-k3s-network-flannel.yaml"
