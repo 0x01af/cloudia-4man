@@ -218,9 +218,7 @@
 - name: Write K3s service file
   ansible.builtin.template:
     src: "k3s-server.service.j2"
-    dest: "{{ systemd_dir }}/k3s-server.service"
-    owner: root
-    group: root
+    dest: "/etc/systemd/system/k3s-server.service"
     mode: "0644"
   register: _k3s_service
 
