@@ -233,7 +233,7 @@
     daemon_reload: true
     state: restarted
 - name: Enable and check K3s service
-  when: ansible_facts.services['k3s-server.service'] is not defined or ansible_facts.services['k3s-server.service'].state != 'running'
+  when: not ansible_check_mode and (ansible_facts.services['k3s-server.service'] is not defined or ansible_facts.services['k3s-server.service'].state != 'running')
   ansible.builtin.systemd:
     name: k3s-server
     daemon_reload: true
