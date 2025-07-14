@@ -27,7 +27,6 @@
 #- import_playbook: plain.yaml
 - hosts: plain_servers
   gather_facts: true
-  become: true
   roles:
     - { role: os_basic, tags: ["os_basic_only"] }
 
@@ -35,7 +34,6 @@
 - hosts: k3s_servers
   serial: 1
   gather_facts: true
-  become: true
   roles:
     - { role: os_basic, tags: ["os_basic_only"] }
     - role: k3s_server
@@ -43,7 +41,6 @@
 
 - hosts: k3s_agents
   gather_facts: true
-  become: true
   roles:
     - { role: os_basic, tags: ["os_basic_only"] }
     - role: k3s_agent
