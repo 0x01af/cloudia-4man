@@ -36,6 +36,7 @@
         url: "https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml"
         timeout: 120
         dest: "/var/lib/rancher/k3s/server/manifests/kube-vip-slb-cloud-controller.yaml"
+      when: not ansible_check_mode
     - name: Create kube-vip ConfigMap manifest
       ansible.builtin.template:
         src: "kube-vip-slb-configmap.yaml.j2"
