@@ -32,7 +32,7 @@
       ansible.builtin.template:
         src: "flannel-netplan.yaml.j2"
         dest: "/etc/netplan/50-k3s-network-flannel.yaml"
-      notify: c4m:
+      notify: c4m:os_basic:netplan-apply
     - name: Add K3s config file for flannel
       become: true
       ansible.builtin.template:
