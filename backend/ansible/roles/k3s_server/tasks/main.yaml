@@ -122,7 +122,7 @@
       ansible.builtin.include_role:
         name: k3s_components
         tasks_from: flannel
-      when: k3s.network.addon == 'flannel'
+      when: k3s.networking.addon == 'flannel'
     - name: Configure prerequistes for K3s storage local-path-provisioner
       ansible.builtin.include_role:
         name: k3s_components
