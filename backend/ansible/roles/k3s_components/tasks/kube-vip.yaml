@@ -32,7 +32,6 @@
         owner: root
         group: root
         mode: "0644
-      become: yes
 
 ### Prepare configuration to use kube-vip for service load balancing
 # CONDITION: Environment defines the usage of kube-vip for service load balancing
@@ -47,7 +46,6 @@
         owner: root
         group: root
         mode: "0644
-      become: yes
     - name: Create kube-vip ConfigMap manifest
       ansible.builtin.template:
         src: "kube-vip-slb-configmap.yaml.j2"
@@ -55,7 +53,6 @@
         owner: root
         group: root
         mode: "0644
-      become: yes
     - name: Prevent default configuration of K3s load balancer servicelb
       ansible.builtin.file:
         path: "/var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip"
@@ -63,4 +60,3 @@
         owner: root
         group: root
         mode: "0644
-      become: yes
