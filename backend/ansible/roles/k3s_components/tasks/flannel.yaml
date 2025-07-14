@@ -6,10 +6,7 @@
   ansible.builtin.file:
     path: "/var/lib/rancher/k3s/server/manifests"
     state: directory
-    owner: root
-    group: root
     mode: "0644"
-  become: yes
 
 - name: Check, if interface exists for flannel
   command: "ip link show {{ k3s.networking.flannel.iface }}"
@@ -31,15 +28,11 @@
       ansible.builtin.template:
         src: "flannel-netplan.yaml.j2"
         dest: "/etc/netplan/50-k3s-network-flannel.yaml"
-        owner: root
-        group: root
         mode: "0644"
       notify: c4m:os_basic:netplan-apply
     - name: Add K3s config file for flannel
       ansible.builtin.template:
         src: "flannel-{{ ansible_parent_role_names[0] }}-config.yaml.j2"
         dest: "/etc/rancher/k3s/config.yaml.d/50-k3s-network-flannel.yaml"
-        owner: root
-        group: root
         mode: "0644"
       
