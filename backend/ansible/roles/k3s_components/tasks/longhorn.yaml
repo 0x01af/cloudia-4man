@@ -7,10 +7,7 @@
   ansible.builtin.file:
     path: "/var/lib/rancher/k3s/server/manifests"
     state: directory
-    owner: root
-    group: root
     mode: "0644"
-  become: yes
 
 ### Prepare configuration to use longhorn for storage
 # CONDITION: Environment defines the usage of longhorn for storage
@@ -21,7 +18,7 @@
       ansible.builtin.file:
         path: "{{ k3s.storage.longhorn.data_path }}"
         state: directory
-        mode: "0755"
+        mode: "0644"
     - name: Prepare data folders for longhorn
       ansible.builtin.file:
         src: "{{ k3s.storage.longhorn.data_path }}"
