@@ -19,6 +19,7 @@
         timeout: 120
         dest: "/var/lib/rancher/k3s/server/manifests/kube-vip-api-rbac.yaml"
         mode: "0644"
+      when: not ansible_check_mode
     - name: Create kube-vip DeamonSet manifest
       ansible.builtin.template:
         src: "kube-vip-api-deamonset.yaml.j2"
