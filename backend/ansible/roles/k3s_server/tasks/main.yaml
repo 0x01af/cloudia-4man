@@ -61,6 +61,7 @@
         loop:
           - { folder: "/k3s-data/k3s" }
           - { folder: "/k3s-data/k3s-pods" }
+      when: not ansible_check_mode
     - name: Prepare folders for K3s data
       ansible.builtin.file:
         src: "{{ item.src }}"
@@ -69,6 +70,7 @@
         loop:
           - { src: "/var/lib/rancher/k3s", dest: "/k3s-data/k3s" }
           - { src: "/var/lib/kubelet/pods", dest: "/k3s-data/k3s-pods" }
+      when: not ansible_check_mode
         # ln -s /datadrive/k3s /var/lib/rancher/k3s
         # ln -s /datadrive/k3s-pods /var/lib/kubelet/pods
         # not done ln -s /datadrive/k3s-run /run/k3s
