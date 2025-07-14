@@ -293,10 +293,8 @@
       ansible.builtin.lineinfile:
         path: "~/.bashrc"
         regexp: '^export KUBECONFIG=(.*)$'
-        line: "export KUBECONFIG={{ (_kubeconfig_paths | default([]) + ['~/.kube/config-{{ k3s.api.endpoint }}']) | unique | join(':') }}"
-        backrefs: true
-      vars:
-        _kubeconfig_paths: "{{ lookup('ansible.builtin.file', '~/.bashrc', default='') | regex_search('^export KUBECONFIG=(.*)$', '\\1') | default([]) | first | default('') | split(':') }}"
+        insertafter: '^export KUBECONFIG=(.*)$'
+        line: "export KUBECONFIG=~/.kube/config-{{ k3s.api.endpoint }}:$KUBECONFIG"
       delegate_to: localhost
     - name: Configure kubectl autocomplete
       ansible.builtin.lineinfile:
