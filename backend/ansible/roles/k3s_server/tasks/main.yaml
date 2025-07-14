@@ -179,8 +179,8 @@
       register: _k3s_config
       # Add the token to the environment if it has been provided.
     - name: Add token as an environment variable
-      when: k3s.token is defined
-      # no_log: true # avoid logging the server token
+      when: not ansible_check_mode and k3s.token is defined
+      no_log: true # avoid logging the server token
       ansible.builtin.lineinfile:
         path: "/etc/rancher/k3s/config.yaml.d/00-k3s-server.yaml"
         line: "token: {{ k3s.token }}"
