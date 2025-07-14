@@ -87,7 +87,6 @@
 # b. installed K3s version is older than expected K3s version (var "k3s.version" in cluster's group_vars)
 - name: Download installation sources
   when: k3s.version_installed is undefined or k3s.version_installed is ansible.builtin.version(k3s.version, '<')
-  become: true
   block:
     - name: Download K3s install script
       ansible.builtin.get_url:
@@ -114,7 +113,6 @@
 # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
 - name: Configure all prerequisites of K3s components
   when: k3s.version_installed is undefined
-  become: true # run with sudo
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
