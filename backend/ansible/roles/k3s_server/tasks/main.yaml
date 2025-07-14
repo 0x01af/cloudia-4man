@@ -269,7 +269,6 @@
       ansible.builtin.file:
         path: "~/.kube"
         state: directory
-        mode: "0700"
       delegate_to: localhost
     - name: Download kubeconfig
       ansible.builtin.fetch:
