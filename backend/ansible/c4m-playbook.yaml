@@ -46,12 +46,12 @@
   post_tasks:
     - name: Inform user about KUBECONFIG environment variable
       ansible.builtin.debug:
-      msg: |
-        K3s Cluster and Kubeconfig has been set up.
-        -------------------------------------------
-        You can now use kubectl to manage your K3s cluster.
-        Please check the installation with following commands:
-        - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'
+        msg: |
+          K3s Cluster and Kubeconfig has been set up.
+          -------------------------------------------
+          You can now use kubectl to manage your K3s cluster.
+          Please check the installation with following commands:
+          - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'
 
 - hosts: k3s_agents
   become: true # run with sudo
