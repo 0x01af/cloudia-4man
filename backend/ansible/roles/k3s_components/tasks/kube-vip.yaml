@@ -6,7 +6,7 @@
   ansible.builtin.file:
     path: "/var/lib/rancher/k3s/server/manifests"
     state: directory
-    mode: "0644"
+    mode: "0755"
 
 ### Prepare configuration to use kube-vip for control-plane
 # CONDITION: Environment defines the usage of kube-vip for control-plane
