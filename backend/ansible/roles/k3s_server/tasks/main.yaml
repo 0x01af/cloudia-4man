@@ -285,7 +285,7 @@
           ansible.builtin.replace:
             path: "~/.kube/config-{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}"
             regexp: 'server: https://[0-9.]+:\d+'
-            replace: 'server: https://{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}:{{ k3s.api.port | default('6443') }}'
+            replace: "server: 'https://{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}:{{ k3s.api.port | default('6443') }}'"
           delegate_to: localhost
     - name: Configure default KUBECONFIG for user
       ansible.builtin.lineinfile:
