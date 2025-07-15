@@ -43,7 +43,15 @@
   roles:
     - { role: os_basic, tags: ["os_basic_only"] }
     - role: k3s_server
-      # task for first server: when: inventory_hostname == k3s_servers[0]
+  post_tasks:
+    - name: Inform user about KUBECONFIG environment variable
+      ansible.builtin.debug:
+      msg: |
+        K3s Cluster and Kubeconfig has been set up.
+        -------------------------------------------
+        You can now use kubectl to manage your K3s cluster.
+        Please check the installation with following commands:
+        - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'
 
 - hosts: k3s_agents
   become: true # run with sudo
