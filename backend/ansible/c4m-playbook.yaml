@@ -49,7 +49,9 @@
         msg: |
           K3s Cluster and Kubeconfig has been set up.
           -------------------------------------------
-          You can now use kubectl to manage your K3s cluster.
+          Please install kubectl for managing your K3s cluster:
+          1. curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'
+          2. install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
           Please check the installation with following commands:
           - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'
 
