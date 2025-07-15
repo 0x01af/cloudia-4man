@@ -21,9 +21,6 @@
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
   when: k3s.version_installed is undefined
-  become: true # run with sudo
-  # become_user: root -> run as root (default)
-  # ignore_errors: true
   block:
     - name: Prepare folder for K3s configuration
       ansible.builtin.file:
@@ -87,7 +84,6 @@
 # b. installed K3s version is older than expected K3s version (var "k3s.version" in cluster's group_vars)
 - name: Download installation sources
   when: k3s.version_installed is undefined or k3s.version_installed is ansible.builtin.version(k3s.version, '<')
-  become: true # run with sudo
   block:
     - name: Download K3s install script
       ansible.builtin.get_url:
@@ -263,6 +259,7 @@
 # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
 - name: Download kubeconfig of first server to the Ansible control node
   when: inventory_hostname == groups['k3s_servers'][0]
+  become: false
   block:
     - name: Create kubeconfig folder
       ansible.builtin.file:
