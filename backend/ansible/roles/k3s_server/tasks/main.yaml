@@ -59,8 +59,6 @@
         state: directory
         mode: "0755"
       loop:
-        - { folder: "/k3s-data/k3s" }
-        - { folder: "/k3s-data/k3s-pods" }
         - { folder: "/var/lib/rancher/k3s" }
         - { folder: "/var/lib/kubelet/pods" }
       when: not ansible_check_mode
