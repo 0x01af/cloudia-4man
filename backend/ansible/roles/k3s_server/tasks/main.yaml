@@ -322,23 +322,10 @@
             chdir: /tmp
           delegate_to: localhost
 
-- name: Verify that all server nodes joined
-  when: (groups['k3s_servers'] | length == 1) or (groups['k3s_servers'] | length >= 3)
-  ansible.builtin.command: "kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'"
-  register: _k3s_nodes
-  until: _k3s_nodes.rc == 0 and (_k3s_nodes.stdout.split() | length) == (groups['k3s_servers'] | length)
-  retries: 20
-  delay: 10
-  changed_when: false
-  delegate_to: localhost
-- name: Inform user about KUBECONFIG environment variable
+- name: Inform user about current server
   ansible.builtin.debug:
     msg: |
-      K3s Cluster and Kubeconfig has been set up.
+      K3s server {{ inventory_hostname }} has been installed/updated.
       -------------------------------------------
       K3s Version (planned): {{ k3s.version }}
       K3s Version (installed): {{ k3s.version_installed }}
-      -------------------------------------------
-      You can now use kubectl to manage your K3s cluster.
-      Please check the installation with following commands:
-      - kubectl get nodes
