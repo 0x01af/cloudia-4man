@@ -300,33 +300,6 @@
         regexp: '\.\s+<\(kubectl completion bash\)'
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
       delegate_to: localhost
-    - name: Check whether kubectl is installed on control node
-      ansible.builtin.command: "kubectl version --client"
-      register: _control_node_kubectl_installed
-      ignore_errors: true
-      delegate_to: localhost
-      become: false
-      changed_when: false
-      when: not ansible_check_mode
-    - name: Install kubectl, if not already installed
-      when: not ansible_check_mode and _control_node_kubectl_installed.rc > 0
-      block:
-        - name: Get latest kubectl version
-          ansible.builtin.command: "curl -L -s https://dl.k8s.io/release/stable.txt"
-          args:
-            chdir: /tmp
-          delegate_to: localhost
-          register: _localhost_kubectl_version_latest
-        - name: Download latest kubectl
-          ansible.builtin.command: "curl -LO 'https://dl.k8s.io/release/{{ _localhost_kubectl_version_latest.stdout }}/bin/linux/amd64/kubectl'"
-          args:
-            chdir: /tmp
-          delegate_to: localhost
-        - name: Install latest kubectl
-          ansible.builtin.command: "install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl"
-          args:
-            chdir: /tmp
-          delegate_to: localhost
 
 - name: Inform user about current server
   ansible.builtin.debug:
