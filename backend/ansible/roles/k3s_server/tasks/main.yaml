@@ -271,6 +271,7 @@
         src: "/etc/rancher/k3s/k3s.yaml"
         dest: "~/.kube/config-{{ k3s.api.endpoint }}.original"
         flat: true
+      become: true
       register: _control_node_kubeconfig_original
     - name: Prepare kubeconfig for control node
       when: _control_node_kubeconfig_original.changed
