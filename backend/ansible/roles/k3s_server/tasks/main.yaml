@@ -269,7 +269,7 @@
     - name: Download kubeconfig
       ansible.builtin.fetch:
         src: "/etc/rancher/k3s/k3s.yaml"
-        dest: "~/.kube/config-{{ k3s.api.endpoint }}.original"
+        dest: "~/.kube/config-{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}.original"
         flat: true
       become: true
       register: _control_node_kubeconfig_original
@@ -278,21 +278,21 @@
       block:
         - name: Copy K3s kubeconfig original to final
           ansible.builtin.copy:
-            src: "~/.kube/config-{{ k3s.api.endpoint }}.original"
-            dest: "~/.kube/config-{{ k3s.api.endpoint }}"
+            src: "~/.kube/config-{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}.original"
+            dest: "~/.kube/config-{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}"
           delegate_to: localhost
         - name: Set K3s API endpoint for remote access
           ansible.builtin.replace:
-            path: "~/.kube/config-{{ k3s.api.endpoint }}"
+            path: "~/.kube/config-{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}"
             regexp: 'server: https://[0-9.]+:\d+'
-            replace: 'server: https://{{ k3s.api.endpoint }}:{{ k3s.api.port }}'
+            replace: 'server: https://{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}:{{ k3s.api.port | default('6443') }}'
           delegate_to: localhost
     - name: Configure default KUBECONFIG for user
       ansible.builtin.lineinfile:
         path: "~/.bashrc"
         regexp: '^export KUBECONFIG=(.*)$'
         insertafter: '^export KUBECONFIG=(.*)$'
-        line: "export KUBECONFIG=~/.kube/config-{{ k3s.api.endpoint }}:$KUBECONFIG"
+        line: "export KUBECONFIG=~/.kube/config-{{ k3s.api.endpoint | default(groups['k3s_servers'][0]) }}:$KUBECONFIG"
       delegate_to: localhost
     - name: Configure kubectl autocomplete
       ansible.builtin.lineinfile:
