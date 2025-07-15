@@ -300,11 +300,3 @@
         regexp: '\.\s+<\(kubectl completion bash\)'
         line: ". <(kubectl completion bash)  # Added by k3s-ansible"
       delegate_to: localhost
-
-- name: Inform user about current server
-  ansible.builtin.debug:
-    msg: |
-      K3s server {{ inventory_hostname }} has been installed/updated.
-      -------------------------------------------
-      K3s Version (planned): {{ k3s.version }}
-      K3s Version (installed): {{ k3s.version_installed }}
