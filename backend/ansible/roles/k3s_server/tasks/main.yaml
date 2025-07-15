@@ -312,10 +312,14 @@
       when: not ansible_check_mode and _control_node_kubectl_installed.rc > 0
       block:
         - name: Download latest kubectl
-          ansible.builtin.command: '(cd /tmp && curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl")'
+          ansible.builtin.command: 'curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"'
+          args:
+            chdir: /tmp
           delegate_to: localhost
         - name: Install latest kubectl
-          ansible.builtin.command: '(cd /tmp && install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl)'
+          ansible.builtin.command: 'install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl'
+          args:
+            chdir: /tmp
           delegate_to: localhost
 
 - name: Verify that all server nodes joined
