@@ -2,7 +2,7 @@
 # k3s_components:longhorn:tasks
 # based on: 
 # https://longhorn.io/docs/1.9.0/advanced-resources/os-distro-specific/csi-on-k3s/
-# - install open-iscsi
+# https://longhorn.io/docs/1.8.1/deploy/install/#using-the-environment-check-script
 - name: If K3s manifest folder does not exist, create K3s manifest folder
   ansible.builtin.file:
     path: "/var/lib/rancher/k3s/server/manifests"
@@ -31,14 +31,18 @@
         name:
           - open-iscsi
           - nfs-common
+          - cryptsetup
+          - dmsetup
         state: present
         update_cache: yes
-    - name: Install pre-requisites for Longhorn on all K3s nodes based on Red Hat OS family (RHEL/CentOS)
+    - name: Install pre-requisites for Longhorn on all K3s nodes based on Red Hat OS family (RHEL/CentOS/Rocky Linux)
       when: ansible_os_family|lower == 'redhat'
       ansible.builtin.yum:
         name:
           - iscsi-initiator-utils
           - nfs-utils
+          - cryptsetup
+          - device-mapper
         state: present
         update_cache: yes
     - name: Load module iscsi_tcp
