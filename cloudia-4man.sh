@@ -4,6 +4,8 @@
 # Contact: github.com/0x01af
 # License: need to be improved
 # Version: v2025-delta
+# based on:
+# - https://linuxize.com/post/bash-functions/
 
 # Configuration
 C4M_CONFIG = {
