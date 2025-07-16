@@ -54,6 +54,7 @@
           2. install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
           Please check the installation with following commands:
           - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'
+          Remember: Helm Controller is automatically installed.
 
 - hosts: k3s_agents
   become: true # run with sudo
