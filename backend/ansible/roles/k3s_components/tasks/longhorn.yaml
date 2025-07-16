@@ -41,3 +41,8 @@
           - nfs-utils
         state: present
         update_cache: yes
+    - name: Load module iscsi_tcp
+      community.general.modprobe:
+        name: iscsi_tcp
+        state: present
+
