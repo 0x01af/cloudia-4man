@@ -17,7 +17,28 @@
     that:
       - (groups['k3s_servers'] | length == 1) or (groups['k3s_servers'] | length >= 3)
     fail_msg: "ERROR: K3s cluster defintion is wrong (either single server or more than three server has to be defined)"
-    
+- name: Validate K3s configuration variable
+  ansible.builtin.assert:
+    that:
+      - k3s is defined
+    fail_msg: "ERROR: K3s configuration variable isn't defined"
+
+### Get fact of installed K3s version
+- name: Get fact of installed K3s version
+  when: not ansible_check_mode
+  block:
+    - name: Retrieve installed k3s version
+      ansible.builtin.command: "k3s --version"
+      register: _cmd_k3s_version_output
+      changed_when: false
+      ignore_errors: true
+    - name: Store installed k3s version as additional fact
+      when: _cmd_k3s_version_output.rc == 0
+      ansible.builtin.set_fact:
+        k3s: "{{ k3s | ansible.builtin.combine({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
+        # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
   when: k3s.version_installed is undefined
@@ -238,22 +259,6 @@
   when: (groups['k3s_servers'] | length) >= 3
   ansible.builtin.pause:
     seconds: 30
-
-### Store fact of installed K3s version
-- name: Store installed K3s version
-  when: not ansible_check_mode and k3s.version_installed is undefined
-  block:
-    - name: Retrieve installed k3s version
-      ansible.builtin.command: "k3s --version"
-      register: _cmd_k3s_version_output
-      changed_when: false
-      ignore_errors: true
-    - name: Store installed k3s version as additional fact
-      when: _cmd_k3s_version_output.rc == 0
-      ansible.builtin.set_fact:
-        k3s: "{{ k3s | ansible.builtin.combine({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
-        # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
-        # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
 
 ###########
 # GET K3S KUBECONFIG: -> kubeconfig: /etc/rancher/k3s/k3s.yaml
