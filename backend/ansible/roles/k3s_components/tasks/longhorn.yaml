@@ -49,4 +49,6 @@
       community.general.modprobe:
         name: iscsi_tcp
         state: present
+    - name: Prepare HelmChart longhorn for autodeployment by HelmController
+      
 
