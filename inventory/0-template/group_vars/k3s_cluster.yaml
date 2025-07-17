@@ -33,8 +33,8 @@ k3s:
       data_path: /opt/local-path-provisioner
     longhorn:
       # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
+      version: v1.9.0
       data_path: /var/lib/longhorn
-      # version: v1.8.1
   ingress:
     # An ingress controller routes traffic based on requested URI to the right pod/container.
     # K3s default: traefik
