@@ -49,8 +49,3 @@
       community.general.modprobe:
         name: iscsi_tcp
         state: present
-    - name: Prepare HelmChart longhorn for autodeployment by HelmController
-      ansible.builtin.template:
-        src: "longhorn-helmchart.yaml.j2"
-        dest: "/var/lib/rancher/k3s/server/manifests/longhorn-helmchart.yaml"
-        mode: "0644"
