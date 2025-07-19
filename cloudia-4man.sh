@@ -89,7 +89,7 @@ c4m_main() {
   do
     # REPLY enthält die Nummer der Auswahl, opt den Text der Auswahl
     case $opt in
-        "Task mit Fortschritt starten")
+        "(1) Betriebssysteme ")
             echo "Du hast '$opt' gewählt."
             task_mit_fortschritt 5 # Task soll 5 Sekunden dauern
             ;;
@@ -135,9 +135,9 @@ exit 0
 # cd /inventory/{$environment}/states/{$server}
 
 # Starting provisioning service, and configuration & deployment management
-# ansible-playbook backend/ansible/c4m-playbook.yml -i inventory/{$environment}/environment.yaml
+# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml
 
 ## do os_basic_only: like os updates and so on.
-# ansible-playbook backend/ansible/c4m-playbook.yml -i inventory/{$environment}/environment.yaml --tags "os_basic_only"
+# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only"
 
 # Updating inventory
