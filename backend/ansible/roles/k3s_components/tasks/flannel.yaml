@@ -21,7 +21,8 @@
   block:
     - name: Generate nic parameters for flannel
       ansible.builtin.set_fact:
-        _k3s_network_flannel_ipaddress: "{{ '169.254.' ~ (os_network.ip4.address | default('0.0.1.1')).split('.')[2] ~ '.' ~ (os_network.ip4.address | default('0.0.1.1')).split('.')[3] }}"
+        _k3s_network_flannel_ipaddress: "{{ '100.64.' ~ (os_network.ip4.address | default('0.0.1.1')).split('.')[2] ~ '.' ~ (os_network.ip4.address | default('0.0.1.1')).split('.')[3] }}"
+        # because link-local addresses don't work, Shared Address Space has been used (https://datatracker.ietf.org/doc/html/rfc6598)
         _k3s_network_flannel_ipprefix: "{{ os_network.ip4.cidr | default(24) }}"
       # when: ansible_host is defined and ansible_interfaces is defined
     - name: Create netplan configuration for flannel
