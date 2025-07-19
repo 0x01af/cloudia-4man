@@ -9,6 +9,7 @@
   ansible.builtin.template:
     src: os-basic-netplan.yaml.j2
     dest: /etc/netplan/10-os-basic-network.yaml
+    mode: "0600" # netplan wants 600
   become: yes
   notify: c4m:os_basic:netplan-apply
 
