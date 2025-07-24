@@ -20,7 +20,7 @@
   ansible.builtin.service:
     name: "{{ item }}"
     state: restarted
-    loop:
-      - cron
+  loop:
+    - cron
   become: true
   become_method: sudo
