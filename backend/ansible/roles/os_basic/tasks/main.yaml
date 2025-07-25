@@ -9,7 +9,10 @@
   register: _os_local_time
 
 - name: 'Restart all time-dependent services'
-  
+  when: _os_local_time.changed
+  ansible.builtin.include_role:
+    name: c4m_commons
+    tasks_from: os_timedependent_services_restart
 
 - name: 'Change keyboard layout'
   become: yes
