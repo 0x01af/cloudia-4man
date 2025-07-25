@@ -1,17 +1,22 @@
 ---
-- name: 'Clean-up cloud-init configuration'
+- name: 'Clean-up Netplan cloud-init configuration'
   ansible.builtin.file:
     path: /etc/netplan/50-cloud-init.yaml
     state: absent
   become: yes
+  register: _os_basic_netplan
 
-- name: 'Template out Netplan YAML to configure networking'
+- name: 'Create Netplan os_basic configuration'
   ansible.builtin.template:
     src: os-basic-netplan.yaml.j2
     dest: /etc/netplan/10-os-basic-network.yaml
     mode: "0600" # netplan wants 600
   become: yes
+  register: _os_basic_netplan
 
+- name: 'Apply netplan configuration'
+  when: _os_basic_netplan.changed
+  
 
 
 # SYSTEM AND PACKAGE UPDATES
