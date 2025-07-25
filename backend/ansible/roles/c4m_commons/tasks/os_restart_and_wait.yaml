@@ -1,6 +1,6 @@
 ---
 # inspired by https://earlruby.org/2019/07/rebooting-a-host-with-ansible/
-- name: 'os_basic:restart-and-wait'
+- name: 'c4m_commons:os-restart-and-wait'
   ansible.builtin.reboot:
     msg: 'cloudia-4man: Reboot initiated'
     connect_timeout: 5
