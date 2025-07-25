@@ -3,7 +3,7 @@
   ansible.builtin.file:
     path: /etc/netplan/50-cloud-init.yaml
     state: absent
-  become: yes
+  become: true
   register: _os_basic_netplan
 
 - name: 'Create Netplan os_basic configuration'
@@ -11,13 +11,13 @@
     src: os-basic-netplan.yaml.j2
     dest: /etc/netplan/10-os-basic-network.yaml
     mode: "0600" # netplan wants 600
-  become: yes
+  become: true
   register: _os_basic_netplan
 
 - name: 'Apply netplan configuration'
   when: _os_basic_netplan.changed
-  
-
+  ansible.builtin.command: netplan apply
+  become: true
 
 # SYSTEM AND PACKAGE UPDATES
 # "sudo apt-get update -y",
