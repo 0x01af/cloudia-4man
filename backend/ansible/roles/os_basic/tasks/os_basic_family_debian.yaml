@@ -35,7 +35,13 @@
     upgrade: dist
     update_cache: yes
   become: yes
-  notify: c4m:os_basic:restart-and-wait
+  register: _os_basic_upgrade
+
+- name: 'Restart the OS'
+  when: _os_basic_upgrade.changed
+  ansible.builtin.include_role:
+    name: c4m_commons
+    tasks_from: os_restart_and_wait
 
 - name: 'Install (or remove) default packages'
   ansible.builtin.apt:
