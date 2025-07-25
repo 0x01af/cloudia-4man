@@ -1,7 +1,7 @@
 ---
 os_local:
 # Defaults for task 'Change timezone'
-  timezone: 'Europe/Zurich'
+  time_zone: 'Europe/Zurich'
 
 # Defaults for task 'Change keyboard layout'
   keyboard:
