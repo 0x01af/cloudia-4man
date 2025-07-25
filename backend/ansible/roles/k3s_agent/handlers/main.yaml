@@ -1,5 +1,0 @@
----
-- name: 'c4m:k3s_node:server:restart'
-  ansible.builtin.service:
-    name: k3s-server
-    state: restarted
