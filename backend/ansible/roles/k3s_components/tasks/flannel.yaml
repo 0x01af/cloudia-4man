@@ -33,7 +33,7 @@
       register: _k3s_network_flannel_netplan
     - name: Apply netplan configuration for flannel
       when: _k3s_network_flannel_netplan.changed
-      
+      ansible.builtin.command: netplan apply
     - name: Add K3s config file for flannel
       ansible.builtin.template:
         src: "flannel-{{ ansible_parent_role_names[0] }}-config.yaml.j2"
