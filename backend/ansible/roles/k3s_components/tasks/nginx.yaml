@@ -18,3 +18,6 @@
       ansible.builtin.file:
         path: "/var/lib/rancher/k3s/server/manifests/traefik.yaml.skip"
         state: touch
+    # - name: Configure firewalls for K3s ingress controller nginx
+    # allow tcp/8443 between all K3s nodes
+      
