@@ -34,6 +34,7 @@
     - name: Download kube-vip Cloud Controller manifest
       ansible.builtin.get_url:
         url: "https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml"
+        url: "https://github.com/kube-vip/kube-vip-cloud-provider/raw/refs/tags/{{ k3s.loadbalancer.kube_vip.lb_version }}/manifest/kube-vip-cloud-controller.yaml"
         timeout: 120
         dest: "/var/lib/rancher/k3s/server/manifests/kube-vip-slb-cloud-controller.yaml"
       when: not ansible_check_mode
