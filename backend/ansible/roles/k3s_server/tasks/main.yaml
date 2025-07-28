@@ -131,13 +131,13 @@
         INSTALL_K3S_VERSION: "{{ k3s.version }}"
       changed_when: true
       when: not ansible_check_mode
+      register: _k3s_binaries_installed
 
 ### Configure all prerequisites of K3s components
 # CONDITION: This block should only be executed if no K3s has been installed yet.
 # mkdir -p /var/lib/rancher/k3s/server/manifests/
 # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
 - name: Configure all prerequisites of K3s components
-  when: k3s.version_installed is undefined
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
@@ -250,7 +250,7 @@
   when:
     - ansible_facts.services['k3s-server.service'] is defined
     - ansible_facts.services['k3s-server.service'].state == 'running'
-    - _k3s_service.changed or _k3s_config.changed
+    - _k3s_service.changed or _k3s_config.changed or _k3s_binaries_installed.changed
   ansible.builtin.systemd:
     name: k3s-server
     daemon_reload: true
@@ -263,7 +263,9 @@
     state: started
     enabled: true
 - name: Pause to allow first server startup
-  when: (groups['k3s_servers'] | length) >= 3
+  when:
+    - (groups['k3s_servers'] | length) >= 3
+    - inventory_hostname == groups['k3s_servers'][0]
   ansible.builtin.pause:
     seconds: 30
 
