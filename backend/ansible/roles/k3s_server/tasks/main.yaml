@@ -35,7 +35,7 @@
     - name: Store installed k3s version as additional fact
       when: _cmd_k3s_version_output.rc == 0
       ansible.builtin.set_fact:
-        k3s: "{{ k3s | ansible.builtin.combine({'version_installed': _cmd_k3s_version_output.stdout_lines[0].split(' ')[1]}) }}"
+        k3s: "{{ k3s | ansible.builtin.combine({'version_installed': _cmd_k3s_version_output.stdout_lines[0].split(' ')[2]}) }}"
         # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
         # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
     - name: Inform user about K3s versions
