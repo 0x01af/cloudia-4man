@@ -243,22 +243,22 @@
 - name: Write K3s service file
   ansible.builtin.template:
     src: "k3s-server.service.j2"
-    dest: "/etc/systemd/system/k3s-server.service"
+    dest: "/etc/systemd/system/k3s.service"
     mode: "0644"
   register: _k3s_service
 
 ### (Re-)Start K3s service
 - name: Restart K3s service
   when:
-    - ansible_facts.services['k3s-server.service'] is defined
-    - ansible_facts.services['k3s-server.service'].state == 'running'
+    - ansible_facts.services['k3s.service'] is defined
+    - ansible_facts.services['k3s.service'].state == 'running'
     - _k3s_service.changed or _k3s_config.changed or _k3s_binaries_installed.changed
   ansible.builtin.systemd:
     name: k3s-server
     daemon_reload: true
     state: restarted
 - name: Enable and check K3s service
-  when: not ansible_check_mode and (ansible_facts.services['k3s-server.service'] is not defined or ansible_facts.services['k3s-server.service'].state != 'running')
+  when: not ansible_check_mode and (ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running')
   ansible.builtin.systemd:
     name: k3s-server
     daemon_reload: true
