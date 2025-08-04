@@ -12,10 +12,7 @@
 # - playbook are ordered: first playbook definition will be applied first.
 # 
 # further readings:
-# - https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
-# - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-roles-to-abstract-your-infrastructure-environment
-# - https://stackoverflow.com/questions/42386801/ansible-how-to-control-the-order-of-the-hosts-when-playbook-is-ran
-# - https://stackoverflow.com/questions/42506865/ansible-play-with-hosts-in-order-i-desire
+# - https://stackoverflow.com/questions/45301295/ansible-task-serial-1-reverse-order
 - name: Check cloudia-4man requirements
   hosts: all
   pre_tasks:
@@ -41,6 +38,7 @@
         tasks_from: shutdown.yaml
 
 - hosts: k3s_servers
+  order: reverse_inventory
   become: true # run with sudo
   # become_user: root -> run as root (default)
   # ignore_errors: true
