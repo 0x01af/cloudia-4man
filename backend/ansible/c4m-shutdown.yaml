@@ -1,15 +1,5 @@
 ---
----
 # cloudia-4man (c4m) shutdown
-# 
-# inventory: defines configuration items (ci), or groups of configuration items (gci)
-# role: defines configuration tasks for a specific type of configuration item
-# playbook: maps roles to ci or cgi
-#
-# keep in mind:
-# - inventory is ordered: first hosts/groups are executed first.
-# - roles are ordered: first role will be applied first.
-# - playbook are ordered: first playbook definition will be applied first.
 # 
 # further readings:
 # - https://stackoverflow.com/questions/45301295/ansible-task-serial-1-reverse-order
