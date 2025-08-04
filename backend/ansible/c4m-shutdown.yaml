@@ -1,1 +1,79 @@
 ---
+---
+# cloudia-4man (c4m) shutdown
+# 
+# inventory: defines configuration items (ci), or groups of configuration items (gci)
+# role: defines configuration tasks for a specific type of configuration item
+# playbook: maps roles to ci or cgi
+#
+# keep in mind:
+# - inventory is ordered: first hosts/groups are executed first.
+# - roles are ordered: first role will be applied first.
+# - playbook are ordered: first playbook definition will be applied first.
+# 
+# further readings:
+# - https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
+# - https://www.digitalocean.com/community/tutorials/how-to-use-ansible-roles-to-abstract-your-infrastructure-environment
+# - https://stackoverflow.com/questions/42386801/ansible-how-to-control-the-order-of-the-hosts-when-playbook-is-ran
+# - https://stackoverflow.com/questions/42506865/ansible-play-with-hosts-in-order-i-desire
+- name: Check cloudia-4man requirements
+  hosts: all
+  pre_tasks:
+    - name: Verify Ansible is version 2.11 or above. (If this fails you may need to update Ansible)
+      ansible.builtin.assert:
+        that: ansible_version.full is version_compare('2.11', '>=')
+        msg: >
+          "Ansible is out of date. See here for more info: https://docs.technotim.live/posts/ansible-automation/"
+
+- hosts: k3s_agents
+  become: true # run with sudo
+  # become_user: root -> run as root (default)
+  # ignore_errors: true
+  gather_facts: true
+  tasks:
+    - name: Shutdown K3s agents
+      ansible.builtin.include_role:
+        name: k3s_agent
+        tasks_from: shutdown.yaml
+    - name: Shutdown OS of K3s agents
+      ansible.builtin.include_role:
+        name: os_basic
+        tasks_from: shutdown.yaml
+
+- hosts: k3s_servers
+  become: true # run with sudo
+  # become_user: root -> run as root (default)
+  # ignore_errors: true
+  serial: 1
+  gather_facts: true
+  tasks:
+    - name: Shutdown K3s servers
+      ansible.builtin.include_role:
+        name: k3s_server
+        tasks_from: shutdown.yaml
+    - name: Shutdown OS of K3s servers
+      ansible.builtin.include_role:
+        name: os_basic
+        tasks_from: shutdown.yaml
+
+#- import_playbook: plain.yaml
+- hosts: plain_servers
+  gather_facts: true
+  # become: true # run with sudo
+  # become_user: root -> run as root (default)
+  # ignore_errors: true
+  tasks:
+    - name: Shutdown OS of plain_servers
+      ansible.builtin.include_role:
+        name: os_basic
+        tasks_from: shutdown.yaml
+
+#- import_playbook: zigbee2mqtt.yaml
+# - hosts: zigbee2mqtt_proxies
+# become: true # run with sudo
+# become_user: root -> run as root (default)
+# ignore_errors: true
+#  gather_facts: true
+#  roles:
+#    - { role: os_basic, tags: ["os_basic_only"] }
+#    - role: zigbee2mqtt_proxy
