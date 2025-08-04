@@ -254,13 +254,13 @@
     - ansible_facts.services['k3s.service'].state == 'running'
     - _k3s_service.changed or _k3s_config.changed or _k3s_binaries_installed.changed
   ansible.builtin.systemd:
-    name: k3s-server
+    name: k3s
     daemon_reload: true
     state: restarted
 - name: Enable and check K3s service
   when: not ansible_check_mode and (ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running')
   ansible.builtin.systemd:
-    name: k3s-server
+    name: k3s
     daemon_reload: true
     state: started
     enabled: true
