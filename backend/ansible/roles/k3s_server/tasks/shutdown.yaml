@@ -6,5 +6,5 @@
 
 - name: k3s_server:shutdown - stop k3s service
   ansible.builtin.systemd:
-    name: k3s-server
+    name: k3s
     state: stopped
