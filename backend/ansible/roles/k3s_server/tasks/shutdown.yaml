@@ -1,0 +1,8 @@
+---
+# based on:
+# - https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/backup_and_restore/graceful-shutdown-cluster
+- name: Kubernetes - mark unschedulable and drain node
+  ansible.builtin.command: kubectl drain {{ inventory_hostname_short }} --ignore-daemonsets --delete-emptydir-data --grace-period=30
+
+- name: Kubernetes - shutdown k3s service
+  
