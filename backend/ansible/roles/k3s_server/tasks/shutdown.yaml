@@ -4,5 +4,7 @@
 - name: Kubernetes - mark unschedulable and drain node
   ansible.builtin.command: kubectl drain {{ inventory_hostname_short }} --ignore-daemonsets --delete-emptydir-data --grace-period=30
 
-- name: Kubernetes - shutdown k3s service
-  
+- name: Kubernetes - stop k3s service
+  ansible.builtin.systemd:
+    name: k3s-server
+    state: stopped
