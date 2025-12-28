@@ -1,0 +1,9 @@
+---
+admin_tools:
+# Defaults for task 'Change keyboard layout'
+  k8sgpt:
+    version: 'none' # none: no installation needed; v0.4.27: version to be installed 
+  kubectl:
+    version: 'none' 
+  ansible:
+    version: 'none'

@@ -1,0 +1,64 @@
+---
+- name: 'Clean-up Netplan cloud-init configuration'
+  ansible.builtin.file:
+    path: /etc/netplan/50-cloud-init.yaml
+    state: absent
+  become: true
+  register: _os_basic_netplan
+
+- name: 'Create Netplan os_basic configuration'
+  ansible.builtin.template:
+    src: os-basic-netplan.yaml.j2
+    dest: /etc/netplan/10-os-basic-network.yaml
+    mode: "0600" # netplan wants 600
+  become: true
+  register: _os_basic_netplan
+
+- name: 'Apply netplan configuration'
+  when: _os_basic_netplan.changed
+  ansible.builtin.command: netplan apply
+  become: true
+
+# SYSTEM AND PACKAGE UPDATES
+# "sudo apt-get update -y",
+# "sudo apt-get upgrade -y",
+# "sudo apt-get dist-upgrade -y",
+# "sudo apt --fix-broken install -y",
+# further information:
+# - https://itsfoss.com/apt-get-linux-guide/
+# - https://adamtheautomator.com/ansible-apt/
+# proof needed:
+# sudo apt install unattended-upgrades
+# sudo dpkg-reconfigure unattended-upgrade
+- name: 'Upgrade the OS (apt-get dist-upgrade)'
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: yes
+  become: yes
+  register: _os_basic_upgrade
+
+- name: 'Restart the OS'
+  when: _os_basic_upgrade.changed
+  ansible.builtin.include_role:
+    name: c4m_commons
+    tasks_from: os_restart_and_wait
+
+- name: 'Install (or remove) default packages'
+  ansible.builtin.apt:
+    update_cache: yes
+    autoremove: yes
+    state: present
+    pkg:
+      - curl
+      - vim
+  become: yes
+
+- name: 'Update all packages to latest versions'
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+    autoremove: yes
+  become: yes
+
+# apt-get clean: clean up disk space - https://www.tecmint.com/useful-basic-commands-of-apt-get-and-apt-cache-for-package-management/
