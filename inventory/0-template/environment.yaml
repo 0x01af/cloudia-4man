@@ -10,6 +10,9 @@ plain_servers:
 # - for each k3s cluster create a group named by cluster-name, and add related servers as children of their corresponding role
 k3s_cluster:
   children:
+    admin_nodes:
+       hosts:
+         localhost:
     k3s_servers:
       hosts:
         <server1>:
