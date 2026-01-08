@@ -9,7 +9,7 @@ k3s:
   # K3s release
   version: "v1.32.3+k3s1"
   # K3s server token
-  token: "k3s_cluster1"
+  token: "k3s_cluster.token"
   api:
     loadbalancer: "kube-vip" # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
     endpoint: "api.k3s_cluster.fqdn" # if loadbalancer = "none", than first server in environment will be used.
