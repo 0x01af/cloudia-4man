@@ -18,18 +18,22 @@ spec:
         entryPoints: 
           - websecure
         # Add custom middlewares : ipallowlist and redirection
-        middlewares:
-          - name: traefik-dashboard-ipallowlist
+        # middlewares:
+        #  - name: traefik-dashboard-ipallowlist
+    
+    providers:
+      kubernetesGateway:
+        enabled: true
     
     extraObjects:
-      - apiVersion: traefik.io/v1alpha1
-        kind: Middleware
-        metadata:
-          name: traefik-dashboard-ipallowlist
-          namespace: kube-system
-        spec:
-          ipAllowList:
-            sourceRange:
-              {% for item in k3s.ingress.traefik.dashboard.ipallowlist %}
-              - {{ item }}
-              {% endfor %}
+      # - apiVersion: traefik.io/v1alpha1
+      #  kind: Middleware
+      #  metadata:
+      #    name: traefik-dashboard-ipallowlist
+      #    namespace: kube-system
+      #  spec:
+      #    ipAllowList:
+      #      sourceRange:
+      #        {% for item in k3s.ingress.traefik.dashboard.ipallowlist %}
+      #        - {{ item }}
+      #        {% endfor %}
