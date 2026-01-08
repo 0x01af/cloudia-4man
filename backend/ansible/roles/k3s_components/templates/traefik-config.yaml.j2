@@ -14,18 +14,13 @@ spec:
       dashboard:
         enabled: true
         # Custom match rule with host domain
-        matchRule: Host(`{{ k3s.ingress.traefik.dashboard.fqdn }}`) && PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+        matchRule: Host(`{{ k3s.ingress.traefik.dashboard.fqdn }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
         entryPoints: 
           - websecure
         # Add custom middlewares : ipallowlist and redirection
         # middlewares:
         #  - name: traefik-dashboard-ipallowlist
-    
-    providers:
-      kubernetesGateway:
-        enabled: true
-    
-    extraObjects:
+      # extraObjects:
       # - apiVersion: traefik.io/v1alpha1
       #  kind: Middleware
       #  metadata:
@@ -34,6 +29,6 @@ spec:
       #  spec:
       #    ipAllowList:
       #      sourceRange:
-      #        {% for item in k3s.ingress.traefik.dashboard.ipallowlist %}
-      #        - {{ item }}
-      #        {% endfor %}
+      #        % for item in k3s.ingress.traefik.dashboard.ipallowlist %
+      #        -  item 
+      #        % endfor %
