@@ -1,0 +1,35 @@
+# based on:
+# - https://doc.traefik.io/traefik/setup/kubernetes/
+# - https://docs.k3s.io/add-ons/helm#customizing-packaged-components-with-helmchartconfig
+# - https://github.com/k3s-io/k3s-charts/blob/main/charts/traefik/37.1.1%2Bup37.1.0/values.yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    # Create an IngressRoute for the dashboard
+    ingressRoute:
+      dashboard:
+        enabled: true
+        # Custom match rule with host domain
+        matchRule: Host(`{{ k3s.ingress.traefik.dashboard.fqdn }}`) && PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+        entryPoints: 
+          - websecure
+        # Add custom middlewares : ipallowlist and redirection
+        middlewares:
+          - name: traefik-dashboard-ipallowlist
+    
+    extraObjects:
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: traefik-dashboard-ipallowlist
+          namespace: traefik
+        spec:
+          ipAllowList:
+            sourceRange:
+              {% for item in k3s.ingress.traefik.dashboard.ipallowlist %}
+              - {{ item }}
+              {% endfor %}

@@ -161,6 +161,11 @@
         name: k3s_components
         tasks_from: nginx
       when: k3s.ingress.controller == 'nginx'
+    - name: Configure prerequistes for K3s ingress controller traefik
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: traefik
+      when: k3s.ingress.controller == 'traefik'
     - name: Configure prerequistes for K3s loadbalancer kube-vip
       ansible.builtin.include_role:
         name: k3s_components

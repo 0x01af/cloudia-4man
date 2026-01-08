@@ -6,28 +6,13 @@
 # change sudoers
 # sudo: ALL=(ALL) NOPASSWD:ALL
 
-
 - name: "tool kubectl"
   when: admin_tools.kubectl.version != 'none'
-    - name: "downloading binaries"
-      ansible.builtin.get_url:
-        url: "https://dl.k8s.io/release/{{ admin_tools.kubectl.version }}/bin/linux/amd64/kubectl"
-        dest: "/tmp/kubectl/"
-    - name: "installing binaries"
-      ansible.builtin.command:
-        cmd: "install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl"
-      args:
-        chdir: "/tmp/kubectl"
-      become: true
-    - name: "configuring kubectl - autocomplete"
-      ansible.builtin.lineinfile:
-        path: "~/.bashrc"
-        regexp: '\.\s+<\(kubectl completion bash\)'
-        line: ". <(kubectl completion bash)  # Added by k3s-ansible"
-      delegate_to: localhost
+  import_tasks: admin_node_tools_kubectl.yaml
 
 - name: "tool k8sgpt"
   when: admin_tools.k8sgpt.version != 'none'
+  block:
     - name: "downloading binaries"
       ansible.builtin.get_url:
         url: "https://github.com/k8sgpt-ai/k8sgpt/releases/download/{{ admin_tools.k8sgpt.version }}/k8sgpt_Linux_x86_64.tar.gz"

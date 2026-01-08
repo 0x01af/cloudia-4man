@@ -1,0 +1,28 @@
+---
+# k3s_components:traefik:tasks
+# based on: 
+#
+- name: If K3s manifest folder does not exist, create K3s manifest folder
+  ansible.builtin.file:
+    path: "/var/lib/rancher/k3s/server/manifests"
+    state: directory
+    mode: "0755"
+
+### Prepare configuration to use traefik for ingress controller
+# CONDITION: Environment defines the usage of nginx for ingress controller
+- name: Prepare configuration to use nginx for ingress controller
+  when: k3s.ingress.controller == 'traefik'
+  become: yes
+  block:
+    - name: Ensure default configuration of K3s ingress controller traefik
+      ansible.builtin.file:
+        path: "/var/lib/rancher/k3s/server/manifests/traefik.yaml.skip"
+        state: absent
+    - name: Configure Traefik Dashboard and API entrypoints
+      ansible.builtin.template:
+        src: "traefik-config.yaml.j2"
+        dest: "/var/lib/rancher/k3s/server/manifests/traefik-config.yaml"
+        mode: "0644"
+    # - name: Configure firewalls for K3s ingress controller nginx
+    # allow tcp/8443 between all K3s nodes
+      
