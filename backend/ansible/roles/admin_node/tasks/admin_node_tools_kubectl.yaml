@@ -16,5 +16,8 @@
     line: ". <(kubectl completion bash)  # Added by k3s-ansible"
 - name: "configuring kubectl - get kubeconfig"
   block:
-    - name:
+    - name: "Test"
+      ansible.builtin.file:
+        path: "~/test-{{ groups['k3s_servers'][0] }}"
+        state: touch
       delegate_to: "{{ groups['k3s_servers'][0] }}"
