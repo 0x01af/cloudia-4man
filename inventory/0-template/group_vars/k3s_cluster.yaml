@@ -1,14 +1,18 @@
 ---
+# Configuratoin of K3s Cluster <k3s_cluster1 - admin_nodes>
+admin_tools:
+  kubectl:
+    version: "v1.35.0"
 
 # Configuration of K3s Cluster <k3s_cluster1>
 k3s:
   # K3s release
-  version: v1.32.3+k3s1
+  version: "v1.32.3+k3s1"
   # K3s server token
   token: "k3s_cluster1"
   api:
     loadbalancer: "kube-vip" # none | external | kube-vip (if kube-vip, please define parameters under section "loadbalancer")
-    endpoint: "k3s-cluster1.mesh.local" # if loadbalancer = "none", than first server in environment will be used.
+    endpoint: "api.k3s_cluster.fqdn" # if loadbalancer = "none", than first server in environment will be used.
     vip: "192.168.1.10"
     # port: "6443" # if changed, please be aware about possible incompatiblities by other K8s components/operators and so on.
   # Networking:
@@ -33,18 +37,25 @@ k3s:
       data_path: /opt/local-path-provisioner
     longhorn:
       # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
-      version: v1.9.0
+      # version: "v1.9.0"
       data_path: /var/lib/longhorn
   ingress:
     # An ingress controller routes traffic based on requested URI to the right pod/container.
     # K3s default: traefik
-    # Recommandation: use NGINX as ingress and reverse-proxy with OWASP
+    # Recommendation: use traefik and nginx-waf as sidecar (bc nginx-ingress-controller isn't supported anymore since March 2026)
     # Read more:
     # - https://kubernetes.github.io/ingress-nginx/user-guide/third-party-addons/modsecurity/)
     # - https://blog.opensight.ch/zerotrust-kubernetes-nginx-ingress-hardening-mit-mod_security-waf-und-owasp-crs/
     controller: "nginx" # nginx | traefik
     nginx:
-      version: v0.0.0
+      # version: "v0.0.0"
+    traefik:
+      # version: "v0.0.0"
+      dashboard:
+        fqdn: "traefik.k3s_cluster.fqdn"
+        ipallowlist:
+          - "192.168.123.0/25"
+          - "2a02:169:67f5:1af::/64"
   loadbalancer:
     # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
     # K3s default: servicelb
