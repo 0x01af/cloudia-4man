@@ -49,3 +49,17 @@
       community.general.modprobe:
         name: iscsi_tcp
         state: present
+    # Solution: Multipath Error
+    # - https://longhorn.io/kb/troubleshooting-volume-with-multipath/
+    # - https://www.youtube.com/watch?v=-ImtLXcEna8
+    - name: Stop and disable service Multipath
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: stopped
+        enabled: false
+      loop:
+        - multipathd
+        - multipathd.socket
+
+
+
