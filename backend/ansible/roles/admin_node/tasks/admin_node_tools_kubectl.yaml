@@ -1,4 +1,8 @@
 ---
+- name: "prepare environment"
+  ansible.builtin.file:
+    path: "/tmp/kubectl"
+    state: directory
 - name: "downloading binaries"
   ansible.builtin.get_url:
     url: "https://dl.k8s.io/release/{{ admin_tools.kubectl.version }}/bin/linux/amd64/kubectl"
