@@ -45,10 +45,15 @@
           - device-mapper
         state: present
         update_cache: yes
-    - name: Load module iscsi_tcp
+    # Solution: Kernel modules not loaded
+    # - https://philprime.dev/guides/building-a-production-ready-kubernetes-cluster-from-scratch/lesson-17.html
+    - name: Load module dm_crypt and iscsi_tcp
       community.general.modprobe:
-        name: iscsi_tcp
+        name: "{{ item }}"
         state: present
+      loop:
+        - dm_crypt
+        - iscsi_tcp
     # Solution: Multipath Error
     # - https://longhorn.io/kb/troubleshooting-volume-with-multipath/
     # - https://www.youtube.com/watch?v=-ImtLXcEna8
