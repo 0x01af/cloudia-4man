@@ -17,6 +17,9 @@ spec:
         enabled: true
         allowCrossNamespace: true
     ###
+    api:
+      dashboard: true
+    ###
     ingressRoute:
       ### Create an IngressRoute for the dashboard
       dashboard:
@@ -44,7 +47,7 @@ spec:
         spec:
           redirectRegex:
             regex: "^http://(.*)"
-            replacement: "https://$1"
+            replacement: "https://${1}/"
             permanent: true
       - apiVersion: traefik.io/v1alpha1
         kind: Middleware
@@ -54,7 +57,7 @@ spec:
         spec:
           redirectRegex:
             regex: "^http://(.*)"
-            replacement: "https://$1"
+            replacement: "https://${1}/"
             permanent: false
       ### ISSUE: Doesn't work, because of load balancing (source ip is cluster internal lb address)
       # - apiVersion: traefik.io/v1alpha1
