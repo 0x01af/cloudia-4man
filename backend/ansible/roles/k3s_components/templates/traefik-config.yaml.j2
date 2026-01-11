@@ -25,45 +25,46 @@ spec:
         matchRule: Host(`{{ k3s.ingress.traefik.dashboard.fqdn }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
         entryPoints: 
           - websecure
+          - web
         # Add custom middlewares : redirection
         middlewares:
-        - name: redirect-to-https
-          namespace: traefik
+          - name: redirect-to-https
+            namespace: traefik
       ### Pre-configure typical Middleware definitions in namespace "traefik"
     extraObjects:
-    - apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: traefik
-    - apiVersion: traefik.io/v1alpha1
-      kind: Middleware
-      metadata:
-        name: redirect-to-https
-        namespace: traefik
-      spec:
-        redirectRegex:
-          regex: "^http://(.*)"
-          replacement: "https://$1"
-          permanent: true
-    - apiVersion: traefik.io/v1alpha1
-      kind: Middleware
-      metadata:
-        name: redirect-to-https-staging
-        namespace: traefik
-      spec:
-        redirectRegex:
-          regex: "^http://(.*)"
-          replacement: "https://$1"
-          permanent: false
-    ### ISSUE: Doesn't work, because of load balancing (source ip is cluster internal lb address)
-    # - apiVersion: traefik.io/v1alpha1
-    #  kind: Middleware
-    #  metadata:
-    #    name: traefik-dashboard-ipallowlist
-    #    namespace: kube-system
-    #  spec:
-    #    ipAllowList:
-    #      sourceRange:
-    #        % for item in k3s.ingress.traefik.dashboard.ipallowlist %
-    #        -  item 
-    #        % endfor %
+      - apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: traefik
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: redirect-to-https
+          namespace: traefik
+        spec:
+          redirectRegex:
+            regex: "^http://(.*)"
+            replacement: "https://$1"
+            permanent: true
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: redirect-to-https-staging
+          namespace: traefik
+        spec:
+          redirectRegex:
+            regex: "^http://(.*)"
+            replacement: "https://$1"
+            permanent: false
+      ### ISSUE: Doesn't work, because of load balancing (source ip is cluster internal lb address)
+      # - apiVersion: traefik.io/v1alpha1
+      #  kind: Middleware
+      #  metadata:
+      #    name: traefik-dashboard-ipallowlist
+      #    namespace: kube-system
+      #  spec:
+      #    ipAllowList:
+      #      sourceRange:
+      #        % for item in k3s.ingress.traefik.dashboard.ipallowlist %
+      #        -  item 
+      #        % endfor 
