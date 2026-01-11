@@ -1,9 +1,0 @@
----
-admin_tools:
-# none: no installation needed; v0.4.27: version to be installed 
-  k8sgpt:
-    version: 'none'
-  kubectl:
-    version: 'none' 
-  ansible:
-    version: 'none'
