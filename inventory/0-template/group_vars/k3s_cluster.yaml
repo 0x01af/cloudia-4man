@@ -1,9 +1,4 @@
 ---
-# Configuratoin of K3s Cluster <k3s_cluster1 - admin_nodes>
-admin_tools:
-  kubectl:
-    version: "v1.35.0"
-
 # Configuration of K3s Cluster <k3s_cluster1>
 k3s:
   # K3s release
