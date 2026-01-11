@@ -1,0 +1,10 @@
+---
+# Configuration of all admin_nodes
+# - none: no installation needed; v0.4.27: version to be installed 
+admin_tools:
+  kubectl:
+    version: "v1.35.0"
+  k8sgpt:
+    version: 'none'
+  ansible:
+    version: 'none'
