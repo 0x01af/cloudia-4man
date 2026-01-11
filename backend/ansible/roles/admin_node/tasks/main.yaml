@@ -7,11 +7,11 @@
 # sudo: ALL=(ALL) NOPASSWD:ALL
 
 - name: "tool kubectl"
-  when: admin_tools.kubectl.version != 'none'
+  when: admin_tools.kubectl.version is defined and admin_tools.kubectl.version != 'none'
   import_tasks: admin_node_tools_kubectl.yaml
 
 - name: "tool k8sgpt"
-  when: admin_tools.k8sgpt.version != 'none'
+  when: admin_tools.k8sgpt.version is defined and admin_tools.k8sgpt.version != 'none'
   block:
     - name: "downloading binaries"
       ansible.builtin.get_url:
