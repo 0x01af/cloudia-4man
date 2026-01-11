@@ -2,6 +2,8 @@
 # - https://doc.traefik.io/traefik/setup/kubernetes/
 # - https://docs.k3s.io/add-ons/helm#customizing-packaged-components-with-helmchartconfig
 # - https://github.com/k3s-io/k3s-charts/blob/main/charts/traefik/37.1.1%2Bup37.1.0/values.yaml
+# - https://devopsx.com/traefik-ingress-redirect-http-to-https/
+---
 apiVersion: helm.cattle.io/v1
 kind: HelmChartConfig
 metadata:
@@ -9,18 +11,47 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
-    # Create an IngressRoute for the dashboard
+    ### Allow cross-namespace usage for the Middleware definitions in namespace "traefik" (https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/middleware/
+    providers:
+      kubernetesCRD:
+        enabled: true
+        allowCrossNamespace: true
+    ###
     ingressRoute:
+      ### Create an IngressRoute for the dashboard
       dashboard:
         enabled: true
         # Custom match rule with host domain
         matchRule: Host(`{{ k3s.ingress.traefik.dashboard.fqdn }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
         entryPoints: 
           - websecure
-        # Add custom middlewares : ipallowlist and redirection
-        # middlewares:
-        #  - name: traefik-dashboard-ipallowlist
-      # extraObjects:
+        # Add custom middlewares : redirection
+        middlewares:
+        - name: redirect-to-https
+          namespace: traefik
+      ### Pre-configure typical Middleware definitions in namespace "traefik"
+      extraObjects:
+      -  apiVersion: traefik.io/v1alpha1
+         kind: Middleware
+         metadata:
+           name: redirect-to-https
+           namespace: traefik
+         spec:
+           redirectRegex:
+             regex: "^http://(.*)"
+             replacement: "https://$1"
+             permanent: true
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+          name: redirect-to-https-staging
+          namespace: traefik
+        spec:
+          redirectRegex:
+            regex: "^http://(.*)"
+            replacement: "https://$1"
+            permanent: false
+      ### ISSUE: Doesn't work, because of load balancing (source ip is cluster internal lb address)
       # - apiVersion: traefik.io/v1alpha1
       #  kind: Middleware
       #  metadata:
