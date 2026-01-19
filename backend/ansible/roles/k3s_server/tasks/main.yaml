@@ -133,44 +133,43 @@
       when: not ansible_check_mode
       register: _k3s_binaries_installed
 
-### Configure all prerequisites of K3s components
-# CONDITION: This block should only be executed if no K3s has been installed yet.
+### Configure all node-level prerequisites of K3s components
 # mkdir -p /var/lib/rancher/k3s/server/manifests/
 # https://docs.k3s.io/installation/packaged-components#auto-deploying-manifests-addons
 - name: Configure all prerequisites of K3s components
   # become_user: root -> run as root (default)
   # ignore_errors: true
   block:
-    - name: Configure prerequistes for K3s network flannel
-      ansible.builtin.include_role:
-        name: k3s_components
-        tasks_from: flannel
+    - name: Configure prerequisites for K3s network flannel
       when: k3s.networking.addon == 'flannel'
-    - name: Configure prerequistes for K3s storage local-path-provisioner
       ansible.builtin.include_role:
         name: k3s_components
-        tasks_from: local-path-provisioner
+        tasks_from: flannel_node-level
+    - name: Configure prerequisites for K3s storage local-path-provisioner
       when: "'local' in (k3s.storage.provisioners | default([]))"
-    - name: Configure prerequistes for K3s storage longhorn
       ansible.builtin.include_role:
         name: k3s_components
-        tasks_from: longhorn
+        tasks_from: local-path-provisioner_node-level
+    - name: Configure prerequisites for K3s storage longhorn
       when: "'longhorn' in (k3s.storage.provisioners | default([]))"
-    - name: Configure prerequistes for K3s ingress controller nginx
       ansible.builtin.include_role:
         name: k3s_components
-        tasks_from: nginx
+        tasks_from: longhorn_node-level
+    - name: Configure prerequisites for K3s ingress controller nginx
       when: k3s.ingress.controller == 'nginx'
-    - name: Configure prerequistes for K3s ingress controller traefik
       ansible.builtin.include_role:
         name: k3s_components
-        tasks_from: traefik
+        tasks_from: nginx_node-level
+    - name: Configure prerequisites for K3s ingress controller traefik
       when: k3s.ingress.controller == 'traefik'
-    - name: Configure prerequistes for K3s loadbalancer kube-vip
       ansible.builtin.include_role:
         name: k3s_components
-        tasks_from: kube-vip
+        tasks_from: traefik_node-level
+    - name: Configure prerequisites for K3s loadbalancer kube-vip
       when: k3s.api.loadbalancer == 'kube-vip' or k3s.loadbalancer.addon == 'kube-vip'
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: kube-vip_node-level
 
 ### Configure K3s server
 # Configuration:
