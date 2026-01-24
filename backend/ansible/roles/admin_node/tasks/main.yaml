@@ -28,13 +28,3 @@
         dest: "/usr/local/bin/k8sgpt"
       become: true
   # Original Source: https://github.com/k8sgpt-ai/k8sgpt/releases/download/v0.4.27/k8sgpt_Linux_x86_64.tar.gz
-
-
-- name: 'admin_node tasks for Debian OS family (Debian/Ubuntu)'
-  import_tasks: admin_node_family_debian.yaml
-  when: ansible_os_family|lower == 'debian'
-
-# - name: 'os_basic tasks for Red Hat OS family (RHEL/CentOS)'
-#  import_tasks: os_basic_redhat.yaml
-#  when: ansible_os_family|lower == 'redhat'
-
