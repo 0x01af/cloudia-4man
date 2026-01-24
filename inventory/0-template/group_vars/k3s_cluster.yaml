@@ -67,4 +67,11 @@ k3s:
       api_iface: "enp0s0"
     # metallb:
     #  lb_range: "192.168.123.130-192.168.123.139"
-      
+
+k8s_apps:
+  kubernetes-reflector:
+    version: "none"
+  # app_name:
+  #  version: version
+  #  params:
+  #    x: y
