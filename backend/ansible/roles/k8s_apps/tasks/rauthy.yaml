@@ -10,3 +10,6 @@
 - name: "deploy rauthy-app"
   kubernetes.core.k8s:
     state: present
+    template:
+      - path: 'rauthy-app-service.yaml.j2'
+      - path: 'file2.j2'
