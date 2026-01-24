@@ -1,1 +1,31 @@
 ---
+- name: Configure prerequisites for K3s network flannel
+  when: k3s.networking.addon == 'flannel'
+    ansible.builtin.include_role:
+       name: k3s_components
+        tasks_from: flannel_node-level
+    - name: Configure prerequisites for K3s storage local-path-provisioner
+      when: "'local' in (k3s.storage.provisioners | default([]))"
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: local-path-provisioner_node-level
+    - name: Configure prerequisites for K3s storage longhorn
+      when: "'longhorn' in (k3s.storage.provisioners | default([]))"
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: longhorn_node-level
+    - name: Configure prerequisites for K3s ingress controller nginx
+      when: k3s.ingress.controller == 'nginx'
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: nginx_node-level
+    - name: Configure prerequisites for K3s ingress controller traefik
+      when: k3s.ingress.controller == 'traefik'
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: traefik_node-level
+    - name: Configure prerequisites for K3s loadbalancer kube-vip
+      when: k3s.api.loadbalancer == 'kube-vip' or k3s.loadbalancer.addon == 'kube-vip'
+      ansible.builtin.include_role:
+        name: k3s_components
+        tasks_from: kube-vip_node-level
