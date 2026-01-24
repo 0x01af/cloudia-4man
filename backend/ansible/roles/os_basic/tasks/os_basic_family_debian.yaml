@@ -1,5 +1,5 @@
 ---
-- block: "Network configuration (if ansible-managed)"
+- block: 'Network configuration (if ansible-managed)'
   when: os_network is defined
   - name: 'Clean-up Netplan cloud-init configuration'
     ansible.builtin.file:
