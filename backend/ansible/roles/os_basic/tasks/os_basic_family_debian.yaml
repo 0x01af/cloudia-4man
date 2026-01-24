@@ -1,6 +1,6 @@
 ---
 - block: "Network configuration (if ansible-managed)"
-  when: os_basic.network is defined
+  when: os_network is defined
   - name: 'Clean-up Netplan cloud-init configuration'
     ansible.builtin.file:
       path: /etc/netplan/50-cloud-init.yaml
