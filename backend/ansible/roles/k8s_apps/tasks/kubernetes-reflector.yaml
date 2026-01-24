@@ -1,0 +1,13 @@
+---
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+- name: "deploy app"
+  kubernetes.core.k8s:
+    state: present
+    src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ k8s_apps.kubernetes-reflector.version }}/reflector.yaml"
