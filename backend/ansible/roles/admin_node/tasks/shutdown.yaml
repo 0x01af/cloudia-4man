@@ -1,3 +1,0 @@
----
-- name: os_basic:shutdown - shutdown system
-  community.general.shutdown:
