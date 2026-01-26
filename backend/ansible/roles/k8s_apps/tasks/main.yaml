@@ -1,4 +1,4 @@
 ---
 - name: "k8s_app kubernetes-reflector"
-  when: k8s_app.kubernetes-reflector is defined and k8s_app.kubernetes-reflector.version is defined and k8s_app.kubernetes-reflector.version != 'none'
+  when: k8s_apps.kubernetes-reflector is defined and k8s_apps.kubernetes-reflector.version is defined and k8s_apps.kubernetes-reflector.version != 'none'
   import_tasks: kubernetes-reflector.yaml
