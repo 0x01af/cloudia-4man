@@ -1,8 +1,9 @@
 ---
-- name: "Assert that overall defaults of role has been set."
+- name: "Assert that the general default parameters for the role have been defined."
   ansible.builtin.assert:
     that:
       - k8s_apps is not none
+    fail_msg: "role k8s_apps: general default parameters are not defined!"
 
 - name: "k8s_app kubernetes-reflector"
   when: k8s_apps.kubernetes-reflector is defined and k8s_apps.kubernetes-reflector.version is defined and k8s_apps.kubernetes-reflector.version != 'none'
