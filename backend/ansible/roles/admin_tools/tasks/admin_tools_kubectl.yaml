@@ -18,17 +18,16 @@
     path: "~/.bashrc"
     regexp: '\.\s+<\(kubectl completion bash\)'
     line: ". <(kubectl completion bash)  # Added by k3s-ansible"
-- name: "configuring kubectl - get kubeconfig"
-  block:
-    - name: "Test"
-      ansible.builtin.file:
-        path: "~/test-{{ groups['k3s_servers'][0] }}"
-        state: touch
-      delegate_to: "{{ groups['k3s_servers'][0] }}"
+# - name: "configuring kubectl - get kubeconfig"
+- name: "Test"
+  ansible.builtin.file:
+    path: "~/test-{{ groups['k3s_servers'][0] }}"
+    state: touch
+  delegate_to: "{{ groups['k3s_servers'][0] }}"
 
- - name: Inform user about KUBECONFIG environment variable
-   ansible.builtin.debug:
-     msg: |
+- name: Inform user about KUBECONFIG environment variable
+  ansible.builtin.debug:
+   msg: |
        K3s Cluster and Kubeconfig has been set up.\n
        -------------------------------------------\n
         Please install kubectl for managing your K3s cluster:\n
