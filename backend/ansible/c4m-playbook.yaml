@@ -26,13 +26,13 @@
     - name: Validate all collections from requirements.yml
       vars:
         # Load and parse the requirements file
-        requirements_file: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
+        _requirements_file: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
       ansible.builtin.assert:
         that:
-          - "{{ item.name }} in ansible_collection_list"
-        fail_msg: "Collection {{ item.name }} is missing! Run 'ansible-galaxy collection install -r requirements.yml'."
+          - "item.name in ansible_collection_list"
+        fail_msg: "Collection {{ item.name }} is missing! Run 'ansible-galaxy collection install -r requirements.yaml'."
         success_msg: "Verified: {{ item.name }} is installed."
-      loop: "{{ requirements_file.collections }}"
+      loop: "{{ _requirements_file.collections }}"
       loop_control:
         label: "{{ item.name }}"
    
