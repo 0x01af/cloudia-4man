@@ -69,7 +69,7 @@ k3s:
     #  lb_range: "192.168.123.130-192.168.123.139"
 
 k8s_apps:
-  kubernetes-reflector:
+  kubernetes_reflector:
     version: "none"
   # app_name:
   #  version: version
