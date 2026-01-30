@@ -10,4 +10,4 @@
 - name: 'deploy app'
   kubernetes.core.k8s:
     state: present
-    src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ k8s_apps.kubernetes-reflector.version }}/reflector.yaml"
+    src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ k8s_apps.kubernetes_reflector.version }}/reflector.yaml"
