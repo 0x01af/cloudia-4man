@@ -6,5 +6,5 @@
     fail_msg: "role k8s_apps: general default parameters are not defined!"
 
 - name: "k8s_app kubernetes-reflector"
-  when: k8s_apps.kubernetes-reflector is defined and k8s_apps.kubernetes-reflector.version is defined and k8s_apps.kubernetes-reflector.version != 'none'
+  when: k8s_apps.kubernetes_reflector is defined and k8s_apps.kubernetes_reflector.version is defined and k8s_apps.kubernetes_reflector.version != 'none'
   import_tasks: kubernetes-reflector.yaml
