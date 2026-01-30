@@ -15,7 +15,8 @@ C4M_CONFIG = {
 
 # Checking prerequisite
 # - ansible: if not existing, should it install it
-
+# - ansible collections: ensure, all required collections are installed
+ansible-galaxy collection install -r backend/ansible/requirements.yaml
 
 ## Main Functions
 # Provision: Neues Gerät / Software installieren -> updates inventory
