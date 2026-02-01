@@ -52,6 +52,7 @@
     pkg:
       - curl
       - vim
+      - python3
   become: yes
 
 - name: 'Update all packages to latest versions'
