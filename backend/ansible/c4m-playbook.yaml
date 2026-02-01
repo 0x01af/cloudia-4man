@@ -39,7 +39,8 @@
       loop_control:
         label: "{{ item.name }}"
     - name: "Python Packages: Gather python package facts"
-      ansible.builtin.pip_package_info:
+      community.general.pip_package_info:
+        clients: ['pip3']
       register: _pip_packages
     - debug:
         var: _pip_packages.packages.keys() | list
