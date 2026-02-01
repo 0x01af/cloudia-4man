@@ -32,8 +32,7 @@
         # Load and parse the requirements file
         _requirements_file: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
       ansible.builtin.assert:
-        # that: item.name in _ansible_installed_collections.stdout
-        that: "lookup('plugin_info', 'collection', item.name) is not none"
+        that: item.name in _ansible_installed_collections.stdout
         fail_msg: "Collection {{ item.name }} is missing! Run 'ansible-galaxy collection install -r requirements.yaml'."
         success_msg: "Verified: {{ item.name }} is installed."
       loop: "{{ _requirements_file.collections }}"
