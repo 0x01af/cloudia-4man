@@ -38,7 +38,11 @@
       loop: "{{ _requirements_file.collections }}"
       loop_control:
         label: "{{ item.name }}"
-   
+    - name: Ensure kubernetes python library is installed
+      ansible.builtin.pip:
+        name: kubernetes
+        executable: pip3
+      become: true
 
 #- import_playbook: plain.yaml
 - hosts: plain_servers
