@@ -42,6 +42,8 @@
       ansible.builtin.pip_package_info:
         clients: ['pip3']
       register: _pip_packages
+    - debug:
+        var: _pip_packages.packages.keys() | list
     - name: "Python Packages: Validate all needed python packages"
       ansible.builtin.assert:
         that: "item in _pip_packages.packages.keys()"
