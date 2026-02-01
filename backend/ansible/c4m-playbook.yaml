@@ -41,7 +41,7 @@
     - name: "Python Packages: Gather python package facts"
       community.general.pip_package_info:
         clients: ['pip3']
-      register: _pip_packages
+      register: _pip_packages.packages.pip3.keys() | list
     - debug:
         var: _pip_packages
     - name: "Python Packages: Validate all needed python packages"
