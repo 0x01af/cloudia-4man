@@ -16,23 +16,24 @@
 # - https://stackoverflow.com/questions/42386801/ansible-how-to-control-the-order-of-the-hosts-when-playbook-is-ran
 # - https://stackoverflow.com/questions/42506865/ansible-play-with-hosts-in-order-i-desire
 - name: Check cloudia-4man requirements
-  hosts: localhost
+  hosts: admin_nodes
   pre_tasks:
-    - name: Verify Ansible is version 2.13 or above. (If this fails you may need to update Ansible)
+    - name: "Ansible: Verify Ansible is version 2.13 or above. (If this fails you may need to update Ansible)"
       ansible.builtin.assert:
         that: ansible_version.full is version_compare('2.13', '>=')
         msg: >
           "Ansible is out of date. See here for more info: https://docs.technotim.live/posts/ansible-automation/"
-    - name: Get installed collections
+    - name: "Ansible Collections: Get installed collections"
       ansible.builtin.command: ansible-galaxy collection list
       register: _ansible_installed_collections
       changed_when: false
-    - name: Validate all collections from requirements.yml
+    - name: "Ansible Collections: Validate all collections from requirements.yml"
       vars:
         # Load and parse the requirements file
         _requirements_file: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
       ansible.builtin.assert:
-        that: item.name in _ansible_installed_collections
+        # that: item.name in _ansible_installed_collections.stdout
+        that: "lookup('plugin_info', 'collection', item.name) is not none"
         fail_msg: "Collection {{ item.name }} is missing! Run 'ansible-galaxy collection install -r requirements.yaml'."
         success_msg: "Verified: {{ item.name }} is installed."
       loop: "{{ _requirements_file.collections }}"
