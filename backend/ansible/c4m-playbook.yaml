@@ -38,11 +38,16 @@
       loop: "{{ _requirements_file.collections }}"
       loop_control:
         label: "{{ item.name }}"
-    - name: Ensure kubernetes python library is installed
-      ansible.builtin.pip:
-        name: kubernetes
-        executable: pip3
-      become: true
+    - name: "Python Packages: Gather python package facts"
+      ansible.builtin.pip_package_info:
+      register: _pip_packages
+    - name: "Python Packages: Validate all needed python packages"
+      ansible.builtin.assert:
+        that: item in _pip_packages.packages
+        fail_msg: "Python library '{{ item }}' not found in pip packages! Run 'pip3 install {{ item }}'"
+        success_msg: "Verified: {{ item }} is installed."
+      loop:
+        - kubernetes
 
 #- import_playbook: plain.yaml
 - hosts: plain_servers
