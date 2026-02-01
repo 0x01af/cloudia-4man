@@ -20,7 +20,7 @@
   pre_tasks:
     - name: "Ansible: Verify Ansible is version 2.13 or above. (If this fails you may need to update Ansible)"
       ansible.builtin.assert:
-        that: ansible_version.full is version_compare('2.13', '>=')
+        that: "ansible_version.full is version_compare('2.13', '>=')"
         msg: >
           "Ansible is out of date. See here for more info: https://docs.technotim.live/posts/ansible-automation/"
     - name: "Ansible Collections: Get installed collections"
@@ -32,7 +32,7 @@
         # Load and parse the requirements file
         _requirements_file: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
       ansible.builtin.assert:
-        that: item.name in _ansible_installed_collections.stdout
+        that: "item.name in _ansible_installed_collections.stdout"
         fail_msg: "Collection {{ item.name }} is missing! Run 'ansible-galaxy collection install -r requirements.yaml'."
         success_msg: "Verified: {{ item.name }} is installed."
       loop: "{{ _requirements_file.collections }}"
@@ -40,10 +40,11 @@
         label: "{{ item.name }}"
     - name: "Python Packages: Gather python package facts"
       ansible.builtin.pip_package_info:
+        clients: ['pip3']
       register: _pip_packages
     - name: "Python Packages: Validate all needed python packages"
       ansible.builtin.assert:
-        that: item in _pip_packages.packages
+        that: "item in _pip_packages.packages.keys()"
         fail_msg: "Python library '{{ item }}' not found in pip packages! Run 'pip3 install {{ item }}'"
         success_msg: "Verified: {{ item }} is installed."
       loop:
