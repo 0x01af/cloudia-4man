@@ -1,3 +1,34 @@
 ---
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+- name: 'deploy app'
+  kubernetes.core.k8s:
+    state: present
+    src: "https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.storage.longhorn.version }}/deploy/longhorn.yaml"
 
-https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.longhorn.version }}/deploy/longhorn.yaml
+# Define Longhorn UI Admin Credentials
+read -p 'Enter Longhorn UI Admin username:' user
+read -sp 'Enter Longhorn UI Admin password:' pass
+
+read -r -d '' longhorn_ingress_secret <<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-ingress-secret
+  namespace: longhorn-system
+type: kubernetes.io/basic-auth
+stringData:
+  username: $user
+  password: $pass
+EOF
+echo "$longhorn_ingress_secret" | kubectl apply -f -
+
+# Configure Longhorn UI Ingress
+kubectl -n longhorn-system apply -f ./longhorn-ui-ingress-traefik.yaml
+
