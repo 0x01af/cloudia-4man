@@ -7,16 +7,16 @@
     # template: 'rauthy-prerequisites.yaml.j2'
     # - path: 'file1.j2'
     # - path: 'file2.j2'
-- name: 'deploy app'
+- name: 'deploy app Longhorn'
   kubernetes.core.k8s:
     state: present
     src: "https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.storage.longhorn.version }}/deploy/longhorn.yaml"
-- name: 'deploy secret'
+- name: 'deploy secret for Longhorn Dashboard'
   kubernetes.core.k8s:
     state: present
     template: 'longhorn-ingress-secret.yaml.j2'
   no_log: true
-
-# Configure Longhorn UI Ingress
-kubectl -n longhorn-system apply -f ./longhorn-ui-ingress-traefik.yaml
-
+- name: 'configure ingress for Longhorn Dashboard'
+  kubernetes.core.k8s:
+    state: present
+    template: 'longhorn-ingress-{{ k3s.ingress.controller }}.yaml.j2'
