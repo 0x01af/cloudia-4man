@@ -11,23 +11,11 @@
   kubernetes.core.k8s:
     state: present
     src: "https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.storage.longhorn.version }}/deploy/longhorn.yaml"
-
-# Define Longhorn UI Admin Credentials
-read -p 'Enter Longhorn UI Admin username:' user
-read -sp 'Enter Longhorn UI Admin password:' pass
-
-read -r -d '' longhorn_ingress_secret <<EOF
-apiVersion: v1
-kind: Secret
-metadata:
-  name: longhorn-ingress-secret
-  namespace: longhorn-system
-type: kubernetes.io/basic-auth
-stringData:
-  username: {{ vault_k3s.storage.longhorn.username }}
-  password: {{ vault_k3s.storage.longhorn.password }}
-EOF
-echo "$longhorn_ingress_secret" | kubectl apply -f -
+- name: 'deploy secret'
+  kubernetes.core.k8s:
+    state: present
+    template: 'longhorn-ingress-secret.yaml.j2'
+  no_log: true
 
 # Configure Longhorn UI Ingress
 kubectl -n longhorn-system apply -f ./longhorn-ui-ingress-traefik.yaml
