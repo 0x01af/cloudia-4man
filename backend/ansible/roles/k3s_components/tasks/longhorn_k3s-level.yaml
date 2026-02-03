@@ -24,8 +24,8 @@ metadata:
   namespace: longhorn-system
 type: kubernetes.io/basic-auth
 stringData:
-  username: $user
-  password: $pass
+  username: {{ vault_k3s.storage.longhorn.username }}
+  password: {{ vault_k3s.storage.longhorn.password }}
 EOF
 echo "$longhorn_ingress_secret" | kubectl apply -f -
 
