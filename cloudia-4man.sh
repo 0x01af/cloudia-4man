@@ -136,9 +136,9 @@ exit 0
 # cd /inventory/{$environment}/states/{$server}
 
 # Starting provisioning service, and configuration & deployment management
-# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml
+# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --ask-vault-pass
 
 ## do os_basic_only: like os updates and so on.
-# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only"
+# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only" --ask-vault-pass
 
 # Updating inventory
