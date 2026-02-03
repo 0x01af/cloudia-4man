@@ -1,0 +1,32 @@
+# based on:
+# https://community.traefik.io/t/minimal-example-for-traefik-with-dashboard-and-basic-auth/18761
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: longhorn-ingress-auth
+  namespace: longhorn-system
+spec:
+  basicAuth:
+    secret: longhorn-ingress-secret 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: longhorn-ingress
+  namespace: longhorn-system
+  annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-longhorn-ingress-auth@kubernetescrd
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: {{ k3s.storage.longhorn.dashboard.fqdn }}
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: longhorn-frontend
+            port:
+              number: 80
