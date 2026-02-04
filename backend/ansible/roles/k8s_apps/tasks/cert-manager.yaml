@@ -19,4 +19,4 @@
 - name: "configure cert-manager issuer <let's encrypt> for corresponding ingress controller"
   kubernetes.core.k8s:
     state: present
-    template: 'cert-manager-issuer-letsencrypt-{{ k3s.ingress.controller }}.yaml.j2'
+    template: 'cert-manager-issuer-letsencrypt.yaml.j2'
