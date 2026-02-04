@@ -8,3 +8,7 @@
 - name: "k8s_app kubernetes-reflector"
   when: k8s_apps.kubernetes_reflector is defined and k8s_apps.kubernetes_reflector.version is defined and k8s_apps.kubernetes_reflector.version != 'none'
   import_tasks: kubernetes-reflector.yaml
+
+- name: "k8s_app cert-manager"
+  when: k8s_apps.cert_manager is defined and k8s_apps.cert_manager.version is defined and k8s_apps.cert_manager.version != 'none'
+  import_tasks: cert-manager.yaml
