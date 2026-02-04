@@ -3,9 +3,20 @@
 # - https://cert-manager.io/docs/installation/kubectl/
 # Usage for Ingress with let's encrypt:
 # - https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
-
-# Deploy cert-manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.18.2/cert-manager.yaml
-
-# Configure let's encrypt issuer
-kubectl apply -f ./cert-manager-issuer-letsencrypt-traefik.yaml
+#====
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+- name: "deploy app cert-manager"
+  kubernetes.core.k8s:
+    state: present
+    src: "https://github.com/cert-manager/cert-manager/releases/download/{{ k8s_apps.cert_manager.version }}/cert-manager.yaml"
+- name: "configure cert-manager issuer <let's encrypt> for corresponding ingress controller"
+  kubernetes.core.k8s:
+    state: present
+    template: 'cert-manager-issuer-letsencrypt-{{ k3s.ingress.controller }}.yaml.j2'
