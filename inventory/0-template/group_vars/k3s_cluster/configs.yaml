@@ -75,6 +75,7 @@ k8s_apps:
     version: "none"
   cert_manager:
     version: "none"
+    ingress: {{ k3s.ingress.controller }}
     acme:
       email: "hostmaster@fqdn"
   # app_name:
