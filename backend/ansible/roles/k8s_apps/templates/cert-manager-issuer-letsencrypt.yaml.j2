@@ -13,7 +13,7 @@ spec:
     solvers:
       - http01:
           ingress:
-            class: traefik
+            class: {{ k8s_apps.cert_manager.ingress }}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -34,4 +34,4 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: traefik
+            ingressClassName: {{ k8s_apps.cert_manager.ingress }}
