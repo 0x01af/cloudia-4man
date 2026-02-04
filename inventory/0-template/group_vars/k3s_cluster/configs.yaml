@@ -75,6 +75,8 @@ k8s_apps:
     version: "none"
   cert_manager:
     version: "none"
+    acme:
+      email: "hostmaster@fqdn"
   # app_name:
   #  version: version
   #  params:
