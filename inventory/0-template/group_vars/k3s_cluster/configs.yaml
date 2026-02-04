@@ -73,6 +73,8 @@ k3s:
 k8s_apps:
   kubernetes_reflector:
     version: "none"
+  cert_manager:
+    version: "none"
   # app_name:
   #  version: version
   #  params:
