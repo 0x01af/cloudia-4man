@@ -1,0 +1,9 @@
+---
+ - name: Inform user about deprecation of NGINX Ingress Controller
+    debug:
+      msg:
+        - "!!! WARNING ---------------------------------------------- !!!"
+        - "NGINX Ingress Controller has been deprecated!"
+        - "=============================================================="
+        - "Please visit the following website for more information:"
+        - "https://kubernetes.io/blog/2025/11/11/ingress-nginx-retirement/"
