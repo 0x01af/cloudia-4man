@@ -5,6 +5,14 @@
       - k8s_apps is not falsy
     fail_msg: "role k8s_apps: general default parameters are not defined!"
 
+#- name: "Check release trains for all K8s Apps"
+#  block:
+#    - name: Get latest release of a public repository
+#      community.general.github_release:
+#        user: ansible
+#        repo: ansible
+#        action: latest_release
+
 - name: "k8s_app kubernetes-reflector"
   when: k8s_apps.kubernetes_reflector is defined and k8s_apps.kubernetes_reflector.version is defined and k8s_apps.kubernetes_reflector.version != 'none'
   import_tasks: kubernetes-reflector.yaml
