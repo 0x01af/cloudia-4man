@@ -5,7 +5,7 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: {{  _k8s_app.acme.email }}
+    email: {{ _k8s_app.acme.email }}
     server: https://acme-v02.api.letsencrypt.org/directory
     profile: tlsserver
     privateKeySecretRef:
@@ -24,7 +24,7 @@ spec:
     # The ACME server URL
     server: https://acme-staging-v02.api.letsencrypt.org/directory
     # Email address used for ACME registration
-    email: {{ k8s_apps.cert_manager.acme.email }}
+    email: {{ _k8s_app.acme.email }}
     # The ACME certificate profile
     profile: tlsserver
     # Name of a secret used to store the ACME account private key
