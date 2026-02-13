@@ -5,7 +5,7 @@ metadata:
   name: letsencrypt-prod
 spec:
   acme:
-    email: {{ k8s_apps.cert_manager.acme.email }}
+    email: {{  _k8s_app.acme.email }}
     server: https://acme-v02.api.letsencrypt.org/directory
     profile: tlsserver
     privateKeySecretRef:
@@ -13,7 +13,7 @@ spec:
     solvers:
       - http01:
           ingress:
-            class: {{ k8s_apps.cert_manager.ingress }}
+            class: {{ _k8s_app.ingress }}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -34,4 +34,4 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: {{ k8s_apps.cert_manager.ingress }}
+            ingressClassName: {{ _k8s_app.ingress }}
