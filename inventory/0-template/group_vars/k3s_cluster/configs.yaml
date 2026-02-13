@@ -71,14 +71,15 @@ k3s:
     #  lb_range: "192.168.123.130-192.168.123.139"
 
 k8s_apps:
-  kubernetes_reflector:
-    version: "none"
-  cert_manager:
-    version: "none"
-    ingress: {{ k3s.ingress.controller }}
+  - name: "kubernetes-reflector"
+    version: "none" # v10.0.3
+  - name: "cert-manager"
+    version: "none" # v1.19.2
+    ingress: "{{ k3s.ingress.controller }}"
     acme:
       email: "hostmaster@fqdn"
-  # app_name:
+  #- name: name
   #  version: version
   #  params:
   #    x: y
+  #  param: value
