@@ -80,6 +80,7 @@ k8s_apps:
       email: "hostmaster@fqdn"
   #- name: name
   #  version: version
+  #  namespace: namespace
   #  params:
   #    x: y
   #  param: value
