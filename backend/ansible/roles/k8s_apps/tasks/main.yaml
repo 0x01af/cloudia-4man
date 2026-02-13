@@ -18,4 +18,4 @@
   loop: "{{ k8s_apps }}"
   loop_control:
     loop_var: _k8s_app
-    label: "{{ _k8s_app.namespace }}/{{ _k8s_app.name }} ({{ _k8s_app.version }})"
+    label: "{{ _k8s_app.name }} ({{ _k8s_app.version }})"
