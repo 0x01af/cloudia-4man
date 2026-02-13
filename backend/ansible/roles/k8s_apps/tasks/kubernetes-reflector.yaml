@@ -13,5 +13,5 @@
   block:
     - name: "deploy app kubernetes-reflector"
       kubernetes.core.k8s:
-      state: present
-      src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ _k8s_app.version }}/reflector.yaml"
+        state: present
+        src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ _k8s_app.version }}/reflector.yaml"
