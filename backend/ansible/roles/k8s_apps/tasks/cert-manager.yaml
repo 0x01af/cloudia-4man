@@ -14,14 +14,13 @@
     # - path: 'file2.j2'
 
 - name: "k8s_app cert-manager"
-  when: k8s_apps.cert_manager is defined and k8s_apps.cert_manager.version is defined and k8s_apps.cert_manager.version != 'none'
-  import_tasks: cert-manager.yaml
-
-- name: "deploy app cert-manager"
-  kubernetes.core.k8s:
-    state: present
-    src: "https://github.com/cert-manager/cert-manager/releases/download/{{ k8s_apps.cert_manager.version }}/cert-manager.yaml"
-- name: "configure cert-manager issuer <let's encrypt> for corresponding ingress controller"
-  kubernetes.core.k8s:
-    state: present
-    template: 'cert-manager-issuer-letsencrypt.yaml.j2'
+  when: _k8s_app.version != 'none'
+  block:
+    - name: "deploy app cert-manager"
+      kubernetes.core.k8s:
+        state: present
+        src: "https://github.com/cert-manager/cert-manager/releases/download/{{ _k8s_app.version }}/cert-manager.yaml"
+    - name: "configure cert-manager issuer <let's encrypt> for corresponding ingress controller"
+      kubernetes.core.k8s:
+        state: present
+        template: 'cert-manager-issuer-letsencrypt.yaml.j2'
