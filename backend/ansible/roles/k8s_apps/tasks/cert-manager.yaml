@@ -12,6 +12,11 @@
     # template: 'rauthy-prerequisites.yaml.j2'
     # - path: 'file1.j2'
     # - path: 'file2.j2'
+
+- name: "k8s_app cert-manager"
+  when: k8s_apps.cert_manager is defined and k8s_apps.cert_manager.version is defined and k8s_apps.cert_manager.version != 'none'
+  import_tasks: cert-manager.yaml
+
 - name: "deploy app cert-manager"
   kubernetes.core.k8s:
     state: present
