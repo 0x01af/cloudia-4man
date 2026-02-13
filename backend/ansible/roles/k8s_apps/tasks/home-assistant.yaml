@@ -1,0 +1,30 @@
+---
+# based on:
+# - https://cert-manager.io/docs/installation/kubectl/
+# Usage for Ingress with let's encrypt:
+# - https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
+#====
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+
+- name: "k8s_app home-assistant"
+  when: _k8s_app.version != 'none'
+  block:
+    - name: "deploy prerequisites of home-assistant"
+      kubernetes.core.k8s:
+        state: present
+        template: 'home-assistant-prerequisites.yaml.j2'
+    - name: "deploy home-assistant"
+      kubernetes.core.k8s:
+        state: present
+        template: 'home-assistant.yaml.j2'
+    - name: "configure ingress of home-assistant"
+      kubernetes.core.k8s:
+        state: present
+        template: 'home-assistant-ingress.yaml.j2'
