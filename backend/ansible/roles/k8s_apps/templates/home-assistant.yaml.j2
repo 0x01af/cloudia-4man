@@ -1,0 +1,109 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: home-assistant-app
+  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant-app
+  template:
+    metadata:
+      labels:
+        app: home-assistant-app
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: app-preferred
+                operator: In
+                values:
+                - "{{ _k8s_app.namespace | default('home-assistant') }}"
+      containers:
+      - name: home-assistant-waf-sidecar
+        image: owasp/modsecurity-crs:nginx-alpine
+        ports:
+        - containerPort: 8122
+        env:
+        - name: BACKEND
+          value: "http://localhost:8123"
+        - name: PORT
+          value: "8122"
+        - name: SSL_PORT
+          value: "4122"
+        volumeMounts:
+        - name: waf-global-settings-volume
+          mountPath: /etc/modsecurity.d/owasp-crs/rules/00-global-settings.conf
+          subPath: 00-global-settings.conf
+        - name: waf-webapp-settings-volume
+          mountPath: /etc/modsecurity.d/owasp-crs/rules/99-webapp-settings.conf
+          subPath: 99-webapp-settings.conf
+      # Home-Assistant: https://github.com/home-assistant/core/pkgs/container/home-assistant/versions?filters%5Bversion_type%5D=tagged
+      - name: home-assistant
+        image: "ghcr.io/home-assistant/home-assistant:{{ _k8s_app.version }}"
+        # command: ["/bin/sh"]
+        # args: ["-c", "wget -O - https://get.hacs.xyz | bash -"]
+        securityContext:
+            privileged: true
+        resources:
+          requests:
+            memory: "256Mi"
+          limits:
+            memory: "512Mi"
+        ports:
+        - containerPort: 8123
+        volumeMounts:
+        - mountPath: /config
+          name: home-assistant-pv-config
+        - mountPath: /config/configuration.yaml
+          name: home-assistant-configmap-configuration
+          subPath: configuration.yaml
+        - mountPath: /config/automations.yaml
+          name: home-assistant-configmap-configuration
+          subPath: automations.yaml
+        - mountPath: /config/scripts.yaml
+          name: home-assistant-configmap-configuration
+          subPath: scripts.yaml
+        - mountPath: /config/scenes.yaml
+          name: home-assistant-configmap-configuration
+          subPath: scenes.yaml
+        - mountPath: /config/zones.yaml
+          name: home-assistant-configmap-configuration
+          subPath: zones.yaml
+        - mountPath: /config/sensors/sensor_homeassistant_specials.yaml
+          name: home-assistant-configmap-configuration
+          subPath: sensor_homeassistant_specials.yaml
+        - mountPath: /config/recorder.yaml
+          name: home-assistant-configmap-configuration
+          subPath: recorder.yaml
+        #- mountPath: /etc/localtime
+        #  name: home-assistant-pv-time
+        #  readOnly: true
+        - mountPath: /etc/localtime
+          name: home-assistant-localtime
+          readOnly: true
+      volumes:
+      - name: waf-global-settings-volume
+        configMap:
+          name: modsecurity-waf-global-settings
+          defaultMode: 0644
+      - name: waf-webapp-settings-volume
+        configMap:
+          name: home-assistant-waf-webapp-settings
+          defaultMode: 0644
+      - name: home-assistant-configmap-configuration
+        configMap:
+          name: home-assistant-configuration
+          defaultMode: 0644
+      - name: home-assistant-pv-config
+        persistentVolumeClaim:
+          claimName: home-assistant-pv-config
+      # https://lf-onap.atlassian.net/wiki/spaces/DW/pages/16554174/Localtime+and+Timezones+in+helm+charts
+      - name: home-assistant-localtime
+        hostPath:
+          path: /etc/localtime
