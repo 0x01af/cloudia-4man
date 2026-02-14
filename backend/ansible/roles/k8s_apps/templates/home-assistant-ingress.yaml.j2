@@ -11,7 +11,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
     traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
 spec:
-  ingressClassName: "{{ k8s_ingress_detected }}"
+  ingressClassName: {{ _k8s_ingress_detected }}
   rules:
     - host: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
       http:
@@ -38,7 +38,7 @@ metadata:
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
     cert-manager.io/acme-challenge-type: "http01"
 spec:
-  ingressClassName: "{{ k8s_ingress_detected }}"
+  ingressClassName: {{ _k8s_ingress_detected }}
   rules:
   - host: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
     http:
