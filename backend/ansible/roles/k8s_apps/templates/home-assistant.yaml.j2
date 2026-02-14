@@ -36,7 +36,7 @@ spec:
               - key: app-preferred
                 operator: In
                 values:
-                - "{{ _k8s_app.namespace | default('home-assistant') }}"
+                - home-assistant
       containers:
       - name: home-assistant-waf-sidecar
         image: owasp/modsecurity-crs:nginx-alpine
