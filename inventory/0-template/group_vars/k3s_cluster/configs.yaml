@@ -79,6 +79,7 @@ k8s_apps:
       email: "hostmaster@fqdn"
   - name: "home-assistant"
     version: "none" # 2026.1.0
+    namespace: "home-assistant"
     config:
       fqdn: "home-assistant.fqdn"
       country: "CH"
