@@ -24,7 +24,7 @@
       kubernetes.core.k8s:
         state: present
         template: 'home-assistant.yaml.j2'
-    - name: "configure ingress of home-assistant"
+    - name: "configure ingress for home-assistant"
       kubernetes.core.k8s:
         state: present
         template: 'home-assistant-ingress.yaml.j2'
