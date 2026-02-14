@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ _k8s_app.namespace | default('home-assistant') }}"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: modsecurity-waf-global-settings
+  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflects: "c4m-general/modsecurity-waf-global-settings"
+    reflector.v1.k8s.emberstack.com/reflected-version: ""
+data:
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: home-assistant-waf-webapp-settings
+  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+data:
+  99-webapp-settings.conf: |-
+    SecRuleEngine DetectionOnly
+    SecDebugLogLevel 9
+    # Home Assistant#Onboarding: False-Positive CRS Rule #949110
+    # SecRule REQUEST_URI "@beginsWith /api/onboarding/users" "id:1001,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
+    # SecRule REQUEST_URI "@beginsWith /auth/login_flow" "id:1002,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
+    # TODO: Home Assistant Web Application Security
+    # SecRule REQUEST_URI "@beginsWith /attack-me" "id:1001,phase:1,pass,nolog,ctl:ruleEngine=Off"
+---
+# inspired by:
+# - https://faun.pub/running-your-home-assistant-on-kubernetes-part-ii-60eb46a73c61
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: home-assistant-configuration
+  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+data:
+  configuration.yaml: |-
+    # Load default config and integrations
+    default_config:
+    # Load frontend themes
+    frontend:
+      themes: !include_dir_merge_named themes
+    # Load automations, scripts, and scenes
+    automation: !include automations.yaml
+    script: !include scripts.yaml
+    scene: !include scenes.yaml
+    zone: !include zones.yaml
+    sensor: !include_dir_merge_list sensors/
+    recorder: !include recorder.yaml
+
+    ### Enhanced default configuration by home-assistant-on-k3s
+    homeassistant:
+      # Configure your individual setting
+      unit_system: metric
+      currency: "{{ _k8s_app.config.currency | default('CHF') }}"
+      country: "{{ _k8s_app.config.country | default('CH') }}"
+      time_zone: "{{ _k8s_app.config.time_zone | default('Europe/Zurich') }}"
+      external_url: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
+      internal_url: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
+      language: "de"
+      allowlist_external_dirs:
+        # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
+        - "/config"
+      debug: false
+    # Web Application Security: Configuration for Web Application Firewall Sidecar
+    http:
+      use_x_forwarded_for: true
+      trusted_proxies:
+        - 127.0.0.1
+        - ::1
+  sensor_homeassistant_specials.yaml: |-
+    # BUG/2026-01-11: Home Assistant log an error "The filesize platform for the sensor integration does not support platform setup. Please remove it from your config."
+    # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
+    # - platform: filesize
+    #  scan_interval: 300
+    #  file_paths:
+    #    - "/config/home-assistant_v2.db"
+  recorder.yaml: |-
+    # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
+    include:
+      domains:
+        - sensor
+        - switch
+        - light
+        - media_player
+    exclude:
+      entities:
+        - sensor.last_boot
+        - sensor.date
+  automations.yaml: |
+  scripts.yaml: |
+  scenes.yaml: |
+  zones.yaml: |
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-pv-config
+  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+  labels:
+    app: home-assistant-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ _k8s_app.storage.size | default('4Gi') }}"
+  storageClassName: "{{ _k8s_app.storage.class | default('') }}"
