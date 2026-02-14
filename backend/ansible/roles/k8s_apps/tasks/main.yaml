@@ -21,7 +21,7 @@
       register: _k8s_ingress_
     - name: "Select first ingress controller (typically the default controller)"
       set_fact:
-        k8s_ingress_detected: "{{ ingress_classes.resources | map(attribute='spec.controller') | first | default('none') }}"
+        k8s_ingress_detected: "{{ ingress_classes.resources | map(attribute='spec.name') | first | default('none') }}"
     - name: "Warn user, if no ingress has been detected"
       debug:
         msg: >-
