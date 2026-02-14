@@ -18,10 +18,10 @@
     - name: "Get all ingress controller"
       kubernetes.core.k8s_info:
         kind: IngressClass
-      register: _k8s_ingress_
+      register: _k8s_ingress_controllers
     - name: "Select first ingress controller (typically the default controller)"
       set_fact:
-        k8s_ingress_detected: "{{ ingress_classes.resources | map(attribute='spec.name') | first | default('none') }}"
+        _k8s_ingress_detected: "{{ _k8s_ingress_controllers.resources | map(attribute='spec.name') | first | default('none') }}"
     - name: "Warn user, if no ingress has been detected"
       debug:
         msg: >-
