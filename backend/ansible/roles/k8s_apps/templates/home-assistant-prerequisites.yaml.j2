@@ -59,8 +59,8 @@ data:
       currency: "{{ _k8s_app.config.currency | default('CHF') }}"
       country: "{{ _k8s_app.config.country | default('CH') }}"
       time_zone: "{{ _k8s_app.config.time_zone | default('Europe/Zurich') }}"
-      external_url: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
-      internal_url: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
+      external_url: "https://{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
+      internal_url: "https://{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
       language: "de"
       allowlist_external_dirs:
         # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
