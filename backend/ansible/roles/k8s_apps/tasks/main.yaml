@@ -30,7 +30,7 @@
           {% set _k8s_ingress_others = _k8s_ingress_controllers.resources 
             | rejectattr('metadata.name', 'in', _k8s_ingress_defaults | map(attribute='metadata.name') | list) 
             | list %}
-          {{ (_k8s_ingress_defaults + _k8s_ingress_others) | first | default("none") }}
+          {{ (_k8s_ingress_defaults + _k8s_ingress_others) | map(attribute='metadata.name') | first | default("none") }}
           
     # - name: "Select first ingress controller (typically the default controller)"
     #  set_fact:
