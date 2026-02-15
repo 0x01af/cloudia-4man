@@ -109,4 +109,4 @@ spec:
   resources:
     requests:
       storage: "{{ _k8s_app.storage.size | default('4Gi') }}"
-  storageClassName: "{{ _k8s_app.storage.class | default('') }}"
+  storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
