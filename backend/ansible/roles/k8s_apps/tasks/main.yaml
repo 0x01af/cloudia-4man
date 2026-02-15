@@ -13,6 +13,9 @@
 #        repo: ansible
 #        action: latest_release
 
+# - name: "Select first ingress controller (typically the default controller)"
+#  set_fact:
+#    _k8s_ingress_detected: "{{ _k8s_ingress_controllers.resources | sortattr('metadata.annotations["ingressclass.kubernetes.io/is-default-class"]', 'defined') | map(attribute='metadata.name') | first | default('none') }}"
 - name: "Identify current ingress controller for K8s applications"
   block:
     - name: "Get all ingress controller"
@@ -32,11 +35,8 @@
             | list %}
           {{ (_k8s_ingress_defaults + _k8s_ingress_others) | map(attribute='metadata.name') | first | default("none") }}
           
-    # - name: "Select first ingress controller (typically the default controller)"
-    #  set_fact:
-    #    _k8s_ingress_detected: "{{ _k8s_ingress_controllers.resources | sortattr('metadata.annotations["ingressclass.kubernetes.io/is-default-class"]', 'defined') | map(attribute='metadata.name') | first | default('none') }}"
     - name: "Warn user, if no ingress has been detected"
-      when: _k3s_ingress_detected = 'none'
+      when: _k8s_ingress_detected = 'none'
       debug:
         msg: >-
           WARNING: No K8s ingress controller has been detected!
