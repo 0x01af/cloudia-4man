@@ -24,6 +24,17 @@
       kubernetes.core.k8s:
         state: present
         template: 'home-assistant.yaml.j2'
+      register: _home-assistant-deployment
+    - name: "force home-assistant recreation (Sledgehammer)"
+      when: _home-assistant-deployment.changed
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Pod
+        namespace: "{{ _k8s_app.namespace }}"
+        name: "{{ _k8s_app.name }}-0"
+        wait: yes
+        wait_timeout: 60
     - name: "configure ingress for home-assistant"
       kubernetes.core.k8s:
         state: present
