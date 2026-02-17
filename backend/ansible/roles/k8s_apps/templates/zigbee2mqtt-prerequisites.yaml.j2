@@ -46,8 +46,8 @@ data:
       # Specifies the maximum allowed packet length (in bytes) that the server can send to Zigbee2MQTT. NOTE: The same value exists in your MQTT broker but for the length the client can send to it instead. (default: 1048576)
       maximum_packet_size: 1048576
     serial:
-      port: /dev/serial/by-id/<SERIAL_ID>
-      adapter: zstack
+      port: {{ _k8s_app.serial.port | default('/dev/serial/by-id/<SERIAL_ID>') }}
+      adapter: {{ _k8s_app.serial.adapter | default('zstack') }}
     advanced:
       #### Zigbee network
       # Optional: Zigbee pan ID (default: shown below)
