@@ -1,0 +1,36 @@
+---
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+
+- name: "k8s_app zigbee2mqtt"
+  when: _k8s_app.version != 'none'
+  block:
+    - name: "deploy prerequisites of zigbee2mqtt"
+      kubernetes.core.k8s:
+        state: present
+        template: 'zigbee2mqtt-prerequisites.yaml.j2'
+    - name: "deploy zigbee2mqtt"
+      kubernetes.core.k8s:
+        state: present
+        template: 'zigbee2mqtt.yaml.j2'
+      register: _zigbee2mqtt_deployment
+    #- name: "force pod recreation (Sledgehammer)"
+    #  when: _zigbee2mqtt_deployment.changed
+    #  kubernetes.core.k8s:
+    #    state: absent
+    #    api_version: v1
+    #    kind: Pod
+    #    namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+    #    name: "home-assistant-app-0"
+    #    wait: yes
+    #    wait_timeout: 60
+    - name: "configure ingress for zigbee2mqtt"
+      kubernetes.core.k8s:
+        state: present
+        template: 'zigbee2mqtt-ingress.yaml.j2'
