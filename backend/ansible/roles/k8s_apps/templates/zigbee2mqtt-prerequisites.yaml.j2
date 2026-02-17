@@ -160,12 +160,12 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zigbee2mqtt-data
+  name: zigbee2mqtt-pv-data
   namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ _k8s_apps.storage.size | default('1Gi') }}
-  storageClass: {{ _k8s_apps.storage.class_name }}
+      storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
+  storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
