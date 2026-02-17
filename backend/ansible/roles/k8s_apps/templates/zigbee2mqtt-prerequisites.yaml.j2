@@ -169,3 +169,14 @@ spec:
     requests:
       storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
   storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: zigbee2mqtt-secret
+  namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
+data:
+  network_key: {{ _k8s_app_vault.network_key | default('[1, 3, 5, 7, 9, 11, 13, 15, 0, 2, 4, 6, 8, 10, 12, 13]') }}
+  mqtt_user: {{ _k8s_app_vault.network_key | default('username') }}
+  mqtt_password: {{ _k8s_app_vault.network_key | default('password') }}
+  # auth_token: your-secret-token
