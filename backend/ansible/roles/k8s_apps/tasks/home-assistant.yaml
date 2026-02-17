@@ -1,9 +1,4 @@
 ---
-# based on:
-# - https://cert-manager.io/docs/installation/kubectl/
-# Usage for Ingress with let's encrypt:
-# - https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
-#====
 # - name: "deploy prerequisites"
 #  kubernetes.core.k8s:
 #    state: present
