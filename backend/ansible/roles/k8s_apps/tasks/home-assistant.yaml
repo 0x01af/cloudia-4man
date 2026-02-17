@@ -24,9 +24,9 @@
       kubernetes.core.k8s:
         state: present
         template: 'home-assistant.yaml.j2'
-      register: _home-assistant-deployment
+      register: _home_assistant_deployment
     - name: "force pod recreation (Sledgehammer)"
-      when: _home-assistant-deployment.changed
+      when: _home_assistant_deployment.changed
       kubernetes.core.k8s:
         state: absent
         api_version: v1
