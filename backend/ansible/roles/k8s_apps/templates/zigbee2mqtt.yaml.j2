@@ -50,7 +50,7 @@ spec:
             name: zigbee2mqtt-configmap-configuration
             subPath: configuration.yaml
           - mountPath: /app/data/secret.yaml
-            name: zigbee2mqtt-secret
+            name: zigbee2mqtt-app-secret
             readOnly: true
           - name: zigbee2mqtt-udev
             mountPath: /run/udev
