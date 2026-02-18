@@ -89,6 +89,14 @@ k8s_apps:
     storage:
       class_name: "longhorn"
       size: "16Gi"
+  - name: "zigbee2mqtt"
+    version: "none" # 2.8.0
+    namespace: "zigbee2mqtt"
+    mqtt:
+      server_fqdn: ""
+    storage:
+      class_name: "longhorn"
+      size: "1Gi"
   #- name: name
   #  version: version
   #  namespace: namespace
