@@ -4,10 +4,7 @@ kind: Service
 metadata:
   name: zigbee2mqtt-service
   namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
-  labels:
-    app: zigbee2mqtt
 spec:
-  type: LoadBalancer
   selector:
     app: zigbee2mqtt
   ports:
