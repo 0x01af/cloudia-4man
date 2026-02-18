@@ -185,3 +185,7 @@ kind: Secret
 metadata:
   name: zigbee2mqtt-ingress-secret
   namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
+type: kubernetes.io/basic-auth
+stringData:
+  username: {{ vault_k8s_apps.zigbee2mqtt.frontend.username }}
+  password: {{ vault_k8s_apps.zigbee2mqtt.frontend.password }}
