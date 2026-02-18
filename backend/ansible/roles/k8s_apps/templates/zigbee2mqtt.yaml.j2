@@ -18,7 +18,7 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: zigbee2mqtt
+  name: zigbee2mqtt-app
   namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
 spec:
   replicas: 1
