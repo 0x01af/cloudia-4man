@@ -92,6 +92,8 @@ k8s_apps:
   - name: "zigbee2mqtt"
     version: "none" # 2.8.0
     namespace: "zigbee2mqtt"
+    frontend:
+      fqdn: "zigbee2mqtt.fqdn"
     mqtt:
       server_fqdn: ""
     storage:
