@@ -97,6 +97,9 @@ k8s_apps:
     storage:
       class_name: "longhorn"
       size: "1Gi"
+    serial:
+      port: "/dev/serial/by-id/<SERIAL_ID>" # /dev/ttyUSB0
+      adapter: "zstack" # see https://www.zigbee2mqtt.io/guide/adapters/
   #- name: name
   #  version: version
   #  namespace: namespace
