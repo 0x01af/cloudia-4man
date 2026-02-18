@@ -57,8 +57,8 @@ spec:
             readOnly: true
           - name: zigbee2mqtt-udev
             mountPath: /run/udev
-          - name: ttyacm
-            mountPath: /dev/ttyACM0
+          - name: zigbee2mqtt-zigbee-stick
+            mountPath: {{ _k8s_app.serial.port }}
       volumes:
         - name: zigbee2mqtt-data
           persistentVolumeClaim:
@@ -66,9 +66,9 @@ spec:
         - name: zigbee2mqtt-udev
           hostPath:
             path: /run/udev
-        - name: ttyacm
+        - name: zigbee2mqtt-zigbee-stick
           hostPath:
-            path: /dev/ttyACM0
+            path: {{ _k8s_app.serial.port }}
         - name: zigbee2mqtt-secret
           secret:
             secretName: zigbee2mqtt-secret
