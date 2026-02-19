@@ -17,6 +17,8 @@ C4M_CONFIG = {
 # - ansible: if not existing, should it install it
 # - ansible collections: ensure, all required collections are installed
 ansible-galaxy collection install -r backend/ansible/requirements.yaml
+# - python libraries: ensure, all required python libraries are installed
+pip install --user passlib
 
 ## Main Functions
 # Provision: Neues Gerät / Software installieren -> updates inventory
