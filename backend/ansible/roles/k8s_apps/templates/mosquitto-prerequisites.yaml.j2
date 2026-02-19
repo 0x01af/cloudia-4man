@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ _k8s_app.namespace | default('mosquitto') }}"
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mosquitto-configuration
+  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
+data:
+  mosquitto.conf: |-
+    listener 1883 0.0.0.0
+    allow_anonymous false
+    password_file /mosquitto/config/password_file.conf
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: home-assistant-pv-config
+  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+  labels:
+    app: home-assistant-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ _k8s_app.storage.size | default('4Gi') }}"
+  storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
+---
+# inspired by:
+# - https://shantanoo-desai.github.io/posts/technology/mosquitto_ansible_passgen/
+apiVersion: v1
+kind: Secret
+
+{%- for user in vault_k8s_apps.mosquitto.users %}
+  {{ user.username }}:{{ user.password | mosquitto_passwd }}
+{% endfor %}
