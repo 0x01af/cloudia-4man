@@ -2,3 +2,74 @@
 # - https://blog.quadmeup.com/2025/07/09/mosquitto-in-kubernetes-the-simple-way/
 # - https://github.com/abalage/mosquitto-mqtt-k8s
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mosquitto
+  labels:
+    app: mosquitto
+spec:
+  ports:
+    - port: 1883
+      targetPort: 1883
+      name: mosquitto
+  selector:
+    app: mosquitto
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  labels:
+    app: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mosquitto
+  template:
+    metadata:
+      labels:
+        app: mosquitto
+    spec:
+      securityContext:
+        fsGroup: 33
+      containers:
+      - image: eclipse-mosquitto:latest
+        name: mosquitto
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "10m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 1883
+          name: mosquitto
+        volumeMounts:
+        - name: mosquitto-persistent-storage
+          mountPath: /mosquitto/data
+        - name: mosquitto-password
+          mountPath: /mosquitto/config/password.txt
+          subPath: password.txt
+        - name: mosquitto-config
+          mountPath: /mosquitto/config/mosquitto.conf
+          subPath: mosquitto.conf
+      volumes:
+      - name: mosquitto-persistent-storage
+        persistentVolumeClaim:
+          claimName: pvc-mosquitto
+      - name: mosquitto-password
+        configMap:
+          name: mosquitto-password
+          items:
+          - key: "password.txt"
+            path: "password.txt"
+      - name: mosquitto-config
+        configMap:
+          name: mosquitto-config
+          items:
+          - key: "mosquitto.conf"
+            path: "mosquitto.conf"
