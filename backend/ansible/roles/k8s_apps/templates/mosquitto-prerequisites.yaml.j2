@@ -6,6 +6,7 @@ metadata:
 ---
 # inspired by:
 # - https://blog.quadmeup.com/2025/07/09/mosquitto-in-kubernetes-the-simple-way/
+# - https://www.datacamp.com/de/tutorial/mosquitto-docker
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -13,9 +14,44 @@ metadata:
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 data:
   mosquitto.conf: |-
-    listener 1883 0.0.0.0
+    # Basic listener configuration
+    listener 1883
+    protocol mqqt
+    # mqtts: listener 8883
+    protocol mqqt
+
+    # WebSocket listener
+    listener 9001
+    protocol websockets
+    # https: listener 9002
+    # protocol websockets
+
+    # Encryption
+    # cafile /mosquitto/config/ca.crt
+    # certfile /mosquitto/config/server.crt
+    # keyfile /mosquitto/config/server.key
+     
+    # Authentication
     allow_anonymous false
     password_file /mosquitto/config/password_file.conf
+
+    # Persistence
+    persistence false
+    # persistence_location /mosquitto/data/
+    autosave_interval 300
+    persistent_client_expiration 1
+
+    # Logging
+    # log_dest file /mosquitto/log/mosquitto.log
+    log_dest stdout
+    log_timestamp true
+    log_type error
+    log_type warning
+    # debugging: log_type notice
+    # debugging: log_type information
+    # # debugging: log_type debug
+    # debugging: connection_messages true
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
