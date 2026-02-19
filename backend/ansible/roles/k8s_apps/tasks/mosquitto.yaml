@@ -1,0 +1,25 @@
+---
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+
+- name: "k8s_app mosquitto"
+  when: _k8s_app.version != 'none'
+  block:
+    - name: "deploy prerequisites of mosquitto"
+      kubernetes.core.k8s:
+        state: present
+        template: 'mosquitto-prerequisites.yaml.j2'
+    - name: "deploy mosquitto"
+      kubernetes.core.k8s:
+        state: present
+        template: 'home-assistant.yaml.j2'
+    - name: "configure ingress for mosquitto"
+      kubernetes.core.k8s:
+        state: present
+        template: 'mosquitto-ingress.yaml.j2'
