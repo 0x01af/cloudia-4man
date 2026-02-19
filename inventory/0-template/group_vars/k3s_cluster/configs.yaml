@@ -94,8 +94,12 @@ k8s_apps:
     namespace: "zigbee2mqtt"
     frontend:
       fqdn: "zigbee2mqtt.fqdn"
+    zigbee:
+      channel: "11"
+      pan_id: "0x1a62"
+      ext_pan_id: "[0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD]"
     mqtt:
-      server_fqdn: ""
+      server_fqdn: "mosquitto.fqdn"
     storage:
       class_name: "longhorn"
       size: "1Gi"
