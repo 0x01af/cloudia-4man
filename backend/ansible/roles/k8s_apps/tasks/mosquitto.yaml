@@ -3,6 +3,7 @@
 # inspired by:
 # - https://rohinpandey.medium.com/beginners-guide-mqtt-on-kubernetes-659a6028d8ca
 # - https://github.com/abalage/mosquitto-mqtt-k8s
+# - https://gist.github.com/gimiki/628e2ca10f026975f00f34e4d1f4ff23
 
 - name: "k8s_app mosquitto"
   when: _k8s_app.version != 'none'
