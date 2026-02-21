@@ -56,8 +56,8 @@ spec:
         - containerPort: 9001
           name: websocket
         volumeMounts:
-        - name: mosquitto-pv-config
-          mountPath: /mosquitto/config
+        # - name: mosquitto-pv-config
+        #   mountPath: /mosquitto/config
         - name: mosquitto-secret-config
           mountPath: /mosquitto/config/password_file.conf
           readOnly: true
@@ -65,9 +65,9 @@ spec:
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
       volumes:
-      - name: mosquitto-pv-config
-        persistentVolumeClaim:
-          claimName: mosquitto-pv-config
+      # - name: mosquitto-pv-config
+      #   persistentVolumeClaim:
+      #    claimName: mosquitto-pv-config
       - name: mosquitto-secret-config
           secret:
             secretName: mosquitto-secret-config
