@@ -19,4 +19,4 @@
     - name: "configure ingress for mosquitto"
       kubernetes.core.k8s:
         state: present
-        template: 'mosquitto-ingress.yaml.j2'
+        template: 'mosquitto-ingress-{{ _ }}.yaml.j2'
