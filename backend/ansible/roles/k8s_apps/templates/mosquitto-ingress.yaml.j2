@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mosquitto-ingress-websocket
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # Annotationen für Websockets, falls der Mosquitto-Service Port 9001 freigibt
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  rules:
+  - host: mqtt.example.com # Ersetzen Sie durch Ihre Domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mosquitto-service
+            port:
+              number: 9001
