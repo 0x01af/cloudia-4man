@@ -61,7 +61,7 @@ spec:
         - name: mosquitto-app-secret
           mountPath: /mosquitto/config/password_file.conf
           subPath: password_file.conf
-        - name: mosquitto-config
+        - name: mosquitto-configmap-config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
       volumes:
@@ -70,9 +70,6 @@ spec:
           claimName: mosquitto-pv-config
       - name: mosquitto-app-secret
         
-      - name: mosquitto-config
+      - name: mosquitto-configmap-config
         configMap:
-          name: mosquitto-config
-          items:
-          - key: "mosquitto.conf"
-            path: "mosquitto.conf"
+          name: mosquitto-configmap-config
