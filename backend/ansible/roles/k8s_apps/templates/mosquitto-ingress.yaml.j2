@@ -1,13 +1,40 @@
 ---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: mosquitto-ingressroute-mqtt
+  namespace: 
+spec:
+  entryPoints:
+    - mqtt
+  routes:
+    - match: HostSNI(`*`)
+      services:
+        - name: mosquitto-service
+          port: 1883
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: mosquitto-ingressroute-mqtts
+  namespace: 
+spec:
+  entryPoints:
+    - mqtts
+  routes:
+    - match: HostSNI(`mqtt.deinedomain.de`) # SNI funktioniert hier dank TLS!
+      services:
+        - name: mosquitto-service
+          port: 1883
+  tls:
+    secretName: mosquitto-secret-tls
+###
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: mosquitto-ingress-websocket
-  annotations:
-    kubernetes.io/ingress.class: "nginx"
-    # Annotationen für Websockets, falls der Mosquitto-Service Port 9001 freigibt
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+  namespace: 
 spec:
   rules:
   - host: mqtt.example.com # Ersetzen Sie durch Ihre Domain
