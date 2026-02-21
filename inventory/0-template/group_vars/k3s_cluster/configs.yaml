@@ -89,6 +89,8 @@ k8s_apps:
     storage:
       class_name: "longhorn"
       size: "16Gi"
+  - name: "mosquitto"
+    version: "none" # 2.1.2
   - name: "zigbee2mqtt"
     version: "none" # 2.8.0
     namespace: "zigbee2mqtt"
@@ -99,7 +101,7 @@ k8s_apps:
       pan_id: "0x1a62"
       ext_pan_id: "[0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD]"
     mqtt:
-      server_fqdn: "mosquitto.fqdn"
+      server_url: "mqtt://mosquitto-service.mosquitto.svc:1883" # mqtts://mosquitto-public.fqdn:8883
     storage:
       class_name: "longhorn"
       size: "1Gi"
