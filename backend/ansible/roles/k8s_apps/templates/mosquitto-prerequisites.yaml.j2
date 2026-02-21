@@ -18,7 +18,7 @@ data:
     listener 1883
     protocol mqqt
     # mqtts: listener 8883
-    protocol mqqt
+    # protocol mqqt
 
     # WebSocket listener
     listener 9001
@@ -52,21 +52,21 @@ data:
     # # debugging: log_type debug
     # debugging: connection_messages true
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mosquitto-pv-config
-  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
-  labels:
-    app: mosquitto-app
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
-  storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: mosquitto-pv-config
+#   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
+#   labels:
+#     app: mosquitto-app
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
+#   storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
 ---
 # inspired by:
 # - https://shantanoo-desai.github.io/posts/technology/mosquitto_ansible_passgen/
