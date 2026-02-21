@@ -1,12 +1,8 @@
 ---
-# - name: "deploy prerequisites"
-#  kubernetes.core.k8s:
-#    state: present
-    # src: 'rauthy-prerequisites.yaml'
-    # definition: |-
-    # template: 'rauthy-prerequisites.yaml.j2'
-    # - path: 'file1.j2'
-    # - path: 'file2.j2'
+# Mosquitto on Kubernetes
+# inspired by:
+# - https://rohinpandey.medium.com/beginners-guide-mqtt-on-kubernetes-659a6028d8ca
+# - https://github.com/abalage/mosquitto-mqtt-k8s
 
 - name: "k8s_app mosquitto"
   when: _k8s_app.version != 'none'
