@@ -37,6 +37,7 @@ metadata:
   name: mosquitto-ingress-websocket
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 spec:
+  ingressClassName: traefik
   rules:
   - host: "{{ _k8s_app.mqtt.fqdn }}"
     http:
