@@ -60,7 +60,7 @@ spec:
           mountPath: /mosquitto/config
         - name: mosquitto-secret-config
           mountPath: /mosquitto/config/password_file.conf
-          subPath: password_file.conf
+          readOnly: true
         - name: mosquitto-configmap-config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
