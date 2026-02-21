@@ -1,6 +1,16 @@
 ---
+# ansible collections (will be used by ansible-galaxy)
 collections:
   - name: community.general
     version: 12.3.0
   - name: kubernetes.core
     version: 6.2.0
+
+# ansible roles (will be used by ansible-galaxy)
+roles:
+# NONE
+
+# pip packages (will be used by ansible playbook)
+pip_packages:
+  - name: kubernetes
+  - name: passlib

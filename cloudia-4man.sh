@@ -143,4 +143,7 @@ exit 0
 ## do os_basic_only: like os updates and so on.
 # ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only" --ask-vault-pass
 
+## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
+# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
+
 # Updating inventory
