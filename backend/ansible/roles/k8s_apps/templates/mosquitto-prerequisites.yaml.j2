@@ -79,3 +79,18 @@ data:
 {%- for user in vault_k8s_apps.mosquitto.users %}
   {{ user.username }}:{{ user.password | mosquitto_passwd }}
 {% endfor %}
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: mosquitto-certificate-tls
+  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
+spec:
+  secretName: mosquitto-secret-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: "{{ _k8s_app.mqtt.fqdn }}"
+  dnsNames:
+    - "{{ _k8s_app.mqtt.fqdn }}"
