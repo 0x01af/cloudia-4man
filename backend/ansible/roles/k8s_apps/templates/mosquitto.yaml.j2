@@ -56,24 +56,20 @@ spec:
         - containerPort: 9001
           name: websocket
         volumeMounts:
-        - name: mosquitto-pv
+        - name: mosquitto-pv-config
           mountPath: /mosquitto/config
-        - name: mosquitto-app-secrets
+        - name: mosquitto-app-secret
           mountPath: /mosquitto/config/password_file.conf
           subPath: password_file.conf
         - name: mosquitto-config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
       volumes:
-      - name: mosquitto-persistent-storage
+      - name: mosquitto-pv-config
         persistentVolumeClaim:
-          claimName: pvc-mosquitto
-      - name: mosquitto-password
-        configMap:
-          name: mosquitto-password
-          items:
-          - key: "password.txt"
-            path: "password.txt"
+          claimName: mosquitto-pv-config
+      - name: mosquitto-app-secret
+        
       - name: mosquitto-config
         configMap:
           name: mosquitto-config
