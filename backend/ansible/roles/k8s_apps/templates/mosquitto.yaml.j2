@@ -39,7 +39,7 @@ spec:
       securityContext:
         fsGroup: 33
       containers:
-      - image: "eclipse-mosquitto:{{ _k8s_app.version | default('latest') }}"
+      - image: "eclipse-mosquitto:{{ _k8s_app.version }}"
         name: mosquitto
         resources:
           requests:
@@ -54,11 +54,11 @@ spec:
         - containerPort: 9001
           name: websocket
         volumeMounts:
-        - name: mosquitto-persistent-storage
-          mountPath: /mosquitto/data
-        - name: mosquitto-password
-          mountPath: /mosquitto/config/password.txt
-          subPath: password.txt
+        - name: mosquitto-pv
+          mountPath: /mosquitto/config
+        - name: mosquitto-app-secrets
+          mountPath: /mosquitto/config/password_file.conf
+          subPath: password_file.conf
         - name: mosquitto-config
           mountPath: /mosquitto/config/mosquitto.conf
           subPath: mosquitto.conf
