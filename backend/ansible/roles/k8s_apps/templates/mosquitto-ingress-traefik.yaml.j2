@@ -42,7 +42,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: "{{ _k8s_app.mqtt.fqdn }}"
+  - host: "{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}"
     http:
       paths:
       - path: /
@@ -53,4 +53,6 @@ spec:
             port:
               number: 9001
   tls:
-  
+  - hosts:
+    - "{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}"
+    secretName: mosquitto-secret-tls
