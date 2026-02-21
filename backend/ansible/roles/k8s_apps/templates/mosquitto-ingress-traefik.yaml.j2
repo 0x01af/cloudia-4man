@@ -36,6 +36,9 @@ kind: Ingress
 metadata:
   name: mosquitto-ingress-websocket
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   ingressClassName: traefik
   rules:
@@ -49,3 +52,5 @@ spec:
             name: mosquitto-service
             port:
               number: 9001
+  tls:
+  
