@@ -5,17 +5,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mosquitto
+  name: mosquitto-service
   labels:
     app: mosquitto
 spec:
+  type: LoadBalancer
   ports:
     - port: 1883
       targetPort: 1883
-      name: mosquitto
+      name: mqtt
+    - port: 9001
+      targetPort: 9001
+      name: websocket
   selector:
     app: mosquitto
-  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,7 +39,7 @@ spec:
       securityContext:
         fsGroup: 33
       containers:
-      - image: eclipse-mosquitto:latest
+      - image: "eclipse-mosquitto:{{ _k8s_app.version | default('latest') }}"
         name: mosquitto
         resources:
           requests:
@@ -47,7 +50,9 @@ spec:
             cpu: "250m"
         ports:
         - containerPort: 1883
-          name: mosquitto
+          name: mqtt
+        - containerPort: 9001
+          name: websocket
         volumeMounts:
         - name: mosquitto-persistent-storage
           mountPath: /mosquitto/data
