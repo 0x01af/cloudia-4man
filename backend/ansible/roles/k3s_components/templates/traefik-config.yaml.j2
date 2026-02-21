@@ -19,6 +19,43 @@ spec:
     ###
     api:
       dashboard: true
+    ### Add well-defined ports / entrypoints in "traefik"
+    # 80 | web | pre-defined by traefik
+    # 443 | websecure | pre-defined by traefik
+    # 1883 | mqtt | added
+    # 8883 | mqtts | added
+    ports:
+      mqqt:
+        port: 1883
+        expose:
+          default: true
+        exposedPort: 1883
+        protocol: TCP
+        redirections:
+          entryPoint: {}
+        forwardedHeaders:
+          trustedIPs: []
+          insecure: false
+        proxyProtocol:
+          trustedIPs: []
+          insecure: false
+      mqqts:
+        port: 8883
+        expose:
+          default: true
+        exposedPort: 8883
+        protocol: TCP
+        redirections:
+          entryPoint: {}
+        forwardedHeaders:
+          trustedIPs: []
+          insecure: false
+        proxyProtocol:
+          trustedIPs: []
+          insecure: false
+    additionalArguments:
+      - "--entryPoints.mqtt.address=:1883/tcp"
+      - "--entryPoints.mqtts.address=:8883/tcp"
     ###
     ingressRoute:
       ### Create an IngressRoute for the dashboard
