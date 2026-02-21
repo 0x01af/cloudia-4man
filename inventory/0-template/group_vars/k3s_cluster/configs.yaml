@@ -91,6 +91,8 @@ k8s_apps:
       size: "16Gi"
   - name: "mosquitto"
     version: "none" # 2.1.2
+    mqtt:
+      fqdn: "mosquitto.fqdn"
   - name: "zigbee2mqtt"
     version: "none" # 2.8.0
     namespace: "zigbee2mqtt"
