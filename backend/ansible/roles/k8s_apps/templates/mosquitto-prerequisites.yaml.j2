@@ -73,7 +73,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: mosquitto-app-secret
+  name: mosquitto-secret-config
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 data:
 {%- for user in vault_k8s_apps.mosquitto.users %}
