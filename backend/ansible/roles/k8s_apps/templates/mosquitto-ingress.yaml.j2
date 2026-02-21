@@ -3,7 +3,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: mosquitto-ingressroute-mqtt
-  namespace: 
+  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 spec:
   entryPoints:
     - mqtt
@@ -17,12 +17,13 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: mosquitto-ingressroute-mqtts
-  namespace: 
+  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 spec:
   entryPoints:
     - mqtts
   routes:
-    - match: HostSNI(`mqtt.deinedomain.de`) # SNI funktioniert hier dank TLS!
+    # SNI funktioniert nur bei MQTTS
+    - match: HostSNI(`{{ _k8s_app.mqtt.fqdn }}`)
       services:
         - name: mosquitto-service
           port: 1883
@@ -34,10 +35,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: mosquitto-ingress-websocket
-  namespace: 
+  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 spec:
   rules:
-  - host: mqtt.example.com # Ersetzen Sie durch Ihre Domain
+  - host: "{{ _k8s_app.mqtt.fqdn }}"
     http:
       paths:
       - path: /
