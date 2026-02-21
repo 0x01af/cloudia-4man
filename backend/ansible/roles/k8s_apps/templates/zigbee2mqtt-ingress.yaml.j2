@@ -17,9 +17,9 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: web
     traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
 spec:
-  ingressClassName: {{ }}
+  ingressClassName: {{ _k8s_ingress_detected }}
   rules:
-    - host: {{ fqdn }}
+    - host: "{{ _k8s_app.frontend.fqdn | default('zigbee2mqtt.local') }}"
       http:
         paths:
           - path: /
@@ -45,9 +45,9 @@ metadata:
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
     cert-manager.io/acme-challenge-type: "http01"
 spec:
-  ingressClassName: {{ }}
-  rules:
-  - host: {{ fqdn }}
+  ingressClassName: {{ _k8s_ingress_detected }}
+rules:
+  - host: "{{ _k8s_app.frontend.fqdn | default('zigbee2mqtt.local') }}"
     http:
       paths:
       - path: /
@@ -59,5 +59,5 @@ spec:
               number: 8080
   tls:
   - hosts:
-    - {{ fqdn }}
+    - "{{ _k8s_app.frontend.fqdn | default('zigbee2mqtt.local') }}"
     secretName: zigbee2mqtt-ingress-tls-secret
