@@ -44,10 +44,10 @@ spec:
         ports:
           - containerPort: 8080
         volumeMounts:
-          - name: zigbee2mqtt-data
+          - name: zigbee2mqtt-pv-data
             mountPath: /app/data
           - mountPath: /app/data/configuration.yaml
-            name: zigbee2mqtt-configmap-configuration
+            name: zigbee2mqtt-configmap-config
             subPath: configuration.yaml
           - mountPath: /app/data/secret.yaml
             name: zigbee2mqtt-app-secret
@@ -57,7 +57,7 @@ spec:
           - name: zigbee2mqtt-zigbee-stick
             mountPath: {{ _k8s_app.serial.port }}
       volumes:
-        - name: zigbee2mqtt-data
+        - name: zigbee2mqtt-pv-data
           persistentVolumeClaim:
             claimName: zigbee2mqtt-pv-data
         - name: zigbee2mqtt-udev
