@@ -69,7 +69,8 @@ spec:
         persistentVolumeClaim:
           claimName: mosquitto-pv-config
       - name: mosquitto-app-secret
-        
+          secret:
+            secretName: mosquitto-app-secret
       - name: mosquitto-configmap-config
         configMap:
           name: mosquitto-configmap-config
