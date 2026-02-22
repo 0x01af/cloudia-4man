@@ -44,7 +44,7 @@
       register: _pip_packages
     - name: "Python Packages: Validate all needed python packages"
       ansible.builtin.assert:
-        that: "item in _pip_packages.packages.pip3.keys()"
+        that: "item.name in _pip_packages.packages.pip3.keys()"
         fail_msg: "Python library '{{ item.name }}' not found in pip packages! Run 'pip3 install {{ item.name }}'"
         success_msg: "Verified: {{ item.name }} is installed."
       loop: "{{ c4m_requirements.pip_packages }}"
