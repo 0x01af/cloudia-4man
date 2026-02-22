@@ -7,6 +7,7 @@ metadata:
 # inspired by:
 # - https://blog.quadmeup.com/2025/07/09/mosquitto-in-kubernetes-the-simple-way/
 # - https://www.datacamp.com/de/tutorial/mosquitto-docker
+# - https://shantanoo-desai.github.io/posts/technology/mosquitto_ansible_passgen/
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -52,6 +53,10 @@ data:
     # # debugging: log_type debug
     # debugging: connection_messages true
 
+  password_file.conf: |-
+    {% for user in vault_k8s_apps.mosquitto.users %}
+      {{ user.username }}:{{ user.password | mosquitto_passwd }}
+    {% endfor %}
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
@@ -67,19 +72,6 @@ data:
 #     requests:
 #       storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
 #   storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
----
-# inspired by:
-# - https://shantanoo-desai.github.io/posts/technology/mosquitto_ansible_passgen/
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mosquitto-secret-config
-  namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
-data:
-{% for user in vault_k8s_apps.mosquitto.users %}
-  {{ user.username }}:{{ user.password | mosquitto_passwd }}
-{% endfor %}
-
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
