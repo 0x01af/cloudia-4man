@@ -15,6 +15,17 @@
       kubernetes.core.k8s:
         state: present
         template: 'zigbee2mqtt-prerequisites.yaml.j2'
+    - name: "set label for node affinity"
+      when: _k8s_app.serial is defined and _k8s_app.serial.attached_to is defined
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: Node
+          metadata:
+            name: "{{ _k8s_app.serial.attached_to }}"
+            labels:
+              app-preferred: zigbee2mqtt
+        state: present
     - name: "deploy zigbee2mqtt"
       kubernetes.core.k8s:
         state: present
