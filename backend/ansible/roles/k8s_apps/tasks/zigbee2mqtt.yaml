@@ -42,7 +42,7 @@
         wait: no
         delete_options:
           gracePeriodSeconds: 0
-          propagationPolicy: Backgroundwait: no
+          propagationPolicy: Background
     - name: "configure ingress for zigbee2mqtt"
       kubernetes.core.k8s:
         state: present
