@@ -39,8 +39,10 @@
         kind: Pod
         namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
         name: "zigbee2mqtt-app-0"
-        wait: yes
-        wait_timeout: 60
+        wait: no
+        delete_options:
+          gracePeriodSeconds: 0
+          propagationPolicy: Backgroundwait: no
     - name: "configure ingress for zigbee2mqtt"
       kubernetes.core.k8s:
         state: present
