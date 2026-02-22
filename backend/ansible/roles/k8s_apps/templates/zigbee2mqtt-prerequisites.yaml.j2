@@ -14,7 +14,7 @@ data:
     mqtt:
       # Required: MQTT server URL (use mqtts:// for SSL/TLS connection)
       # Example: 'localhost', when using the Mosquito HA addon use 'core-mosquitto'
-      server: '{{ _k8s_apps.mqtt.server_url }}'
+      server: '{{ _k8s_app.mqtt.server_url }}'
       # Optional: MQTT base topic for Zigbee2MQTT MQTT messages (default: zigbee2mqtt)
       base_topic: zigbee2mqtt
       ## Optional: absolute path to SSL/TLS certificate of CA used to sign server and client certificates (default: nothing)
