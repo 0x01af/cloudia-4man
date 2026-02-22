@@ -8,6 +8,9 @@
 - name: "k8s_app mosquitto"
   when: _k8s_app.version != 'none'
   block:
+    - name: "Debugge die User-Struktur"
+      debug:
+        var: vault_k8s_apps.mosquitto.users
     - name: "deploy prerequisites of mosquitto"
       kubernetes.core.k8s:
         state: present
