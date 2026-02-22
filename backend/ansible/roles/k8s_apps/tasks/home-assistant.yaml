@@ -20,16 +20,30 @@
         state: present
         template: 'home-assistant.yaml.j2'
       register: _home_assistant_deployment
-    - name: "force pod recreation (Sledgehammer)"
+    - name: "force pod recreation via Rollout (Clean Sledgehammer)"
       when: _home_assistant_deployment.changed
       kubernetes.core.k8s:
-        state: absent
-        api_version: v1
-        kind: Pod
-        namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
-        name: "home-assistant-app-0"
-        wait: yes
-        wait_timeout: 60
+        definition:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: home-assistant-app
+            namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+            annotations:
+              kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+        state: patched
+    #- name: "force pod recreation (Sledgehammer)"
+    #  when: _home_assistant_deployment.changed
+    #  kubernetes.core.k8s:
+    #    state: absent
+    #    api_version: v1
+    #    kind: Pod
+    #    namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+    #    name: "home-assistant-app-0"
+    #    wait: no
+    #    delete_options:
+    #      gracePeriodSeconds: 0
+    #      propagationPolicy: Backgroundwait: no
     - name: "configure ingress for home-assistant"
       kubernetes.core.k8s:
         state: present
