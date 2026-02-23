@@ -42,8 +42,11 @@
           If any K8s application needs an ingress controller, than deployment will fail.
 
 - name: "Iterate through K8s applications"
-  include_tasks: "{{ _k8s_app.name }}.yaml"
+  include_tasks: 
+    file: "{{ item.name }}.yaml"
   loop: "{{ k8s_apps }}"
   loop_control:
-    loop_var: _k8s_app
-    label: "{{ _k8s_app.name }} ({{ _k8s_app.version }})"
+    loop_var: item
+    label: "{{ item.name }} ({{ item.version }})"
+  vars:
+    _k8s_app: "{{ item }}"
