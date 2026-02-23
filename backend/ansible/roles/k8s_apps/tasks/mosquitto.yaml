@@ -15,7 +15,7 @@
     - name: "deploy mosquitto"
       kubernetes.core.k8s:
         state: present
-        template: 'home-assistant.yaml.j2'
+        template: 'mosquitto.yaml.j2'
     - name: "configure ingress for mosquitto"
       kubernetes.core.k8s:
         state: present
