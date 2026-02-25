@@ -80,6 +80,7 @@ k8s_apps:
   - name: "home-assistant"
     version: "none" # 2026.1.0
     namespace: "home-assistant"
+    environment: "production" # staging
     config:
       fqdn: "home-assistant.fqdn"
       country: "CH"
@@ -91,11 +92,14 @@ k8s_apps:
       size: "16Gi"
   - name: "mosquitto"
     version: "none" # 2.1.2
+    namespace: "mosquitto"
+    environment: "production" # staging
     mqtt:
       fqdn: "mosquitto.fqdn"
   - name: "zigbee2mqtt"
     version: "none" # 2.8.0
     namespace: "zigbee2mqtt"
+    environment: "production" # staging
     frontend:
       fqdn: "zigbee2mqtt.fqdn"
     zigbee:
@@ -110,9 +114,10 @@ k8s_apps:
     serial:
       port: "/dev/serial/by-id/<SERIAL_ID>" # /dev/ttyUSB0
       adapter: "zstack" # see https://www.zigbee2mqtt.io/guide/adapters/
-  #- name: name
-  #  version: version
+  #- name: name - required
+  #  version: version - required
   #  namespace: namespace
+  #  environment: "production" # staging
   #  params:
   #    x: y
   #  param: value
