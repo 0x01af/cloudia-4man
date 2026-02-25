@@ -81,7 +81,15 @@ metadata:
 spec:
   secretName: mosquitto-secret-tls
   issuerRef:
-    name: letsencrypt-prod
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    {% if _k8s_app.mode is defined and _k8s_app.mode == "prod" %}
+    # configure prod certificate issueing
+    name: "letsencrypt-production"
+    {% else %}
+    # configure test certificate issueing
+    name: "letsencrypt-staging"
+    {% endif %}
     kind: ClusterIssuer
   commonName: "{{ _k8s_app.mqtt.fqdn }}"
   dnsNames:
