@@ -81,7 +81,7 @@
 - hosts: admin_nodes:&k3s_cluster
   gather_facts: true
   roles:
-    - role: admin_tools
+    - { role: admin_tools, tags: ["admin_tools_only"] }
     - role: k3s_components
     - { role: k8s_apps, tags: ["k8s_apps_only"] }
 
