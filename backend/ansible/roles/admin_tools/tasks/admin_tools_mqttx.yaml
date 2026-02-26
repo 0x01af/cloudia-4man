@@ -1,4 +1,15 @@
 ---
-
-curl -LO https://www.emqx.com/en/downloads/MQTTX/v1.13.0/mqttx-cli-linux-x64
-sudo install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx
+- name: "prepare environment"
+  ansible.builtin.file:
+    path: "/tmp/mqttx"
+    state: directory
+- name: "downloading binaries"
+  ansible.builtin.get_url:
+    url: "https://www.emqx.com/en/downloads/MQTTX/{{ _admin_tool.version }}/mqttx-cli-linux-x64"
+    dest: "/tmp/mqttx"
+- name: "installing binaries"
+  ansible.builtin.command:
+    cmd: "install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx"
+  args:
+    chdir: "/tmp/mqttx"
+  become: true
