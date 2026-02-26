@@ -5,7 +5,7 @@
     state: directory
 - name: "downloading binaries"
   ansible.builtin.get_url:
-    url: "https://dl.k8s.io/release/{{ admin_tools.kubectl.version }}/bin/linux/amd64/kubectl"
+    url: "https://dl.k8s.io/release/{{ _admin_tool.version }}/bin/linux/amd64/kubectl"
     dest: "/tmp/kubectl/"
 - name: "installing binaries"
   ansible.builtin.command:
