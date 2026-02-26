@@ -2,9 +2,11 @@
 # Configuration of all admin_nodes
 # - none: no installation needed; v0.4.27: version to be installed 
 admin_tools:
-  kubectl:
+  - name: "kubectl"
     version: "v1.35.0"
-  k8sgpt:
-    version: 'none'
-  ansible:
-    version: 'none'
+  - name: "mqttx"
+    version: "v1.13.0"
+  # - name: "k8sgpt
+  #  version: 'none'
+  #- name: "ansible
+  #  version: 'none'
