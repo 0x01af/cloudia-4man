@@ -15,6 +15,9 @@
   when: admin_tools.kubectl is defined and kubectl.version is defined and admin_tools.kubectl.version != 'none'
   import_tasks: admin_tools_kubectl.yaml
 
+curl -LO https://www.emqx.com/en/downloads/MQTTX/v1.13.0/mqttx-cli-linux-x64
+sudo install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx
+
 - name: "tool k8sgpt"
   when: admin_tools.k8sgpt is defined and admin_tools.k8sgpt.version is defined and admin_tools.k8sgpt.version != 'none'
   block:
