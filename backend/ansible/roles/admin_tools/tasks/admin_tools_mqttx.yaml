@@ -12,4 +12,4 @@
     cmd: "install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx"
   args:
     chdir: "/tmp/mqttx"
-  # become: true
+  become: true
