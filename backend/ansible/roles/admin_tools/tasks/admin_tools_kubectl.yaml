@@ -12,7 +12,7 @@
     cmd: "install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl"
   args:
     chdir: "/tmp/kubectl"
-  # become: true
+  become: true
 - name: "kubectl: configuring kubectl - autocomplete"
   ansible.builtin.lineinfile:
     path: "~/.bashrc"
