@@ -1,7 +1,7 @@
 ---
 
 - name: "tool k8sgpt"
-  when: admin_tools.k8sgpt is defined and admin_tools.k8sgpt.version is defined and admin_tools.k8sgpt.version != 'none'
+  when: _admin_tool.version != 'none'
   block:
     - name: "downloading binaries"
       ansible.builtin.get_url:
