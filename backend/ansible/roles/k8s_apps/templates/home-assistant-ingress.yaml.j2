@@ -32,13 +32,13 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    {%- if _k8s_app.mode is defined and _k8s_app.mode == "prod" %}
+    {% if _k8s_app.mode is defined and _k8s_app.mode == "prod" -%}
     # configure prod certificate issueing
     cert-manager.io/cluster-issuer: "letsencrypt-production"
-    {%- else %}
+    {% else %}
     # configure test certificate issueing
     cert-manager.io/cluster-issuer: "letsencrypt-staging"
-    {%- endif %}
+    {% endif %}
     cert-manager.io/acme-challenge-type: "http01"
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
