@@ -5,7 +5,7 @@
   block:
     - name: "downloading binaries"
       ansible.builtin.get_url:
-        url: "https://github.com/k8sgpt-ai/k8sgpt/releases/download/{{ admin_tools.k8sgpt.version }}/k8sgpt_Linux_x86_64.tar.gz"
+        url: "https://github.com/k8sgpt-ai/k8sgpt/releases/download/{{ _admin_tool.version }}/k8sgpt_Linux_x86_64.tar.gz"
         dest: "/tmp/k8sgpt_Linux_x86_64.tar.gz"
     - name: "extracting binaries (tar -xzf k8sgpt_Linux_x86_64.tar.gz)"
       ansible.builtin.unarchive:
