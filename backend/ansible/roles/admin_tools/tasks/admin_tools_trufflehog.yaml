@@ -1,3 +1,17 @@
 ---
 # trufflehog
 # curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin <ReleaseTag like v3.56.0>
+- name: "trufflehog: prepare environment"
+  ansible.builtin.file:
+    path: "/tmp/trufflehog"
+    state: directory
+- name: "trufflehog: downloading install script"
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh"
+    dest: "/tmp/trufflehog"
+- name: "trufflehog: installing binaries"
+  ansible.builtin.command:
+    cmd: "install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx"
+  args:
+    chdir: "/tmp/mqttx"
+  become: tru
