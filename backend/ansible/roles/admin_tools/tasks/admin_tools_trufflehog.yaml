@@ -11,7 +11,7 @@
     dest: "/tmp/trufflehog"
 - name: "trufflehog: installing binaries"
   ansible.builtin.command:
-    cmd: "install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx"
+    cmd: "./install.sh -b /usr/local/bin {{ _admin_tool.version }}"
   args:
-    chdir: "/tmp/mqttx"
-  become: tru
+    chdir: "/tmp/trufflehog"
+  become: true
