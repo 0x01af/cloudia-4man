@@ -1,0 +1,25 @@
+---
+# - name: "deploy prerequisites"
+#  kubernetes.core.k8s:
+#    state: present
+    # src: 'rauthy-prerequisites.yaml'
+    # definition: |-
+    # template: 'rauthy-prerequisites.yaml.j2'
+    # - path: 'file1.j2'
+    # - path: 'file2.j2'
+
+- name: "k8s_app gatus (monitoring)"
+  when: _k8s_app.version != 'none'
+  block:
+    - name: "deploy prerequisites of gatus"
+      kubernetes.core.k8s:
+        state: present
+        template: 'gatus-prerequisites.yaml.j2'
+    - name: "deploy gatus"
+      kubernetes.core.k8s:
+        state: present
+        template: 'gatus.yaml.j2'
+    - name: "configure ingress for gatus"
+      kubernetes.core.k8s:
+        state: present
+        template: 'gatus-ingress.yaml.j2'
