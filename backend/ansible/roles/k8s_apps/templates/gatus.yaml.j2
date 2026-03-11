@@ -23,7 +23,7 @@ metadata:
   name: gatus
   namespace: "{{ _k8s_app.namespace | default('gatus') }}"
   # annotations:
-  #  config_hash: sha1(jsonencode(kubernetes_config_map_v1.gatus.data))
+  #  checksum/config: sha1(jsonencode(kubernetes_config_map_v1.gatus.data))
   labels:
     app: gatus
 spec:
@@ -36,8 +36,8 @@ spec:
       labels:
         app: gatus
     spec:
-      # securityContext:
-      #  fsGroup: 1
+      securityContext:
+        fsGroup: 65534
       containers:
       - image: "twinproduction/gatus:{{ _k8s_app.version }}" # v5.11.0
         name: gatus
