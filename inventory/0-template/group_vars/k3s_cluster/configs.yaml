@@ -80,7 +80,7 @@ k8s_apps:
   - name: "home-assistant"
     version: "none" # 2026.1.0
     namespace: "home-assistant"
-    environment: "production" # staging
+    mode: "prod" # test
     config:
       fqdn: "home-assistant.fqdn"
       country: "CH"
@@ -93,13 +93,13 @@ k8s_apps:
   - name: "mosquitto"
     version: "none" # 2.1.2
     namespace: "mosquitto"
-    environment: "production" # staging
+    mode: "prod" # test
     mqtt:
       fqdn: "mosquitto.fqdn"
   - name: "zigbee2mqtt"
     version: "none" # 2.8.0
     namespace: "zigbee2mqtt"
-    environment: "production" # staging
+    mode: "prod" # test
     frontend:
       fqdn: "zigbee2mqtt.fqdn"
     zigbee:
@@ -114,10 +114,23 @@ k8s_apps:
     serial:
       port: "/dev/serial/by-id/<SERIAL_ID>" # /dev/ttyUSB0
       adapter: "zstack" # see https://www.zigbee2mqtt.io/guide/adapters/
+  - name: "gatus"
+    version: "none" # 
+    namespace: "gatus"
+    mode: "prod" # test
+    frontend:
+      fqdn: "gatus.fqdn"
+    endpoints:
+    - name: "example"
+      url: "https://example.org"
+      interval: "60s"
+      conditions:
+        - "[STATUS] == 200"
+        - "[BODY] == pat(*<h1>Example Domain</h1>*)"
   #- name: name - required
   #  version: version - required
   #  namespace: namespace
-  #  environment: "production" # staging
+  #  mode: "prod" # test
   #  params:
   #    x: y
   #  param: value
