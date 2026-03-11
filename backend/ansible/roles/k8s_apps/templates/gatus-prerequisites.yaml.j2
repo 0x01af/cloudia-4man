@@ -13,4 +13,12 @@ metadata:
   namespace: "{{ _k8s_app.namespace | default('gatus') }}"
 data:
   config.yaml: |-
-  
+    endpoints:
+      {{ _k8s_app.endpoints }}
+    # endpoints:
+    # - name: example
+    #  url: https://example.org
+    #  interval: 60s
+    #  conditions:
+    #    - "[STATUS] == 200"
+    #    - "[BODY] == pat(*<h1>Example Domain</h1>*)"
