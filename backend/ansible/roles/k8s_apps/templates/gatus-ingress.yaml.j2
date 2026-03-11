@@ -1,0 +1,59 @@
+---
+# inspired by:
+# - https://traefik.io/blog/secure-web-applications-with-traefik-proxy-cert-manager-and-lets-encrypt (ingress resource)
+# - https://www.digitalocean.com/community/tutorials/how-to-secure-your-site-in-kubernetes-with-cert-manager-traefik-and-let-s-encrypt (ingress resource)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gatus-ingress-redirect
+  namespace: "{{ _k8s_app.namespace | default('gatus') }}"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+spec:
+  ingressClassName: {{ _k8s_ingress_detected }}
+  rules:
+    - host: "{{ _k8s_app.config.fqdn | default('gatus.local') }}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gatus-service
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gatus-ingress
+  namespace: "{{ _k8s_app.namespace | default('gatus') }}"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    {% if _k8s_app.mode is defined and _k8s_app.mode == "prod" -%}
+    # configure prod certificate issueing
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+    {% else %}
+    # configure test certificate issueing
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    {% endif %}
+    cert-manager.io/acme-challenge-type: "http01"
+spec:
+  ingressClassName: {{ _k8s_ingress_detected }}
+  rules:
+  - host: "{{ _k8s_app.config.fqdn | default('gatus.local') }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: gatus-service
+            port:
+              number: 8080
+  tls:
+  - hosts:
+    - "{{ _k8s_app.config.fqdn | default('gatus.local') }}"
+    secretName: gatus-ingress-tls-secret
