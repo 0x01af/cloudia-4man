@@ -1,3 +1,16 @@
 # based on:
 # - https://github.com/TwiN/terraform-kubernetes-gatus
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ _k8s_app.namespace | default('gatus') }}"
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: gatus-configmap-config
+  namespace: "{{ _k8s_app.namespace | default('gatus') }}"
+data:
+  config.yaml: |-
+  
