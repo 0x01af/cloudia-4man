@@ -1,0 +1,66 @@
+---
+# Configuration of Apps on K8s
+k8s_apps:
+  - name: "kubernetes-reflector"
+    version: "none" # v10.0.3
+  - name: "cert-manager"
+    version: "none" # v1.19.2
+    acme:
+      email: "hostmaster@fqdn"
+  - name: "home-assistant"
+    version: "none" # 2026.1.0
+    namespace: "home-assistant"
+    mode: "prod" # test
+    config:
+      fqdn: "home-assistant.fqdn"
+      country: "CH"
+      language: "de"
+      currency: "CHF"
+      time_zone: "Europe/Zurich"
+    storage:
+      class_name: "longhorn"
+      size: "16Gi"
+  - name: "mosquitto"
+    version: "none" # 2.1.2
+    namespace: "mosquitto"
+    mode: "prod" # test
+    mqtt:
+      fqdn: "mosquitto.fqdn"
+  - name: "zigbee2mqtt"
+    version: "none" # 2.8.0
+    namespace: "zigbee2mqtt"
+    mode: "prod" # test
+    frontend:
+      fqdn: "zigbee2mqtt.fqdn"
+    zigbee:
+      channel: "11"
+      pan_id: "0x1a62"
+      ext_pan_id: "[0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD, 0xDD]"
+    mqtt:
+      server_url: "mqtt://mosquitto-service.mosquitto.svc:1883" # mqtts://mosquitto-public.fqdn:8883
+    storage:
+      class_name: "longhorn"
+      size: "1Gi"
+    serial:
+      port: "/dev/serial/by-id/<SERIAL_ID>" # /dev/ttyUSB0
+      adapter: "zstack" # see https://www.zigbee2mqtt.io/guide/adapters/
+  - name: "gatus"
+    version: "none" # 
+    namespace: "gatus"
+    mode: "prod" # test
+    frontend:
+      fqdn: "gatus.fqdn"
+    endpoints:
+    - name: "example"
+      url: "https://example.org"
+      interval: "60s"
+      conditions:
+        - "[STATUS] == 200"
+        - "[BODY] == pat(*<h1>Example Domain</h1>*)"
+  #- name: name - required
+  #  version: version - required
+  #  namespace: namespace
+  #  mode: "prod" # test
+  #  params:
+  #    x: y
+  #  param: value
