@@ -14,7 +14,7 @@ metadata:
 data:
   config.yaml: |-
     endpoints:
-      {{ _k8s_app.endpoints }}
+      {{ _k8s_app.endpoints | to_yaml }}
     # endpoints:
     # - name: example
     #  url: https://example.org
