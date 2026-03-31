@@ -79,7 +79,7 @@ metadata:
   name: mosquitto-certificate-tls
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 spec:
-  secretName: mosquitto-secret-tls
+  secretName: mosquitto-ingress-secret-tls
   issuerRef:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
