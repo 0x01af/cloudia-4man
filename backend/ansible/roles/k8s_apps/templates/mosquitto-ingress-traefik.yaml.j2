@@ -31,8 +31,7 @@ spec:
         - name: mosquitto-service
           port: 1883
   tls:
-    secretName: mosquitto-secret-tls
-###
+    secretName: mosquitto-ingress-secret-tls
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -58,4 +57,4 @@ spec:
   tls:
   - hosts:
     - "{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}"
-    secretName: mosquitto-secret-tls
+    secretName: mosquitto-ingress-secret-tls
