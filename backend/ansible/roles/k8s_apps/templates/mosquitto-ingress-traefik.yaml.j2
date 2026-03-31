@@ -26,7 +26,7 @@ spec:
     - mqtts
   routes:
     # SNI funktioniert nur bei MQTTS
-    - match: HostSNI(`{{ _k8s_app.mqtt.fqdn }}`)
+    - match: HostSNI(`{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}`)
       services:
         - name: mosquitto-service
           port: 1883
