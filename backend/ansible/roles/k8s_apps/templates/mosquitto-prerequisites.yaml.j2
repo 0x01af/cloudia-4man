@@ -91,6 +91,6 @@ spec:
     name: "letsencrypt-staging"
     {% endif %}
     kind: ClusterIssuer
-  commonName: "{{ _k8s_app.mqtt.fqdn }}"
+  commonName: "{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}"
   dnsNames:
-    - "{{ _k8s_app.mqtt.fqdn }}"
+    - "{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}"
