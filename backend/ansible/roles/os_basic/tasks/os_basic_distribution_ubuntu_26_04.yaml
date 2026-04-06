@@ -3,10 +3,17 @@
 # - https://discourse.ubuntu.com/t/improving-chrony-time-source-configuration-in-ubuntu/47850
 # - https://discourse.ubuntu.com/t/ntp-server-should-point-to-a-local-ntp-server/78601/13
 # - https://oneuptime.com/blog/post/2026-02-21-ansible-configure-ntp-servers/view
-- name: Deploy chrony configuration
+# - https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/debconf_module.html
+- name: 'Change chrony default configuration'
+  ansible.builtin.debconf:
+    name: chrony
+    question: chrony/configure_ubuntu_pools_in_sourcesd
+    value: 'false'
+    vtype: boolean
+- name: 'Configure chrony based on settings'
   ansible.builtin.template:
-    src: os-basic-ubuntu-chrony.conf.j2
-    dest: /etc/chrony/sources.d/10-os-basic-ubuntu-26-04.conf
+    src: os-basic-ubuntu-26-04-chrony.conf.j2
+    dest: /etc/chrony/sources.d/os-basic-ubuntu-26-04.conf
     owner: root
     group: root
     mode: '0644'
