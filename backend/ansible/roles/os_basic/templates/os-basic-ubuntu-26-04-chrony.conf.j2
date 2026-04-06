@@ -1,0 +1,14 @@
+
+# Internal NTP servers - preferred
+{% for server in os_basic.ntp.servers %}
+server {{ server }} iburst prefer
+{% endfor %}
+
+# Fallback to public NTP if internal servers are unreachable
+server 0.pool.ntp.org iburst
+server 1.pool.ntp.org iburst
+
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync
+logdir /var/log/chrony
