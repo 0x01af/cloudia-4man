@@ -1,5 +1,5 @@
 ---
-- name: 'c4m_commons:time-dependent-services-restart'
+- name: 'c4m_commons:os-time-dependent-services-restart'
   ansible.builtin.service:
     name: "{{ item }}"
     state: restarted
