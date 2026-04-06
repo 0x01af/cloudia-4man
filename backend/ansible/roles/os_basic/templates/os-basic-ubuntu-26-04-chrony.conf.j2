@@ -1,7 +1,7 @@
 {{ ansible_managed | comment }}
 
 # NTP servers - preferred
-{% for server in os_basic.ntp.servers %}
+{% for server in os_local.ntp.servers %}
 server {{ server }} iburst prefer
 {% endfor %}
 
