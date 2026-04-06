@@ -6,6 +6,12 @@ ansible_user: "your-superuser"
 # Operating System Local Configuration
 os_local:
   time_zone: "Europe/Zurich"
+  ntp:
+    servers:
+      - "0.ch.pool.ntp.org"
+	    - "1.ch.pool.ntp.org"
+	    - "2.ch.pool.ntp.org"
+	    - "3.ch.pool.ntp.org"
   keyboard:
     model: "pc105"
     layout: "ch"
