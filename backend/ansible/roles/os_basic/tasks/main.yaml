@@ -8,11 +8,6 @@
     name: "{{ os_local.time_zone }}"
   register: _os_local_time
 
-- name: 'Change time server'
-  ansible_distribution: "Ubuntu"
-ansible_distribution_version: "24.04"
-ansible_distribution_major_version: "24"
-
 - name: 'Restart all time-dependent services'
   when: _os_local_time.changed
   ansible.builtin.include_role:
