@@ -1,10 +1,11 @@
+{{ ansible_managed | comment }}
 
-# Internal NTP servers - preferred
+# NTP servers - preferred
 {% for server in os_basic.ntp.servers %}
 server {{ server }} iburst prefer
 {% endfor %}
 
-# Fallback to public NTP if internal servers are unreachable
+# NTP servers - Fallback to public NTP if internal servers are unreachable
 server 0.pool.ntp.org iburst
 server 1.pool.ntp.org iburst
 
