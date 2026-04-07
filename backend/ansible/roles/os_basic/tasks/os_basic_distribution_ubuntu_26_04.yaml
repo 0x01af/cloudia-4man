@@ -13,9 +13,12 @@
 - name: 'Configure chrony based on settings'
   ansible.builtin.template:
     src: os-basic-ubuntu-26-04-chrony.conf.j2
-    dest: /etc/chrony/sources.d/os-basic-ubuntu-26-04.conf
+    dest: /etc/chrony/sources.d/os-basic-ubuntu-26-04-chrony.conf
     owner: root
     group: root
     mode: '0644'
     backup: true
-  # notify: Restart chrony
+- name: 'Restart chrony'
+  ansible.builtin.service:
+    name: chrony
+    state: restarted
