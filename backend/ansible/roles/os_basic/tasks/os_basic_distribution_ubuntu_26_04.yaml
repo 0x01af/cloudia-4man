@@ -18,7 +18,7 @@
     group: root
     mode: '0644'
     backup: true
-- name: 'Restart chrony'
-  ansible.builtin.service:
-    name: chrony
-    state: restarted
+- name: 'Restart timedependent services'
+  ansible.builtin.include_role:
+    name: c4m_commons
+    tasks_from: timedependent_services_restart
