@@ -13,7 +13,7 @@
 - name: 'Configure chrony based on settings'
   ansible.builtin.template:
     src: os-basic-ubuntu-26-04-chrony.conf.j2
-    dest: /etc/chrony/sources.d/os-basic-ubuntu-26-04-chrony.conf
+    dest: /etc/chrony/sources.d/10-os-basic-ubuntu-26-04-chrony.conf
     owner: root
     group: root
     mode: '0644'
