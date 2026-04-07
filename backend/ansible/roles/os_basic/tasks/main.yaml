@@ -36,8 +36,11 @@
   block:
     - name: 'os_basic tasks - general'
       import_tasks: os_basic_family_debian.yaml
-    - name: 'os_basic tasks - distribution Ubuntu 26.04'
-      when: ansible_distribution|lower == 'ubuntu' and ansible_distribution_version == '26.04'
+    - name: 'os_basic tasks - distribution Ubuntu 24.04'
+      when: ansible_distribution|lower == 'ubuntu' and ansible_distribution_version == '24.04'
+      import_tasks: os_basic_distribution_ubuntu_24_04.yaml
+    - name: 'os_basic tasks - distribution Ubuntu 25.10/26.04'
+      when: ansible_distribution|lower == 'ubuntu' and (ansible_distribution_version == '25.10' or ansible_distribution_version == '26.04')
       import_tasks: os_basic_distribution_ubuntu_26_04.yaml
 
 # - name: 'os_basic tasks for Red Hat OS family (RHEL/CentOS)'
