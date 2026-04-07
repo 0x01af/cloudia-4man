@@ -1,0 +1,14 @@
+---
+# Set NTP servers (systemd-timesyncd)
+- name: 'Configure timesyncd based on settings'
+  ansible.builtin.template:
+    src: os-basic-ubuntu-24-04-timesyncd.conf.j2
+    dest: /etc/systemd/timesyncd.conf.d/10-os-basic-ubuntu-24-04-timesyncd.conf
+    owner: root
+    group: root
+    mode: '0644'
+    backup: true
+- name: 'Restart systemd-timesyncd'
+  ansible.builtin.service:
+    name: systemd-timesyncd
+    state: restarted
