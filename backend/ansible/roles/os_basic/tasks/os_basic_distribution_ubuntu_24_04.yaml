@@ -1,5 +1,12 @@
 ---
 # Set NTP servers (systemd-timesyncd)
+- name: 'Ensure drop-in directory timesyncd.conf.d exists'
+  ansible.builtin.file:
+    path: /etc/systemd/timesyncd.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
 - name: 'Configure timesyncd based on settings'
   ansible.builtin.template:
     src: os-basic-ubuntu-24-04-timesyncd.conf.j2
