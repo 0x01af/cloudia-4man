@@ -1,0 +1,7 @@
+{{ ansible_managed | comment }}
+
+[Time]
+# NTP servers - preferred
+NTP="{% for server in os_local.ntp.servers -%}{{ server }} {%- endfor %}"
+# NTP servers - Fallback to public NTP if internal servers are unreachable
+FallbackNTP="0.pool.ntp.org 1.pool.ntp.org"
