@@ -33,17 +33,19 @@
 
 - name: 'os_basic tasks for Debian OS family (Debian/Ubuntu)'
   when: ansible_os_family|lower == 'debian'
-  block:
-    - name: 'os_basic tasks - general'
-      import_tasks: os_basic_family_debian.yaml
-    - name: 'os_basic tasks - distribution Ubuntu 24.04'
-      when: ansible_distribution|lower == 'ubuntu' and ansible_distribution_version == '24.04'
-      import_tasks: os_basic_distribution_ubuntu_24_04.yaml
-    - name: 'os_basic tasks - distribution Ubuntu 25.10/26.04'
-      when: ansible_distribution|lower == 'ubuntu' and (ansible_distribution_version == '25.10' or ansible_distribution_version == '26.04')
-      import_tasks: os_basic_distribution_ubuntu_26_04.yaml
+  include_tasks: os_basic_family_debian.yaml
 
-# - name: 'os_basic tasks for Red Hat OS family (RHEL/CentOS)'
-#  import_tasks: os_basic_redhat.yaml
+# - name: 'os_basic tasks for Red Hat OS family (RHEL/CentOS/Fedora/Rocky Linux/AlmaLinux)'
 #  when: ansible_os_family|lower == 'redhat'
 
+# - name: 'os_basic tasks for SUSE family (SLES/openSUSE)'
+#  when: ansible_os_family|lower == 'suse'
+
+- name: 'os_basic tasks for service timesyncd'
+  when: ansible_distribution|lower == 'ubuntu' and ansible_distribution_version == '24.04'
+  include_tasks: os_basic_timesyncd.yaml
+- name: 'os_basic tasks for service chrony'
+  when: ansible_distribution|lower == 'ubuntu' and (ansible_distribution_version == '25.10' or ansible_distribution_version == '26.04')
+  # => chrony: Red Hat Enterprise Linux (RHEL) 7, 8, 9+; Fedora; Rocky Linux / AlmaLinux 8, 9, 10
+  # => chrony: SUSE Linux Enterprise Server (SLES) 15+
+  include_tasks: os_basic_chrony.yaml
