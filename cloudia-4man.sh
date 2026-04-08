@@ -7,11 +7,32 @@
 # based on:
 # - https://linuxize.com/post/bash-functions/
 
-# Configuration
-C4M_CONFIG = {
- ansible_version: "2.7",
- inventory_path: './inventory'
-}
+### Configuration
+# Konstanten als assoziatives Array (Benötigt Bash 4.0+)
+declare -A C4M_CONFIG
+C4M_CONFIG=(
+    [ansible_version]="2.7"
+    [inventory_path]="./inventory"
+)
+
+# Liste der Umgebungen (C4M_ENVIRONMENTS) dynamisch füllen
+# NOT NEEDED: Detecting new infrastructure component
+# - scan directory "/inventory"
+# - new environment found, if a subfolder of "/inventory" isn't listed in file "/inventory/.c4m-inventory.yaml"
+# - new server found, if a subfolder of "/inventory/environment" isn't listed in file "/inventory/.c4m-inventory.yaml"
+C4M_ENVIRONMENTS=()
+# Überprüfen, ob das Verzeichnis existiert
+if [ -d "${C4M_CONFIG[inventory_path]}" ]; then
+    # Scanne Unterverzeichnisse, schliesse "0-template" aus
+    for dir in "${C4M_CONFIG[inventory_path]}"/*/; do
+        dir_name=$(basename "$dir")
+        if [[ "$dir_name" != "0-template" && "$dir_name" != "*" ]]; then
+            C4M_ENVIRONMENTS+=("$dir_name")
+        fi
+    done
+else
+    echo "Warnung: Inventory-Pfad ${C4M_CONFIG[inventory_path]} nicht gefunden."
+fi
 
 # Checking prerequisite
 # - ansible: if not existing, should it install it
@@ -20,12 +41,7 @@ ansible-galaxy collection install -r backend/ansible/requirements.yaml
 # - python libraries: ensure, all required python libraries are installed
 pip install --user passlib
 
-## Main Functions
-# Provision: Neues Gerät / Software installieren -> updates inventory
-# Configure: Geräte/Software konfigurieren/installieren
-# Update: Geräte/Software aktualisieren
-# Change: Geräte/Software verändern
-# Remove: Geräte/Software entfernen
+### Main Functions
 
 # Funktion für einen Task mit einfachem Fortschrittsbalken
 c4m_install() {
@@ -125,14 +141,6 @@ echo "Cloudia wishes a good day."
 exit 0
 
 
-# NOT NEEDED: Detecting new infrastructure component
-# - scan directory "/inventory"
-# - new environment found, if a subfolder of "/inventory" isn't listed in file "/inventory/.c4m-inventory.yaml"
-# - new server found, if a subfolder of "/inventory/environment" isn't listed in file "/inventory/.c4m-inventory.yaml"
-
-# Asking about any special parameters like one-time-passwords, or similar
-
-
 # INCLUDED AT ANSIBLE: Running provisioning service
 # mkdir /inventory/{$environment}/states/{$server}
 # cd /inventory/{$environment}/states/{$server}
@@ -146,4 +154,122 @@ exit 0
 ## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
 # ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
 
-# Updating inventory
+
+
+# Hilfsfunktion zum Ausführen von Ansible
+c4m_run_ansible() {
+    local env=$1
+    local tag_arg=$2
+    local cmd="ansible-playbook backend/ansible/c4m-playbook.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
+    
+    if [ -n "$tag_arg" ]; then
+        cmd="$cmd --tags \"$tag_arg\""
+    fi
+    
+    echo -e "\n--- Starte: $env ---"
+    echo "Kommando: $cmd"
+    # Führe das Kommando tatsächlich aus:
+    eval $cmd
+}
+
+# ==============================================================================
+# SUB-SUBMENU: All Environments
+# ==============================================================================
+show_sub_sub_menu_all() {
+    clear
+    echo "=== Configure All Environments ==="
+    echo "0 Full run"
+    echo "1 OS Basic only run"
+    echo "2 K8s Apps only run"
+    echo "-----------------------------------"
+    read -p "Wahl: " ssc
+
+    case $ssc in
+        0)
+            for env in "${C4M_ENVIRONMENTS[@]}"; do run_ansible "$env" ""; done
+            return 0 # Signal zum Hauptmenu zurückzukehren
+            ;;
+        1)
+            for env in "${C4M_ENVIRONMENTS[@]}"; do run_ansible "$env" "os_basic_only"; done
+            return 0
+            ;;
+        2)
+            for env in "${C4M_ENVIRONMENTS[@]}"; do run_ansible "$env" "k8s_apps_only"; done
+            return 0
+            ;;
+        *) echo "Ungültige Wahl."; sleep 1; return 1 ;;
+    esac
+}
+
+# ==============================================================================
+# CHOICE: Environment(s)
+# ==============================================================================
+c4m_choice_environments() {
+    local action=$1
+    while true; do
+        clear
+        echo "Choose environment(s) for " $action
+        echo "--------------------------------------------"
+        echo "a All environments"
+        
+        # Auflistung der dynamischen Liste
+        local i=1
+        for env in "${C4M_ENVIRONMENTS[@]}"; do
+            echo "$i $env"
+            ((i++))
+        done
+        
+        echo "q Quit (Back to Main)"
+        echo "--------------------------------------------"
+        read -p "Wahl: " choice_environment
+        
+        if [[ "$choice_environment" == "a" ]]; then
+            show_sub_sub_menu_all
+            break
+        elif [[ "$choice_environment" == "q" ]]; then
+            break
+        elif [[ "$sub_choice" =~ ^[0-9]+$ ]] && [ "$sub_choice" -ge 1 ] && [ "$sub_choice" -le "${#C4M_ENVIRONMENTS[@]}" ]; then
+            # Einzelne Umgebung ausgewählt (Index ist Wahl-1)
+            local selected_env="${C4M_ENVIRONMENTS[$((sub_choice-1))]}"
+            echo "Einzel-Modus für $selected_env gewählt (keine spezifische Logik definiert, führe Full Run aus)..."
+            run_ansible "$selected_env" ""
+            read -p "Drücke Enter für Hauptmenü..."
+            break
+        fi
+    done
+}
+
+# ==============================================================================
+# MAIN MENU
+# ==============================================================================
+c4m_main() {
+  while true; do
+    clear
+    echo "=== Main Menu ==="
+    echo "1 Configure and Update environments..."
+    echo "2 Shutdown environments..."
+    echo "q Quit"
+    echo "-----------------------------------"
+    read -p "Auswahl: " choice_action
+
+    case $choice_action in
+        1)
+            c4m_choice_environments "configure and update"
+            ;;
+        2)
+            c4m_choice_environments "shutdown"
+            ;;
+        q)
+            exit 0
+            ;;
+        *)
+            echo "Ungültige Option."
+            sleep 1
+            ;;
+    esac
+  done
+}
+
+c4m_main
+echo "Cloudia wishes a good day."
+exit 0
