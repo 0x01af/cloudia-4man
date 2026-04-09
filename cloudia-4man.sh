@@ -44,57 +44,6 @@ ansible-galaxy collection install -r backend/ansible/requirements.yaml
 pip install --user passlib
 
 ### Main Functions
-# Funktion für einen Task mit einfachem Fortschrittsbalken
-c4m_install() {
-  local duration=$1
-  local total_steps=20 # Anzahl der Schritte für den Balken
-  local bar_width=50   # Breite des Balkens in Zeichen
-
-  echo "Führe Task 1 aus (Dauer: ${duration}s)..."
-
-  for i in $(seq 1 $total_steps); do
-    # Berechne Fortschritt
-    local percent=$(( 100 * i / total_steps ))
-    local filled_width=$(( bar_width * i / total_steps ))
-    local empty_width=$(( bar_width - filled_width ))
-
-    # Erstelle Balken-String
-    local bar=$(printf "%${filled_width}s" "" | tr ' ' '#')
-    local empty=$(printf "%${empty_width}s" "")
-
-    # Gib Balken aus (mit \r, um die Zeile zu überschreiben)
-    printf "\r[%-${bar_width}s] %d%%" "${bar}${empty}" $percent
-
-    # Simuliere Arbeit
-    sleep $(echo "$duration / $total_steps" | bc -l)
-  done
-
-  # Zeilenumbruch nach Beendigung des Balkens
-  echo
-  echo "Cloudia's install task has been done."
-}
-
-
-c4m_update() {
-  echo "Cloudia - the foreman - is updating..."
-  sleep 2 # Simuliere Arbeit
-  echo "Cloudia's update task has been done."
-}
-
-
-c4m_change() {
-  echo "Cloudia - the foreman - is changing..."
-  sleep 2 # Simuliere Arbeit
-  echo "Cloudia's change task has been done."
-}
-
-c4m_remove() {
-  echo "Cloudia - the foreman - is removing..."
-  sleep 2 # Simuliere Arbeit
-  echo "Cloudia's remove task has been done."
-}
-
-
 # INCLUDED AT ANSIBLE: Running provisioning service
 # mkdir /inventory/{$environment}/states/{$server}
 # cd /inventory/{$environment}/states/{$server}
@@ -107,8 +56,6 @@ c4m_remove() {
 
 ## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
 # ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
-
-
 
 # ==============================================================================
 # Run ansible ...
