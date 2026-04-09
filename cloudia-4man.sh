@@ -15,6 +15,7 @@ C4M_CONFIG=(
     [inventory_path]="./inventory"
 )
 
+### Preparation
 # Liste der Umgebungen (C4M_ENVIRONMENTS) dynamisch füllen
 # NOT NEEDED: Detecting new infrastructure component
 # - scan directory "/inventory"
@@ -32,6 +33,7 @@ if [ -d "${C4M_CONFIG[inventory_path]}" ]; then
     done
 else
     echo "Warnung: Inventory-Pfad ${C4M_CONFIG[inventory_path]} nicht gefunden."
+    exit 1
 fi
 
 # Checking prerequisite
@@ -42,7 +44,6 @@ ansible-galaxy collection install -r backend/ansible/requirements.yaml
 pip install --user passlib
 
 ### Main Functions
-
 # Funktion für einen Task mit einfachem Fortschrittsbalken
 c4m_install() {
   local duration=$1
@@ -93,53 +94,6 @@ c4m_remove() {
   echo "Cloudia's remove task has been done."
 }
 
-c4m_main() {
-  # --- Hauptmenü ---
-  echo "Willkommen bei meiner kleinen Konsolen-App!"
-
-  # PS3 ist der Prompt, der vor der Menüauswahl angezeigt wird.
-  PS3="Bitte wähle eine Option (1-4): "
-
-  # Optionen für das select-Menü
-  options=("Install" "Update" "Change" "Remove" "Exit")
-
-  # Die select-Schleife zeigt das Menü an und wartet auf Eingabe
-  select opt in "${options[@]}"
-  do
-    # REPLY enthält die Nummer der Auswahl, opt den Text der Auswahl
-    case $opt in
-        "(1) Betriebssysteme ")
-            echo "Du hast '$opt' gewählt."
-            task_mit_fortschritt 5 # Task soll 5 Sekunden dauern
-            ;;
-        "Einfachen Task starten")
-            echo "Du hast '$opt' gewählt."
-            einfacher_task
-            ;;
-        "Hilfe anzeigen")
-            echo "Dies ist eine Beispiel-App."
-            echo "Wähle einen Task oder 'Exit' zum Beenden."
-            ;;
-        "Exit")
-            echo "Anwendung wird beendet."
-            return 0 # Verlässt die select-Schleife (und damit das Skript)
-            ;;
-        *) # Wird ausgeführt, wenn eine ungültige Nummer eingegeben wurde
-           echo "Ungültige Option: $REPLY. Bitte wähle eine Nummer von 1 bis ${#options[@]}."
-           ;;
-      esac
-      # Wichtig: Nach jeder Aktion erneut den Prompt anzeigen lassen (standardmäßig bei select)
-      # Manchmal ist es hilfreich, hier noch eine Leerzeile auszugeben oder auf "Enter" zu warten
-      cls
-      # read -p "Drücke Enter, um zum Menü zurückzukehren..." dummy_var
-
-   done # Ende der select-Schleife
-}
-
-cls
-echo "Cloudia wishes a good day."
-exit 0
-
 
 # INCLUDED AT ANSIBLE: Running provisioning service
 # mkdir /inventory/{$environment}/states/{$server}
@@ -156,87 +110,79 @@ exit 0
 
 
 
-# Hilfsfunktion zum Ausführen von Ansible
+# ==============================================================================
+# Run ansible ...
+# ==============================================================================
 c4m_run_ansible() {
-    local env=$1
-    local tag_arg=$2
-    local cmd="ansible-playbook backend/ansible/c4m-playbook.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
-    
-    if [ -n "$tag_arg" ]; then
-        cmd="$cmd --tags \"$tag_arg\""
-    fi
-    
-    echo -e "\n--- Starte: $env ---"
-    echo "Kommando: $cmd"
-    # Führe das Kommando tatsächlich aus:
-    eval $cmd
+  local action=$1
+  local scope=$2
+  local env=$3
+
+  local cmd="ansible-playbook backend/ansible/c4m-$action.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
+  
+  if [ "$scope" != "any" ]; then
+    cmd="$cmd --tags \"$scope\""
+  fi
+
+  echo "Cloudia - the foreman - executes command: $cmd"
+  eval $cmd
 }
 
 # ==============================================================================
-# SUB-SUBMENU: All Environments
+# Execute action on environments ...
 # ==============================================================================
-show_sub_sub_menu_all() {
+c4m_action() {
+  local action="${1}"
+  local scope="${2:-any}"
+
+  while true; do
     clear
-    echo "=== Configure All Environments ==="
-    echo "0 Full run"
-    echo "1 OS Basic only run"
-    echo "2 K8s Apps only run"
-    echo "-----------------------------------"
-    read -p "Wahl: " ssc
-
-    case $ssc in
-        0)
-            for env in "${C4M_ENVIRONMENTS[@]}"; do run_ansible "$env" ""; done
-            return 0 # Signal zum Hauptmenu zurückzukehren
-            ;;
-        1)
-            for env in "${C4M_ENVIRONMENTS[@]}"; do run_ansible "$env" "os_basic_only"; done
-            return 0
-            ;;
-        2)
-            for env in "${C4M_ENVIRONMENTS[@]}"; do run_ansible "$env" "k8s_apps_only"; done
-            return 0
-            ;;
-        *) echo "Ungültige Wahl."; sleep 1; return 1 ;;
-    esac
+    echo "Cloudia - the foreman executes " $action " (scope: " $scope ") on ..."
+    echo "------------------------------------------------------------------------------------------"
+    echo "a) All environments"
+    # Auflistung der dynamischen Liste
+    local i=1
+    for env in "${C4M_ENVIRONMENTS[@]}"; do
+      echo "$i) $env"
+      ((i++))
+    done
+    echo "q) Quit (back to main)"
+    echo "------------------------------------------------------------------------------------------"
+    read -p "Choose environment(s): " environment
+    
+    if [[ "$environment" == "q" ]]; then
+      break
+    elif [[ "$environment" == "a" ]]; then
+      for env in "${C4M_ENVIRONMENTS[@]}"; do
+        c4m_run_ansible $action $scope $env
+      done
+      break
+    elif [[ "$environment" =~ ^[0-9]+$ ]] && [ "$environment" -ge 1 ] && [ "$environment" -le "${#C4M_ENVIRONMENTS[@]}" ]; then
+      # Einzelne Umgebung ausgewählt (Index ist Wahl-1)
+      local env="${C4M_ENVIRONMENTS[$((environment-1))]}"
+      c4m_run_ansible $action $scope $env
+      break
+    fi
+  done
 }
 
 # ==============================================================================
-# CHOICE: Environment(s)
+# Choose execution scope ...
 # ==============================================================================
-c4m_choice_environments() {
-    local action=$1
-    while true; do
-        clear
-        echo "Choose environment(s) for " $action
-        echo "--------------------------------------------"
-        echo "a All environments"
-        
-        # Auflistung der dynamischen Liste
-        local i=1
-        for env in "${C4M_ENVIRONMENTS[@]}"; do
-            echo "$i $env"
-            ((i++))
-        done
-        
-        echo "q Quit (Back to Main)"
-        echo "--------------------------------------------"
-        read -p "Wahl: " choice_environment
-        
-        if [[ "$choice_environment" == "a" ]]; then
-            show_sub_sub_menu_all
-            break
-        elif [[ "$choice_environment" == "q" ]]; then
-            break
-        elif [[ "$sub_choice" =~ ^[0-9]+$ ]] && [ "$sub_choice" -ge 1 ] && [ "$sub_choice" -le "${#C4M_ENVIRONMENTS[@]}" ]; then
-            # Einzelne Umgebung ausgewählt (Index ist Wahl-1)
-            local selected_env="${C4M_ENVIRONMENTS[$((sub_choice-1))]}"
-            echo "Einzel-Modus für $selected_env gewählt (keine spezifische Logik definiert, führe Full Run aus)..."
-            run_ansible "$selected_env" ""
-            read -p "Drücke Enter für Hauptmenü..."
-            break
-        fi
-    done
+c4m_scope() {
+  clear
+  echo "------------------------------------------------------------------------------------------"
+  echo "1) OS Basic only run"
+  echo "2) K8s Apps only run"
+  echo "any) any scope"
+  echo "------------------------------------------------------------------------------------------"
+  read -p "Choose execution scope..." scope
+  
+  case $scope in
+    1) return "os_basic_only" ;;
+    2) return "k8s_apps_only" ;;
+    *) return "any" ;;
+  esac
 }
 
 # ==============================================================================
@@ -245,31 +191,34 @@ c4m_choice_environments() {
 c4m_main() {
   while true; do
     clear
-    echo "=== Main Menu ==="
-    echo "1 Configure and Update environments..."
-    echo "2 Shutdown environments..."
-    echo "q Quit"
-    echo "-----------------------------------"
-    read -p "Auswahl: " choice_action
-
-    case $choice_action in
-        1)
-            c4m_choice_environments "configure and update"
-            ;;
-        2)
-            c4m_choice_environments "shutdown"
-            ;;
-        q)
-            exit 0
-            ;;
-        *)
-            echo "Ungültige Option."
-            sleep 1
-            ;;
+    echo "Cloudia - the foreman - welcomes you."
+    echo "------------------------------------------------------------------------------------------"
+    echo "1) Execute playbook ..."
+    echo "2) Execute shutdown ..."
+    echo "q) Quit (Exit)"
+    echo "------------------------------------------------------------------------------------------"
+    read -p "Choose an action ..." action
+    
+    case $action in
+      1)
+        local scope=$(c4m_scope)
+        c4m_action "playbook" $scope
+        ;;
+      2)
+        c4m_action "shutdown"
+        ;;
+      q)
+        break
+        ;;
+      *)
+        echo "ERROR: Option is not available!"
+        sleep 1
+        ;;
     esac
   done
 }
 
 c4m_main
+clear
 echo "Cloudia wishes a good day."
 exit 0
