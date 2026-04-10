@@ -142,7 +142,7 @@ function c4m_scope() {
     --checklist "Choose a scope: " 0 0 15 \
     "os_basic_only" "Run OS Basic only" off \
     "k8s_apps_only" "Run K8s Apps only" off \
-    2>&1 > /dev/tty)
+    3>&1 1>&2 2>&3)
 
   clear
   echo "Test: " $scope
@@ -163,8 +163,8 @@ function c4m_main() {
     1 "Execute playbook ..." \
     2 "Execute shutdown ..." \
     q "Quit" \
-    2>&1 > /dev/tty)
-      
+    3>&1 1>&2 2>&3)
+    
     case $action in
       1)
         local scope=$(c4m_scope)
