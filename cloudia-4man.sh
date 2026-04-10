@@ -73,9 +73,9 @@ function c4m_aborted() {
 # Run ansible ...
 # ==============================================================================
 function c4m_run_ansible() {
-  local action=$1
-  local scope=$2
-  local env=$3
+  local action="${1}"
+  local scope="${2}"
+  local env="${3}"
 
   local cmd="ansible-playbook backend/ansible/c4m-$action.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
   
@@ -83,7 +83,7 @@ function c4m_run_ansible() {
     cmd="$cmd --tags \"$scope\""
   fi
 
-  echo "Cloudia - the foreman - executes command: $cmd"
+  printf "Cloudia - the foreman - executes command: $cmd"
   # eval $cmd
 }
 
@@ -96,13 +96,13 @@ function c4m_action() {
   
   local i=1
   local options=()
-  for env in "${environments[@]}"; do
+  for env in "${C4M_ENVIRONMENTS[@]}"; do
     options+=("$i" "$env" off)
     ((i++))
   done
   
   while true; do
-    environments=$(dialog --clear \
+    local environments=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Inventory" \
     --extra-button --extra-label "All environments" \ \
@@ -136,8 +136,7 @@ function c4m_action() {
 # Choose execution scope ...
 # ==============================================================================
 function c4m_scope() {
-  local scope
-  scope=$(dialog --clear \
+  local scope=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Playbook scope" \
     --nocancel \
@@ -158,7 +157,7 @@ function c4m_scope() {
 # ==============================================================================
 function c4m_main() {
   while true; do
-    action=$(dialog --clear \
+    local action=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Cloudia - the foreman - welcomes you." \
     --menu "Choose an action: " 0 0 15 \
