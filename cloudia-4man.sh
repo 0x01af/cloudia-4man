@@ -80,7 +80,7 @@ function c4m_run_ansible() {
 
   local cmd="ansible-playbook backend/ansible/c4m-$action.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
   
-  if [ "$scope" != "any" ]; then
+  if [ -ne $scope ]; then
     cmd="$cmd --tags \"$scope\""
   fi
 
@@ -149,7 +149,11 @@ function c4m_scope() {
   case $exit_status in
     0)  # OK was pressed
         echo "${scope[@]}" >debug.log
-        return join_by "," "${scope[@]}"
+        if [ ${#errors[@]} -eq 0 ]; then
+          return ""
+        else
+          return join_by , "${scope[@]}"
+        fi
         ;;
     1)  # Cancel was pressed
         break
