@@ -163,24 +163,24 @@ function c4m_main() {
     --menu "Choose an action: " 0 0 15 \
     1 "Execute playbook ..." \
     2 "Execute shutdown ..." \
-    q "Quit" \
     3>&1 1>&2 2>&3)
+
+    exit_status=$?
     
-    case $action in
-      1)
-        local scope=$(c4m_scope)
-        c4m_action "playbook" $scope
-        ;;
-      2)
-        c4m_action "shutdown"
-        ;;
-      q)
-        break
-        ;;
-      *)
-        echo "ERROR: Option is not available!"
-        sleep 1
-        ;;
+    case $exit_status in
+      0)  # OK was pressed
+          case $action in
+            1)
+               local scope=$(c4m_scope)
+               c4m_action "playbook" $scope
+               ;;
+            2)
+               c4m_action "shutdown"
+               ;;
+          ;;
+      1)  # Cancel was pressed
+          break
+          ;;
     esac
   done
 }
