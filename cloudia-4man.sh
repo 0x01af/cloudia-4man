@@ -94,14 +94,20 @@ function c4m_run_ansible() {
 function c4m_action() {
   local action="${1}"
   local scope="${2:-any}"
-
+  
+  local i=0
+  for env in "${environments[@]}"; do
+    i=$((i+1))
+    options+=($i "$env" off)
+  done
+  
   while true; do
     environments=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Inventory" \
     --extra-button --extra-label "All environments" \ \
     --checklist "Choose environment(s) to executing $action (scope: $scope):" 0 0 15 \
-    "${C4M_ENVIRONMENTS[@]}" \
+    "${options[@]}" \
     3>&1 1>&2 2>&3)
     
     exit_status=$?
@@ -138,7 +144,8 @@ function c4m_scope() {
     "k8s_apps_only" "Run K8s Apps only" off \
     2>&1 > /dev/tty)
 
-  echo $scope
+  clear
+  echo "Test: " $scope
   sleep 5
   
   return join_by "," "${scope[@]}"
