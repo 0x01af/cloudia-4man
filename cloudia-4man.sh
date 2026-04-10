@@ -85,7 +85,8 @@ function c4m_run_ansible() {
 
   
   clear
-  printf "Cloudia - the foreman - executes following command:\n$cmd"
+  printf "Cloudia - the foreman - executes following command:\n$cmd\n\n"
+  printf "Please stand by for any requests or warnings...\n\n"
   eval $cmd
 }
 
