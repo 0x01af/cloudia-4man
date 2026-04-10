@@ -68,7 +68,6 @@ function c4m_aborted() {
   echo "Cloudia hopes to get well soon."
   exit 0
 }
-function join_by { local IFS="$1"; shift; echo "$*"; }
 
 # ==============================================================================
 # Run ansible ...
@@ -80,7 +79,7 @@ function c4m_run_ansible() {
 
   local cmd="ansible-playbook backend/ansible/c4m-$action.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
   
-  if [ -ne $scope ]; then
+  if [[ -n "$scope" && "$scope" != "any" ]]; then
     cmd="$cmd --tags \"$scope\""
   fi
 
@@ -95,10 +94,11 @@ function c4m_action() {
   local action="${1}"
   local scope="${2:-any}"
   
-  local i=0
+  local i=1
+  local options=()
   for env in "${environments[@]}"; do
-    i=$((i+1))
     options+=($i "$env" off)
+    ((i++))
   done
   
   while true; do
@@ -136,19 +136,20 @@ function c4m_action() {
 # Choose execution scope ...
 # ==============================================================================
 function c4m_scope() {
-  declare -a scope=($(dialog --clear \
+  local scope
+  scope=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Playbook scope" \
     --nocancel \
     --checklist "Choose a scope: " 0 0 15 \
     "os_basic_only" "Run OS Basic only" off \
     "k8s_apps_only" "Run K8s Apps only" off \
-    2>&1 >/dev/tty))
-  
-  if (( ${#scope[@]} )); then
-    echo ""
+    2>&1 >/dev/tty)
+
+  if [ -z "$scope" ]; then
+    echo "any"
   else
-    join_by , "${scope[@]}"
+    echo "$scope" | sed 's/"//g' | tr ' ' ','
   fi
 }
 
