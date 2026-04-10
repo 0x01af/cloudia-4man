@@ -96,33 +96,33 @@ function c4m_action() {
   local scope="${2:-any}"
 
   while true; do
-    clear
-    echo "Cloudia - the foreman executes " $action " (scope: " $scope ") on ..."
-    echo "------------------------------------------------------------------------------------------"
-    echo "a) All environments"
-    # Auflistung der dynamischen Liste
-    local i=1
-    for env in "${C4M_ENVIRONMENTS[@]}"; do
-      echo "$i) $env"
-      ((i++))
-    done
-    echo "q) Quit (back to main)"
-    echo "------------------------------------------------------------------------------------------"
-    read -p "Choose environment(s): " environment
+    environments=$(dialog --clear \
+    --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
+    --title "Inventory" \
+    --extra-button --extra-label "All environments" \ \
+    --checklist "Choose environment(s) to executing $action (scope: $scope):" 0 0 15 \
+    "${C4M_ENVIRONMENTS[@]}" \
+    3>&1 1>&2 2>&3)
     
-    if [[ "$environment" == "q" ]]; then
-      break
-    elif [[ "$environment" == "a" ]]; then
-      for env in "${C4M_ENVIRONMENTS[@]}"; do
-        c4m_run_ansible $action $scope $env
-      done
-      break
-    elif [[ "$environment" =~ ^[0-9]+$ ]] && [ "$environment" -ge 1 ] && [ "$environment" -le "${#C4M_ENVIRONMENTS[@]}" ]; then
-      # Einzelne Umgebung ausgewählt (Index ist Wahl-1)
-      local env="${C4M_ENVIRONMENTS[$((environment-1))]}"
-      c4m_run_ansible $action $scope $env
-      break
-    fi
+    exit_status=$?
+    
+    case $exit_status in
+      0)  # OK was pressed
+          for env in "${environments[@]}"; do
+            c4m_run_ansible $action $scope $env
+          done
+          break
+          ;;
+      3)  # Extra button (More Info) was pressed
+          for env in "${C4M_ENVIRONMENTS[@]}"; do
+            c4m_run_ansible $action $scope $env
+          done
+          break
+          ;;
+      1)  # Cancel was pressed
+          break
+          ;;
+    esac
   done
 }
 
@@ -138,7 +138,10 @@ function c4m_scope() {
     "k8s_apps_only" "Run K8s Apps only" off \
     2>&1 > /dev/tty)
 
-  return join_by , "${scope[@]}"
+  echo $scope
+  sleep 5
+  
+  return join_by "," "${scope[@]}"
 }
 
 # ==============================================================================
@@ -154,7 +157,7 @@ function c4m_main() {
     2 "Execute shutdown ..." \
     q "Quit" \
     2>&1 > /dev/tty)
-        
+      
     case $action in
       1)
         local scope=$(c4m_scope)
