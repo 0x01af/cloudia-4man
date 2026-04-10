@@ -102,17 +102,16 @@ function c4m_action() {
   done
   
   while true; do
-    local environments=$(dialog --clear \
+    local environments
+    environments=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Inventory" \
     --extra-button --extra-label "All environments" \
     --checklist "Choose environment(s) to executing $action (scope: $scope):" 0 0 15 \
     "${options[@]}" \
     3>&1 1>&2 2>&3)
-    
-    local dialog_status=$?
-    
-    case $dialog_status in
+   
+    case $? in
       0)  # OK was pressed
           for env in "${environments[@]}"; do
             c4m_run_ansible "$action" "$scope" "${C4M_ENVIRONMENTS[$env-1]}"
@@ -125,7 +124,7 @@ function c4m_action() {
           done
           break
           ;;
-      1)  # Cancel was pressed
+      1 | 255)  # Cancel was pressed
           break
           ;;
     esac
@@ -157,18 +156,18 @@ function c4m_scope() {
 # ==============================================================================
 function c4m_main() {
   while true; do
-    local action=$(dialog --clear \
+    local action
+    
+    action=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Cloudia - the foreman - welcomes you." \
     --cancel-label "Exit" \
-    --stdout \
     --menu "Choose an action: " 0 0 15 \
     1 "Execute playbook ..." \
-    2 "Execute shutdown ...")
-
-    local dialog_status=$?
+    2 "Execute shutdown ..." \
+    3>&1 1>&2 2>&3)
     
-    case $dialog_status in
+    case $? in
       0) # OK was pressed
          case $action in
            1) local scope=$(c4m_scope)
@@ -178,9 +177,7 @@ function c4m_main() {
               ;;
          esac
          ;;
-      1) # Cancel was pressed
-         clear
-         echo "Cloudia wishes a good day."
+      1 | 255) # Cancel was pressed
          break
          ;;
     esac
@@ -188,4 +185,6 @@ function c4m_main() {
 }
 
 c4m_main
+clear
+echo "Cloudia wishes a good day."
 exit 0
