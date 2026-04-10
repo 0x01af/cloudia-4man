@@ -149,7 +149,7 @@ function c4m_scope() {
   case $exit_status in
     0)  # OK was pressed
         echo "${scope[@]}" >debug.log
-        if [ ${#errors[@]} -eq 0 ]; then
+        if (( ${#scope[@]} )); then
           return ""
         else
           return join_by , "${scope[@]}"
