@@ -177,7 +177,7 @@ function c4m_main() {
               ;;
          esac
          ;;
-      1) # Cancel was pressed
+      *) # Cancel was pressed
          break
          ;;
     esac
