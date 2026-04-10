@@ -139,26 +139,17 @@ function c4m_scope() {
   declare -a scope=($(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Playbook scope" \
+    --nocancel \
     --checklist "Choose a scope: " 0 0 15 \
     "os_basic_only" "Run OS Basic only" off \
     "k8s_apps_only" "Run K8s Apps only" off \
     2>&1 >/dev/tty))
-
-  exit_status=$?
   
-  case $exit_status in
-    0)  # OK was pressed
-        echo "${scope[@]}" >debug.log
-        if (( ${#scope[@]} )); then
-          echo ""
-        else
-          join_by , "${scope[@]}"
-        fi
-        ;;
-    1)  # Cancel was pressed
-        break
-        ;;
-  esac 
+  if (( ${#scope[@]} )); then
+    echo ""
+  else
+    join_by , "${scope[@]}"
+  fi
 }
 
 # ==============================================================================
