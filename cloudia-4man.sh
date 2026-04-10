@@ -83,8 +83,9 @@ function c4m_run_ansible() {
     cmd="$cmd --tags \"$scope\""
   fi
 
-  # printf "Cloudia - the foreman - executes command: $cmd"
+  
   clear
+  printf "Cloudia - the foreman - executes following command:\n$cmd"
   eval $cmd
 }
 
