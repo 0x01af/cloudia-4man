@@ -143,7 +143,7 @@ function c4m_scope() {
     --checklist "Choose a scope: " 0 0 15 \
     "os_basic_only" "Run OS Basic only" off \
     "k8s_apps_only" "Run K8s Apps only" off \
-    2>&1 >/dev/tty)
+    3>&1 1>&2 2>&3)
 
   if [ -z "$scope" ]; then
     echo "any"
