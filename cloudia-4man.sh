@@ -97,7 +97,7 @@ function c4m_action() {
   local i=1
   local options=()
   for env in "${environments[@]}"; do
-    options+=($i "$env" off)
+    options+=("$i" "$env" off)
     ((i++))
   done
   
