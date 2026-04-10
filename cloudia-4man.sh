@@ -6,6 +6,8 @@
 # Version: v2026-delta
 # based on:
 # - https://linuxize.com/post/bash-functions/
+# - https://github.com/RileyMeta/Bash-Dialog/blob/main/Examples/All_Menus/All_Menus.sh
+trap 'c4m_aborted' INT
 
 ### Configuration
 # Konstanten als assoziatives Array (Benötigt Bash 4.0+)
@@ -13,6 +15,7 @@ declare -A C4M_CONFIG
 C4M_CONFIG=(
     [ansible_version]="2.7"
     [inventory_path]="./inventory"
+    [dialog_backtitle]="Cloudia - the foreman (cloudia-4man)"
 )
 
 ### Preparation
@@ -58,9 +61,20 @@ pip install --user passlib
 # ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
 
 # ==============================================================================
+# Helper functions
+# ==============================================================================
+function c4m_aborted() {
+  clear
+  echo "ERROR: Program has been aborted unexpectedly!"
+  echo "Cloudia hopes to get well soon."
+  exit 0
+}
+function join_by { local IFS="$1"; shift; echo "$*"; }
+
+# ==============================================================================
 # Run ansible ...
 # ==============================================================================
-c4m_run_ansible() {
+function c4m_run_ansible() {
   local action=$1
   local scope=$2
   local env=$3
@@ -72,13 +86,13 @@ c4m_run_ansible() {
   fi
 
   echo "Cloudia - the foreman - executes command: $cmd"
-  eval $cmd
+  # eval $cmd
 }
 
 # ==============================================================================
 # Execute action on environments ...
 # ==============================================================================
-c4m_action() {
+function c4m_action() {
   local action="${1}"
   local scope="${2:-any}"
 
@@ -116,36 +130,32 @@ c4m_action() {
 # ==============================================================================
 # Choose execution scope ...
 # ==============================================================================
-c4m_scope() {
-  clear
-  echo "------------------------------------------------------------------------------------------"
-  echo "1) OS Basic only run"
-  echo "2) K8s Apps only run"
-  echo "any) any scope"
-  echo "------------------------------------------------------------------------------------------"
-  read -p "Choose execution scope..." scope
-  
-  case $scope in
-    1) return "os_basic_only" ;;
-    2) return "k8s_apps_only" ;;
-    *) return "any" ;;
-  esac
+function c4m_scope() {
+  scope=$(dialog --clear \
+    --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
+    --title "Playbook scope" \
+    --checklist "Choose a scope: " 0 0 15 \
+    "os_basic_only" "Run OS Basic only" off \
+    "k8s_apps_only" "Run K8s Apps only" off \
+    2>&1 > /dev/tty)
+
+  return join_by , "${scope[@]}"
 }
 
 # ==============================================================================
 # MAIN MENU
 # ==============================================================================
-c4m_main() {
+function c4m_main() {
   while true; do
-    clear
-    echo "Cloudia - the foreman - welcomes you."
-    echo "------------------------------------------------------------------------------------------"
-    echo "1) Execute playbook ..."
-    echo "2) Execute shutdown ..."
-    echo "q) Quit (Exit)"
-    echo "------------------------------------------------------------------------------------------"
-    read -p "Choose an action ..." action
-    
+    action=$(dialog --clear \
+    --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
+    --title "Cloudia - the foreman - welcomes you." \
+    --menu "Choose an action: " 0 0 15 \
+    1 "Execute playbook ..." \
+    2 "Execute shutdown ..." \
+    q "Quit" \
+    2>&1 > /dev/tty)
+        
     case $action in
       1)
         local scope=$(c4m_scope)
