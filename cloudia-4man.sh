@@ -110,9 +110,9 @@ function c4m_action() {
     "${options[@]}" \
     3>&1 1>&2 2>&3)
     
-    exit_status=$?
+    local dialog_status=$?
     
-    case $exit_status in
+    case $dialog_status in
       0)  # OK was pressed
           for env in "${environments[@]}"; do
             c4m_run_ansible $action $scope $env
@@ -165,9 +165,9 @@ function c4m_main() {
     2 "Execute shutdown ..." \
     3>&1 1>&2 2>&3)
 
-    exit_status=$?
+    local dialog_status=$?
     
-    case $exit_status in
+    case $dialog_status in
       0)  # OK was pressed
           case $action in
             1)
