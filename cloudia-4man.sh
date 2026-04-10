@@ -115,13 +115,13 @@ function c4m_action() {
     case $dialog_status in
       0)  # OK was pressed
           for env in "${environments[@]}"; do
-            c4m_run_ansible $action $scope $env
+            c4m_run_ansible "$action" "$scope" "$env"
           done
           break
           ;;
       3)  # Extra button (More Info) was pressed
           for env in "${C4M_ENVIRONMENTS[@]}"; do
-            c4m_run_ansible $action $scope $env
+            c4m_run_ansible "$action" "$scope" "$env"
           done
           break
           ;;
@@ -172,7 +172,7 @@ function c4m_main() {
           case $action in
             1)
                local scope=$(c4m_scope)
-               c4m_action "playbook" $scope
+               c4m_action "playbook" "$scope"
                ;;
             2)
                c4m_action "shutdown"
