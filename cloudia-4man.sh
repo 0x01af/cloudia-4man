@@ -136,13 +136,13 @@ function c4m_action() {
 # Choose execution scope ...
 # ==============================================================================
 function c4m_scope() {
-  declare -a scope=( $(dialog --clear \
+  declare -a scope=($(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Playbook scope" \
     --checklist "Choose a scope: " 0 0 15 \
     "os_basic_only" "Run OS Basic only" off \
     "k8s_apps_only" "Run K8s Apps only" off \
-    2>&1 1>&2) )
+    2>&1 >/dev/tty))
 
   exit_status=$?
   
