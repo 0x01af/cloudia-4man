@@ -150,9 +150,9 @@ function c4m_scope() {
     0)  # OK was pressed
         echo "${scope[@]}" >debug.log
         if (( ${#scope[@]} )); then
-          return ""
+          echo ""
         else
-          return join_by , "${scope[@]}"
+          join_by , "${scope[@]}"
         fi
         ;;
     1)  # Cancel was pressed
