@@ -168,20 +168,18 @@ function c4m_main() {
     local dialog_status=$?
     
     case $dialog_status in
-      0)  # OK was pressed
-          case $action in
-            1)
-               local scope=$(c4m_scope)
-               c4m_action "playbook" "$scope"
-               ;;
-            2)
-               c4m_action "shutdown"
-               ;;
-          esac
-          ;;
-      1)  # Cancel was pressed
-          break
-          ;;
+      0) # OK was pressed
+         case $action in
+           1) local scope=$(c4m_scope)
+              c4m_action "playbook" "$scope"
+              ;;
+           2) c4m_action "shutdown"
+              ;;
+         esac
+         ;;
+      1) # Cancel was pressed
+         break
+         ;;
     esac
   done
 }
