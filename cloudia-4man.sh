@@ -144,11 +144,17 @@ function c4m_scope() {
     "k8s_apps_only" "Run K8s Apps only" off \
     3>&1 1>&2 2>&3)
 
-  clear
-  echo "Test: " $scope
-  sleep 5
+  exit_status=$?
   
-  return join_by "," "${scope[@]}"
+  case $exit_status in
+    0)  # OK was pressed
+        echo "${scope[@]}" >debug.log
+        return join_by "," "${scope[@]}"
+        ;;
+    1)  # Cancel was pressed
+        break
+        ;;
+  esac 
 }
 
 # ==============================================================================
