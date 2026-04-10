@@ -177,6 +177,7 @@ function c4m_main() {
             2)
                c4m_action "shutdown"
                ;;
+          esac
           ;;
       1)  # Cancel was pressed
           break
