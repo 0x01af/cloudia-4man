@@ -105,7 +105,7 @@ function c4m_action() {
     local environments=$(dialog --clear \
     --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
     --title "Inventory" \
-    --extra-button --extra-label "All environments" \ \
+    --extra-button --extra-label "All environments" \
     --checklist "Choose environment(s) to executing $action (scope: $scope):" 0 0 15 \
     "${options[@]}" \
     3>&1 1>&2 2>&3)
