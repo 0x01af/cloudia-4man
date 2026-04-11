@@ -6,3 +6,16 @@
   debug:
     msg: "blah"
   
+ETCD_VER=v3.6.10
+
+# choose either URL
+# GOOGLE_URL=https://storage.googleapis.com/etcd
+# GITHUB_URL=https://github.com/etcd-io/etcd/releases/download
+
+curl -L https://storage.googleapis.com/etcd/${ETCD_VER}/etcd-${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+tar xzvf /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz -C /tmp/ --no-same-owner etcd-v3.6.0-linux-amd64/etcdctl
+rm -f /tmp/etcd-${ETCD_VER}-linux-amd64.tar.gz
+
+mv /tmp/etcd-v3.6.0-linux-amd64/etcdctl to /usr/local/bin
+test etcdctl version
+rm -f /tmp/etcd-v3.6.0-linux-amd64
