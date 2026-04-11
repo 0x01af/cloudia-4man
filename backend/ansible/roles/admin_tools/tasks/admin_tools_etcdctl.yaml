@@ -1,0 +1,8 @@
+---
+# etcdctl: install and configure
+# - https://etcd.io/docs/v3.6/install/
+# - https://github.com/etcd-io/etcd/releases/tag/v3.6.0
+- name: Install of kubernetes etcd-client
+  debug:
+    msg: "blah"
+  
