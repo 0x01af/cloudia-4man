@@ -1,5 +1,11 @@
----  
-- name: k3s_server:shutdown - stop k3s service
+---
+# inspired by:
+# - https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/backup_and_restore/graceful-shutdown-cluster
+- name: "k3s_server:shutdown - check and save certificates state"
+  ansible.builtin.command: "k3s certificate check --output table"
+  register: _k3s_certificate_check
+
+- name: "k3s_server:shutdown - stop k3s service"
   ansible.builtin.systemd:
     name: k3s
     state: stopped
