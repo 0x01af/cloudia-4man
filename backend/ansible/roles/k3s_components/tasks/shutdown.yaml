@@ -3,11 +3,8 @@
 # - https://docs.redhat.com/en/documentation/openshift_container_platform/4.17/html/backup_and_restore/graceful-shutdown-cluster
 # - https://docs.k3s.io/cli/certificate#client-and-server-certificates
 # - https://blog.doenselmann.com/kubernetes-etcd-backup-mit-ansible/
-- name: "k3s_cluster:shutdown - check and save certificates state"
-  ansible.builtin.command: "k3s certificate check --output table"
-  register: _k3s_certificate_check
-
-- name: "k3s_cluster:shutdown - backup etcd"
+- name: "k3s_cluster:shutdown - backup first"
+  include_tasks: backup.yaml
 
 - name: "k3s_cluster:shutdown - mark all nodes unschedulable (cordon)"
   kubernetes.core.k8s_drain:
