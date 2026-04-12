@@ -1,2 +1,15 @@
 ---
 # - https://blog.doenselmann.com/kubernetes-etcd-backup-mit-ansible/
+# - https://longhorn.io/docs/1.11.1/advanced-resources/system-backup-restore/backup-longhorn-system/
+
+- name: "k3s_cluster:backup - etcd"
+  debug:
+    msg: "blah"
+
+- name: "k3s_cluster:backup - longhorn system"
+  debug:
+    msg: "blah"
+
+- name: "k3s_cluster:backup - longhorn volumes"
+  debug:
+    msg: "blah"
