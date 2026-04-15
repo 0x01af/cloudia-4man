@@ -1,3 +1,5 @@
+# inspired by:
+# - https://oneuptime.com/blog/post/2026-03-20-optimize-longhorn-performance-production/view
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -8,7 +10,7 @@ data:
   default-resource.yaml: |
     "backup-target": "{{ k3s.storage.longhorn.backup.target }}"
     "backup-target-credential-secret": "longhorn-backup-secret"
-    "backupstore-poll-interval": "180"
+    "backupstore-poll-interval": "300"
 ---
 apiVersion: v1
 kind: Secret
