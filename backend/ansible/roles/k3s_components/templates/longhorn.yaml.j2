@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: longhorn-default-resource
+  namespace: longhorn-system
+data:
+  default-resource.yaml: |
+    "backup-target": "{{ k3s.storage.longhorn.backup.target }}"
+    "backup-target-credential-secret": "longhorn-backup-secret"
+    "backupstore-poll-interval": "180"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-ingress-secret
+  namespace: longhorn-system
+type: kubernetes.io/basic-auth
+stringData:
+  username: {{ vault_k3s.storage.longhorn.dashboard.username }}
+  password: {{ vault_k3s.storage.longhorn.dashboard.password }}
