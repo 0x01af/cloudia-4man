@@ -36,6 +36,9 @@ k3s:
       data_path: /var/lib/longhorn
       dashboard:
         fqdn: "longhorn.k3s_cluster.fqdn"
+      backup_target:
+        type: "cifs" # cifs|nfs|aws-s3|gcp-storage|azure-blog|
+        fqdn_path: "backup-target.fqdn/backupstore"
   ingress:
     # An ingress controller routes traffic based on requested URI to the right pod/container.
     # K3s default: traefik
