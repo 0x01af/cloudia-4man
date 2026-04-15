@@ -2,6 +2,28 @@
 # - https://oneuptime.com/blog/post/2026-03-20-optimize-longhorn-performance-production/view
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  name: longhorn-backup-secret
+  namespace: longhorn-system
+type: Opaque
+stringData:
+{%- if k3s.storage.longhorn.backup_target.type == "cifs" %}
+  CIFS_USERNAME: {{ vault_k3s.storage.longhorn.backup_target.access_id }}
+  CIFS_PASSWORD: {{ vault_k3s.storage.longhorn.backup_target.access_key }}
+{%- elif k3s.storage.longhorn.backup_target.type == "aws-s3" %}
+  AWS_ACCESS_KEY_ID: {{ vault_k3s.storage.longhorn.backup_target.access_id }}
+  AWS_SECRET_ACCESS_KEY: {{ vault_k3s.storage.longhorn.backup_target.access_key }}
+{%- elif k3s.storage.longhorn.backup_target.type == "azure-blob" %}
+  AZBLOB_ACCOUNT_NAME: {{ vault_k3s.storage.longhorn.backup_target.access_id }}"
+  AZBLOB_ACCOUNT_KEY: {{ vault_k3s.storage.longhorn.backup_target.access_key }}"
+{%- elif k3s.storage.longhorn.backup_target.type == "gcp-storage" %}
+  AWS_ACCESS_KEY_ID: {{ vault_k3s.storage.longhorn.backup_target.access_id }}
+  AWS_ENDPOINTS: https://storage.googleapis.com
+  AWS_SECRET_ACCESS_KEY: {{ vault_k3s.storage.longhorn.backup_target.access_key }}
+{% endif %} 
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   name: longhorn-default-resource
