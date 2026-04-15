@@ -1,15 +1,20 @@
 ---
 # - https://blog.doenselmann.com/kubernetes-etcd-backup-mit-ansible/
-# - https://longhorn.io/docs/1.11.1/advanced-resources/system-backup-restore/backup-longhorn-system/
+# - longhorn system: https://longhorn.io/docs/1.11.1/advanced-resources/system-backup-restore/backup-longhorn-system/
+# -- including longhorn volumes
 
 - name: "k3s_cluster:backup - etcd"
   debug:
     msg: "blah"
 
-- name: "k3s_cluster:backup - longhorn system"
-  debug:
-    msg: "blah"
-
-- name: "k3s_cluster:backup - longhorn volumes"
-  debug:
-    msg: "blah"
+- name: "k3s_cluster:backup - longhorn system & volumes"
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: longhorn.io/v1beta2
+      kind: SystemBackup
+      metadata:
+        name: longhorn-system-backup-manually
+        namespace: longhorn-system
+      spec:
+        volumeBackupPolicy: if-not-present
