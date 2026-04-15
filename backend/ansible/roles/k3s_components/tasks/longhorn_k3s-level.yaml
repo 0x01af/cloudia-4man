@@ -17,11 +17,10 @@
   kubernetes.core.k8s:
     state: present
     src: "https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.storage.longhorn.version }}/deploy/longhorn.yaml"
-- name: 'deploy secret for Longhorn Dashboard'
+- name: 'deploy configuration for Longhorn'
   kubernetes.core.k8s:
     state: present
-    template: 'longhorn-ingress-secret.yaml.j2'
-  no_log: true
+    template: 'longhorn.yaml.j2'
 - name: 'configure ingress for Longhorn Dashboard'
   kubernetes.core.k8s:
     state: present
