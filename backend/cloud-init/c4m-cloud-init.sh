@@ -12,9 +12,9 @@ wget -P /tmp/c4m-tmp $ISO
 
 # Mount iso image and copy original grub.cfg
 mkdir /tmp/c4m-tmp/iso-mnt
-mount -o loop /tmp/c4m-tmp/$ORIG_ISO /tmp/c4m-tmp/iso-mnt
+sudo mount -o loop /tmp/c4m-tmp/$ORIG_ISO /tmp/c4m-tmp/iso-mnt
 cp --no-preserve=all /tmp/c4m-tmp/iso-mnt/boot/grub/grub.cfg /tmp/c4m-tmp/grub.cfg
-umount /tmp/c4m-tmp/iso-mnt
+sudo umount /tmp/c4m-tmp/iso-mnt
 
 # Change grub.cfg
 sed -i 's/linux	\/casper\/vmlinuz  ---/linux	\/casper\/vmlinuz autoinstall quiet ---/g' /tmp/c4m-tmp/grub.cfg
