@@ -20,6 +20,6 @@ sudo umount /tmp/c4m-tmp/iso-mnt
 sed -i 's/linux	\/casper\/vmlinuz  ---/linux	\/casper\/vmlinuz autoinstall quiet ---/g' /tmp/c4m-tmp/grub.cfg
 
 # Modify and create new iso image
-chdir ~/livefs-edit
-livefs-edit /tmp/c4m-tmp/$ORIG_ISO /tmp/c4m-tmp/$MODDED_ISO --cp /tmp/c4m-tmp/grub.cfg new/iso/boot/grub/grub.cfg
+# chdir ~/livefs-edit
+sudo livefs-edit /tmp/c4m-tmp/$ORIG_ISO /tmp/c4m-tmp/$MODDED_ISO --cp /tmp/c4m-tmp/grub.cfg new/iso/boot/grub/grub.cfg
 
