@@ -2,7 +2,7 @@
 
 export ISO="https://releases.ubuntu.com/26.04/ubuntu-26.04-live-server-amd64.iso"
 export ORIG_ISO="ubuntu-26.04-live-server-amd64.iso"
-export MODDED_ISO="${ORIG_ISO:-4}-c4m.iso"
+export MODDED_ISO="${ORIG_ISO::-4}-c4m.iso"
 
 mkdir /tmp/c4m-tmp
 
