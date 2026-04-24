@@ -2,10 +2,10 @@
 # inspired by:
 # - https://askubuntu.com/questions/1390827/how-to-make-ubuntu-autoinstall-iso-with-cloud-init-in-ubuntu-21-10/1391309#1391309
 
-export ISO="https://releases.ubuntu.com/26.04/ubuntu-26.04-live-server-amd64.iso"
-export ORIG_ISO="ubuntu-26.04-live-server-amd64.iso"
+export UBUNTU_RELEASE="26.04"
+export ORIG_ISO="ubuntu-${UBUNTU_RELEASE}-live-server-amd64.iso"
+export DOWNLOAD_ISO="https://releases.ubuntu.com/${UBUNTU_RELEASE}/${ORIG_ISO}"
 export MODDED_ISO="${ORIG_ISO::-4}-c4m.iso"
-export TIMESTAMP=$(date +"%y%m%d%H%M%S00")
 
 mkdir /tmp/c4m-tmp
 
