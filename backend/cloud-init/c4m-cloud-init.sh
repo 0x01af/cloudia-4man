@@ -11,7 +11,7 @@ mkdir /tmp/c4m-tmp
 
 # Download iso image
 # sudo su -
-wget -P /tmp/c4m-tmp $ISO
+wget -P /tmp/c4m-tmp $DOWNLOAD_ISO
 
 # Extract iso image
 mkdir /tmp/c4m-tmp/iso
