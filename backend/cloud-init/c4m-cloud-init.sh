@@ -22,4 +22,4 @@ sudo sed -i -E 's|/casper/vmlinuz\s+---|/casper/vmlinuz autoinstall quiet ---|' 
 
 # Create new iso image
 export MKISOFS_ARGS=$(xorriso -indev /tmp/c4m-tmp/$ORIG_ISO -report_el_torito as_mkisofs 2>&1 | awk "/Volume id[[:space:]]*:[[:space:]]*'Ubuntu-Server/ {flag=1; next} flag {printf \"%s \", \$0}")
-xorriso -as mkisofs $MKISOFS_ARGS -isohybrid-gpt-basdat -o /tmp/c4m-tmp/$MODDED_ISO /tmp/c4m-tmp/iso/
+eval "sudo xorriso -as mkisofs $MKISOFS_ARGS -isohybrid-gpt-basdat -o \"/tmp/c4m-tmp/$MODDED_ISO\" \"/tmp/c4m-tmp/iso\""
