@@ -18,7 +18,7 @@ mkdir /tmp/c4m-tmp/iso
 bsdtar -C /tmp/c4m-tmp/iso -xf /tmp/c4m-tmp/$ORIG_ISO
 
 # Change grub.cfg
-sed -i -E 's|/casper/vmlinuz\s+---|/casper/vmlinuz autoinstall quiet ---|' /tmp/c4m-tmp/iso/boot/grub/grub.cfg
+sudo sed -i -E 's|/casper/vmlinuz\s+---|/casper/vmlinuz autoinstall quiet ---|' /tmp/c4m-tmp/iso/boot/grub/grub.cfg
 
 # Create new iso image
 export MKISOFS_ARGS=$(xorriso -indev /tmp/c4m-tmp/$ORIG_ISO -report_el_torito as_mkisofs 2>&1 | awk "/Volume id[[:space:]]*:[[:space:]]*'Ubuntu-Server/ {flag=1; next} flag {printf \"%s \", \$0}")
