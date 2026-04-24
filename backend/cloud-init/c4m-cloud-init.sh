@@ -17,7 +17,7 @@ cp --no-preserve=all /tmp/c4m-tmp/iso-mnt/boot/grub/grub.cfg /tmp/c4m-tmp/grub.c
 sudo umount /tmp/c4m-tmp/iso-mnt
 
 # Change grub.cfg
-sed -i 's/linux	\/casper\/vmlinuz  ---/linux	\/casper\/vmlinuz autoinstall quiet ---/g' /tmp/c4m-tmp/grub.cfg
+sed -i -E 's|/casper/vmlinuz\s+---|/casper/vmlinuz autoinstall quiet ---|' /tmp/c4m-tmp/grub.cfg
 
 # Modify and create new iso image
 # chdir ~/livefs-edit
