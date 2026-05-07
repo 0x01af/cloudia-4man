@@ -1,8 +1,8 @@
 ---
-# Configuration of K3s Cluster <k3s_cluster1>
+# Configuration of K3s Cluster <k3s-cluster1>
 k3s:
   # K3s release
-  version: "v1.32.3+k3s1"
+  version: "v1.35.4+k3s1"
   # K3s server token
   token: "k3s_cluster.token"
   api:
@@ -32,7 +32,7 @@ k3s:
       data_path: /opt/local-path-provisioner
     longhorn:
       # Longhorn Storage: https://longhorn.io/docs/1.8.1/references/settings/#default-data-path
-      version: "v1.10.2"
+      version: "v1.11.2"
       data_path: /var/lib/longhorn
       dashboard:
         fqdn: "longhorn.k3s_cluster.fqdn"
@@ -54,10 +54,10 @@ k3s:
       dashboard:
         fqdn: "traefik.k3s_cluster.fqdn"
         ipallowlist:
-          - "192.168.123.0/25"
-          - "2a02:169:67f5:1af::/64"
+          - "192.0.2.0/24"
+          - "2001:0db8::/64"
   loadbalancer:
-    # A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
+# A load balancer expose services, which could be routed and handled by ingress controller, to the external world.
     # K3s default: servicelb
     # Recommandation: use Kube-VIP as (real) load balancer for services AND control plane (if configured under section "api")
     # Read more:
@@ -66,9 +66,11 @@ k3s:
     addon: "kube-vip" # kube-vip | metallb | servicelb
     kube_vip:
       # https://kube-vip.io/docs/usage/k3s/ / https://kube-vip.io/docs/installation/daemonset/)
-      lb_version: v0.4.0
-      lb_range: "192.168.123.130-192.168.123.139"
-      api_version: v0.9.1
-      api_iface: "enp0s0"
+      # lb_version: Check latest kube-vip Cloud Controller version https://github.com/kube-vip/kube-vip-cloud-provider
+      lb_version: "v0.0.12"
+      lb_range: "192.0.2.224-192.0.2.254"
+      api_iface: "enp1s0"
+      # api_version: Check latest kube-vip release on https://github.com/kube-vip/kube-vip
+      api_version: "v1.1.2"
     # metallb:
-    #  lb_range: "192.168.123.130-192.168.123.139"
+    #  lb_range: "192.0.2.224-192.0.2.254"
