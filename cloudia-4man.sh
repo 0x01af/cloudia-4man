@@ -166,7 +166,7 @@ function c4m_main() {
     --title "Cloudia - the foreman - welcomes you." \
     --cancel-label "Exit" \
     --menu "Choose an action: " 0 0 15 \
-    1 "Execute playbook ..." \
+    1 "Execute bootstrap ..." \
     2 "Execute shutdown ..." \
     3>&1 1>&2 2>&3)
     
@@ -174,7 +174,7 @@ function c4m_main() {
       0) # OK was pressed
          case $action in
            1) local scope=$(c4m_scope)
-              c4m_action "playbook" "$scope"
+              c4m_action "bootstrap" "$scope"
               ;;
            2) c4m_action "shutdown"
               ;;
