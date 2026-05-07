@@ -1,5 +1,5 @@
 ---
-# cloudia-4man (c4m) playbook
+# cloudia-4man (c4m) bootstrap
 # 
 # inventory: defines configuration items (ci), or groups of configuration items (gci)
 # role: defines configuration tasks for a specific type of configuration item
