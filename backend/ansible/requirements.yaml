@@ -14,3 +14,4 @@ roles:
 pip_packages:
   - name: kubernetes
   - name: passlib
+  - name: dnspython
