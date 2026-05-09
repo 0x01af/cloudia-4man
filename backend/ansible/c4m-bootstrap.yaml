@@ -18,9 +18,9 @@
 - name: Check cloudia-4man requirements
   hosts: admin_nodes
   pre_tasks:
-    - name: "Get cloudia-4man requirements"
+    - name: "Get cloudia-4man requirements for Ansible"
       ansible.builtin.set_fact:
-        c4m_requirements: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
+        _c4m_ansible_requirements: "{{ lookup('file', 'requirements.yaml') | from_yaml }}"
     - name: "Ansible: Verify Ansible is version 2.13 or above. (If this fails you may need to update Ansible)"
       ansible.builtin.assert:
         that: "ansible_version.full is version_compare('2.13', '>=')"
@@ -35,21 +35,24 @@
         that: "item.name in _ansible_installed_collections.stdout"
         fail_msg: "Collection {{ item.name }} is missing! Run 'ansible-galaxy collection install -r requirements.yaml'."
         success_msg: "Verified: {{ item.name }} is installed."
-      loop: "{{ c4m_requirements.collections }}"
+      loop: "{{ _c4m_ansible_requirements.collections }}"
       loop_control:
         label: "{{ item.name }}"
+    - name: "Get cloudia-4man requirements for Python"
+      ansible.builtin.set_fact:
+        _c4m_ansible_requirements: "{{ lookup('file', '../python/requirements.txt').splitlines() }}"
     - name: "Python Packages: Gather python package facts"
       community.general.pip_package_info:
         clients: ['pip3']
       register: _pip_packages
     - name: "Python Packages: Validate all needed python packages"
       ansible.builtin.assert:
-        that: "item.name in _pip_packages.packages.pip3.keys()"
-        fail_msg: "Python library '{{ item.name }}' not found in pip packages! Run 'pip3 install {{ item.name }}'"
-        success_msg: "Verified: {{ item.name }} is installed."
-      loop: "{{ c4m_requirements.pip_packages }}"
+        that: "item in _pip_packages.packages.pip3.keys()"
+        fail_msg: "Python library '{{ item }}' not found in pip packages! Run 'pip3 install {{ item }}'"
+        success_msg: "Verified: {{ item }} is installed."
+      loop: "{{ _c4m_python_requirements }}"
       loop_control:
-        label: "{{ item.name }}"
+        label: "{{ item }}"
 
 #- import_playbook: plain.yaml
 - hosts: plain_servers
