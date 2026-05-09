@@ -5,7 +5,6 @@
 # - https://oneuptime.com/blog/post/2026-02-21-ansible-configure-ntp-servers/view
 # - https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/debconf_module.html
 - name: 'Change chrony default configuration'
-  when: 
   ansible.builtin.debconf:
     name: chrony
     question: chrony/configure_ubuntu_pools_in_sourcesd
