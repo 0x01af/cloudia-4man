@@ -9,9 +9,3 @@ collections:
 # ansible roles (will be used by ansible-galaxy)
 roles:
 # NONE
-
-# pip packages (will be used by ansible playbook)
-pip_packages:
-  - name: kubernetes
-  - name: passlib
-  - name: dnspython
