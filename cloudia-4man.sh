@@ -83,6 +83,7 @@ function c4m_run_ansible() {
     cmd="$cmd --tags \"$scope\""
   fi
 
+  cmd="$cmd | tee \"c4m-last-run.log\""
   
   clear
   printf "Cloudia - the foreman - executes following command:\n$cmd\n\n"
