@@ -13,7 +13,7 @@ metadata:
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
   rules:
-    - host: "{{ _k8s_app.config.fqdn | default('gatus.local') }}"
+    - host: "{{ _k8s_app.frontend.fqdn | default('gatus.local') }}"
       http:
         paths:
           - path: /
@@ -43,7 +43,7 @@ metadata:
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
   rules:
-  - host: "{{ _k8s_app.config.fqdn | default('gatus.local') }}"
+  - host: "{{ _k8s_app.frontend.fqdn | default('gatus.local') }}"
     http:
       paths:
       - path: /
@@ -55,5 +55,5 @@ spec:
               number: 8080
   tls:
   - hosts:
-    - "{{ _k8s_app.config.fqdn | default('gatus.local') }}"
+    - "{{ _k8s_app.frontend.fqdn | default('gatus.local') }}"
     secretName: gatus-ingress-tls-secret
