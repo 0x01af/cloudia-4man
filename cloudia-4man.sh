@@ -43,7 +43,7 @@ fi
 # - ansible collections: ensure, all required collections are installed
 ansible-galaxy collection install -r backend/ansible/requirements.yaml
 # - python libraries: ensure, all required python libraries are installed (https://packaging.python.org/en/latest/tutorials/installing-packages/)
-pip install --user passlib
+# python3 -m pip install -r backend/ansible/requirements.yaml
 
 ### Main Functions
 # INCLUDED AT ANSIBLE: Running provisioning service
