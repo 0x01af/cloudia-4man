@@ -28,7 +28,7 @@
       - _dns_result | length > 0
     fail_msg: "ERROR: DNS for K3s API endpoint isn't available"
   vars:
-    _dns_result: "{{ query('community.dns.lookup', '{{ k3s.api.endpoint }}', type='A') }}"
+    _dns_result: "{{ query('community.general.dig', '{{ k3s.api.endpoint }}', qtype='A') }}"
 
 ### Get fact of installed K3s version
 - name: Get fact of installed K3s version
