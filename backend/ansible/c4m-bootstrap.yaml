@@ -40,7 +40,14 @@
         label: "{{ item.name }}"
     - name: "Get cloudia-4man requirements for Python"
       ansible.builtin.set_fact:
-        _c4m_python_requirements: "{{ lookup('file', '../python/requirements.txt').splitlines() }}"
+        _c4m_python_requirements: >-
+          {{ 
+            lookup('file', '../python/requirements.txt').splitlines() 
+            | map('regex_replace', '#.*$', '')
+            | map('trim')
+            | reject('match', '^$')
+            | list 
+          }}
     - name: "Python Packages: Gather python package facts"
       community.general.pip_package_info:
         clients: ['pip3']
