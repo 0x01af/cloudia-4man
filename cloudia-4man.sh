@@ -39,8 +39,6 @@ else
 fi
 
 # Checking prerequisite
-# - yq: if not existing, install it
-wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 # - pip: if not existing, install it
 # curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 # python3 get-pip.py --user
@@ -49,21 +47,12 @@ wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O 
 # - ansible collections: ensure, all required collections are installed
 ansible-galaxy collection install -r backend/ansible/requirements.yaml
 # - python libraries: ensure, all required python libraries are installed (https://packaging.python.org/en/latest/tutorials/installing-packages/)
-python3 -m pip install $(yq '.pip_packages[].name' 'backend/ansible/requirements.yaml' | xargs)
+python3 -m pip install -r backend/python/requirements.txt
 
 ### Main Functions
 # INCLUDED AT ANSIBLE: Running provisioning service
 # mkdir /inventory/{$environment}/states/{$server}
 # cd /inventory/{$environment}/states/{$server}
-
-# Starting provisioning service, and configuration & deployment management
-# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --ask-vault-pass
-
-## do os_basic_only: like os updates and so on.
-# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only" --ask-vault-pass
-
-## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
-# ansible-playbook backend/ansible/c4m-playbook.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
 
 # ==============================================================================
 # Helper functions
@@ -82,7 +71,13 @@ function c4m_run_ansible() {
   local action="${1}"
   local scope="${2}"
   local env="${3}"
-
+  
+  # Starting provisioning service, and configuration & deployment management
+  # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --ask-vault-pass
+  ## do os_basic_only: like os updates and so on.
+  # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only" --ask-vault-pass
+  ## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
+  # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
   local cmd="ansible-playbook backend/ansible/c4m-$action.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
   
   if [[ -n "$scope" && "$scope" != "any" ]]; then
