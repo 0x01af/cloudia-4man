@@ -42,7 +42,7 @@ fi
 # - ansible: if not existing, should it install it
 # - ansible collections: ensure, all required collections are installed
 ansible-galaxy collection install -r backend/ansible/requirements.yaml
-# - python libraries: ensure, all required python libraries are installed
+# - python libraries: ensure, all required python libraries are installed (https://packaging.python.org/en/latest/tutorials/installing-packages/)
 pip install --user passlib
 
 ### Main Functions
