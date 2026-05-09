@@ -39,11 +39,17 @@ else
 fi
 
 # Checking prerequisite
-# - ansible: if not existing, should it install it
+# - yq: if not existing, install it
+wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+# - pip: if not existing, install it
+# curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+# python3 get-pip.py --user
+# - ansible: if not existing, install it
+# python3 -m pip install --user ansible
 # - ansible collections: ensure, all required collections are installed
 ansible-galaxy collection install -r backend/ansible/requirements.yaml
 # - python libraries: ensure, all required python libraries are installed (https://packaging.python.org/en/latest/tutorials/installing-packages/)
-# python3 -m pip install -r backend/ansible/requirements.yaml
+python3 -m pip install $(yq '.pip_packages[].name' 'backend/ansible/requirements.yaml' | xargs)
 
 ### Main Functions
 # INCLUDED AT ANSIBLE: Running provisioning service
