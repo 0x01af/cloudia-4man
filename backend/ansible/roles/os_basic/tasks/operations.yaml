@@ -1,0 +1,3 @@
+---
+# when: ansible_distribution|lower == 'ubuntu' and ansible_distribution_version == '24.04'
+# when: ansible_distribution|lower == 'ubuntu' and (ansible_distribution_version == '25.10' or ansible_distribution_version == '26.04')
