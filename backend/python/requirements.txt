@@ -1,0 +1,4 @@
+# pip packages (will be used by ansible playbook)
+kubernetes
+passlib
+dnspython
