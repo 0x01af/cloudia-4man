@@ -22,6 +22,13 @@
     that:
       - k3s is defined
     fail_msg: "ERROR: K3s configuration variable isn't defined"
+- name: Validate DNS works and record for K3s API endpoint is available  
+  ansible.builtin.assert:
+    that:
+      - _dns_result | length > 0
+    fail_msg: "ERROR: DNS for K3s API endpoint isn't available"
+  vars:
+    _dns_result: "{{ query('community.dns.lookup', '{{ k3s.api.endpoint }}', type='A') }}"
 
 ### Get fact of installed K3s version
 - name: Get fact of installed K3s version
