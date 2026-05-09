@@ -1,0 +1,8 @@
+---
+- name: Inform user about K3s versions
+  ansible.builtin.debug:
+    msg: |
+          ----------------------------------------\n
+          K3s version (installed): {{ k3s.version_installed }}\n
+          K3s version (configured): {{ k3s.version }}\n
+          ----------------------------------------\n
