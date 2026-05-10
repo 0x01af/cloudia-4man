@@ -17,7 +17,7 @@
   ansible.builtin.lineinfile:
     path: "~/.bashrc"
     regexp: '\.\s+<\(kubectl completion bash\)'
-    line: ". <(kubectl completion bash)  # Added by k3s-ansible"
+    line: ". <(kubectl completion bash)  # Added by ansible admin_tools_kubectl"
 # - name: "configuring kubectl - get kubeconfig"
 - name: "kubectl: Test"
   ansible.builtin.file:
@@ -30,9 +30,6 @@
    msg: |
        K3s Cluster and Kubeconfig has been set up.\n
        -------------------------------------------\n
-        Please install kubectl for managing your K3s cluster:\n
-         1. curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'\n
-         2. install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl\n
-          Please check the installation with following commands:\n
-          - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'\n
-          Remember: Helm Controller is automatically installed.\n
+       Please check the installation with following commands:\n
+       - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'\n
+       Remember: Helm Controller is automatically installed.\n
