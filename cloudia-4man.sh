@@ -87,11 +87,11 @@ function c4m_run_ansible() {
   fi
   
   clear
-  printf "Cloudia - the foreman - executes an ansible-playbook with following parameters:\n"
-  printf "\- playbook: $playbook\n"
-  printf "\- inventory: $inventory\n"
-  printf "\- tags: $scope\n"
-  printf "Please stand by for any requests or warnings...\n\n"
+  printf -- "Cloudia - the foreman - executes an ansible-playbook with following parameters:\n"
+  printf -- "- playbook: $playbook\n"
+  printf -- "- inventory: $inventory\n"
+  printf -- "- tags: $scope\n"
+  printf -- "Please stand by for any requests or warnings...\n\n"
   
   ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags "$tags"} | tee "c4m-last-run.log"
   case $? in
