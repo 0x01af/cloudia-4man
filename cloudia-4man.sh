@@ -78,18 +78,37 @@ function c4m_run_ansible() {
   # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only" --ask-vault-pass
   ## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
   # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
-  local cmd="ansible-playbook backend/ansible/c4m-$action.yaml -i ${C4M_CONFIG[inventory_path]}/$env/environment.yaml --ask-vault-pass"
+  local playbook="backend/ansible/c4m-$action.yaml"
+  local inventory="${C4M_CONFIG[inventory_path]}/$env/environment.yaml"
+  local tags=""
   
   if [[ -n "$scope" && "$scope" != "any" ]]; then
-    cmd="$cmd --tags \"$scope\""
+    $tags="$scope"
   fi
-
-  cmd="$cmd | tee \"c4m-last-run.log\""
   
   clear
-  printf "Cloudia - the foreman - executes following command:\n$cmd\n\n"
+  printf "Cloudia - the foreman - executes an ansible-playbook with following parameters:\n"
+  printf "- playbook: $playbook"
+  printf "- inventory: $inventory"
+  printf "- tags: $scope"
   printf "Please stand by for any requests or warnings...\n\n"
-  eval $cmd
+  
+  ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags "$tags"} | tee "c4m-last-run.log"
+  case $? in
+    0) # everything okay
+       dialog --clear \
+         --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
+         --title "Info" \
+         --msgbox "Cloudia - the foreman - was successfull.\n\nFor more information, read the last-run logfile (c4m-last-run.log)." 0 40
+       ;;
+    *) # everythin else
+       dialog --clear \
+         --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
+         --title "Error" \
+         --msgbox "ERROR: Cloudia - the foreman - detected an error!\n\nPlease visit the last-run logfile (c4m-last-run.log)." 0 40
+       ;;
+    esac
+  
 }
 
 # ==============================================================================
