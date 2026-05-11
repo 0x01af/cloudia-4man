@@ -20,7 +20,7 @@
 - name: 'configure backup-target of Longhorn'
   kubernetes.core.k8s:
     state: present
-    template: 'longhorn-ingress-{{ k3s.storage.longhorn.backup_target.type }}.yaml.j2'
+    template: 'longhorn-backup-{{ k3s.storage.longhorn.backup_target.type }}.yaml.j2'
 - name: 'configure app Longhorn'
   kubernetes.core.k8s:
     state: present
