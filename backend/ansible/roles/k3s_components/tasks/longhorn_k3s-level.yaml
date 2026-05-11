@@ -17,10 +17,6 @@
   kubernetes.core.k8s:
     state: present
     src: "https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.storage.longhorn.version }}/deploy/longhorn.yaml"
-- name: 'configure backup-target of Longhorn'
-  kubernetes.core.k8s:
-    state: present
-    template: 'longhorn-backup-{{ k3s.storage.longhorn.backup_target.type }}.yaml.j2'
 - name: 'configure app Longhorn'
   kubernetes.core.k8s:
     state: present
