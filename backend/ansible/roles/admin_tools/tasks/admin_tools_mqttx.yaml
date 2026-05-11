@@ -1,4 +1,7 @@
 ---
+- name: "tool mqttx"
+  when: _admin_tool.version != 'none'
+  block:
     - name: "mqttx: prepare environment"
       ansible.builtin.file:
         path: "/tmp/mqttx"
