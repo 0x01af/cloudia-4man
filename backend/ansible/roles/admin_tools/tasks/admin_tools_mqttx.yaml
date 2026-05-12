@@ -8,8 +8,9 @@
         state: directory
     - name: "mqttx: downloading binaries"
       ansible.builtin.get_url:
-        url: "https://www.emqx.com/en/downloads/MQTTX/{{ _admin_tool.version }}/mqttx-cli-linux-x64"
+        url: "https://github.com/emqx/MQTTX/releases/download/{{ _admin_tool.version }}/mqttx-cli-linux-x64"
         dest: "/tmp/mqttx"
+        # didn't work properly: url: "https://www.emqx.com/en/downloads/MQTTX/{{ _admin_tool.version }}/mqttx-cli-linux-x64"
     - name: "mqttx: installing binaries"
       ansible.builtin.command:
         cmd: "install ./mqttx-cli-linux-x64 /usr/local/bin/mqttx"
