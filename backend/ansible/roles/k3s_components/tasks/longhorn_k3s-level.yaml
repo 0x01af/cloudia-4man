@@ -20,9 +20,6 @@
   kubernetes.core.k8s:
     state: present
     src: "https://raw.githubusercontent.com/longhorn/longhorn/{{ k3s.storage.longhorn.version }}/deploy/longhorn.yaml"
-- name: "DEBUG: Template ausgeben"
-  ansible.builtin.debug:
-    msg: "{{ lookup('template', 'longhorn-config.yaml.j2') }}"
 - name: 'configure app Longhorn'
   kubernetes.core.k8s:
     state: present
