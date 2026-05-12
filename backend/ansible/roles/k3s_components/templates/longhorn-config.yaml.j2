@@ -32,7 +32,7 @@ data:
     "backup-target": "{{ k3s.storage.longhorn.backup_target.type }}://{{ k3s.storage.longhorn.backup_target.fqdn_path }}"
     "backup-target-credential-secret": "longhorn-backup-secret"
     "backupstore-poll-interval": "300"
-{%- endif %}
+{% endif %}
 ---
 apiVersion: v1
 kind: Secret
