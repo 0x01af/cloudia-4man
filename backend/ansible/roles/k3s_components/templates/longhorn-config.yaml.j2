@@ -8,18 +8,18 @@ metadata:
 type: Opaque
 stringData:
 {% if k3s.storage.longhorn.backup_target.type == "cifs" %}
-  CIFS_USERNAME: "{{ vault_k3s.storage.longhorn.backup_target.access_id }}"
-  CIFS_PASSWORD: "{{ vault_k3s.storage.longhorn.backup_target.access_key }}"
+  CIFS_USERNAME: "{{ vault_k3s.storage.longhorn.backup_target.access_id | string | to_yaml }}"
+  CIFS_PASSWORD: "{{ vault_k3s.storage.longhorn.backup_target.access_key | string | to_yaml }}"
 {% elif k3s.storage.longhorn.backup_target.type == "aws-s3" %}
-  AWS_ACCESS_KEY_ID: "{{ vault_k3s.storage.longhorn.backup_target.access_id }}"
-  AWS_SECRET_ACCESS_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key }}"
+  AWS_ACCESS_KEY_ID: "{{ vault_k3s.storage.longhorn.backup_target.access_id | string | to_yaml }}"
+  AWS_SECRET_ACCESS_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key | string | to_yaml }}"
 {% elif k3s.storage.longhorn.backup_target.type == "azure-blob" %}
-  AZBLOB_ACCOUNT_NAME: "{{ vault_k3s.storage.longhorn.backup_target.access_id }}"
-  AZBLOB_ACCOUNT_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key }}"
+  AZBLOB_ACCOUNT_NAME: "{{ vault_k3s.storage.longhorn.backup_target.access_id | string | to_yaml }}"
+  AZBLOB_ACCOUNT_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key | string | to_yaml }}"
 {% elif k3s.storage.longhorn.backup_target.type == "gcp-storage" %}
-  AWS_ACCESS_KEY_ID: "{{ vault_k3s.storage.longhorn.backup_target.access_id }}"
+  AWS_ACCESS_KEY_ID: "{{ vault_k3s.storage.longhorn.backup_target.access_id | string | to_yaml }}"
   AWS_ENDPOINTS: "https://storage.googleapis.com"
-  AWS_SECRET_ACCESS_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key }}"
+  AWS_SECRET_ACCESS_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key | string | to_yaml }}"
 {% endif %}
 ---
 apiVersion: v1
@@ -41,5 +41,5 @@ metadata:
   namespace: longhorn-system
 type: kubernetes.io/basic-auth
 stringData:
-  username: {{ vault_k3s.storage.longhorn.dashboard.username }}
-  password: {{ vault_k3s.storage.longhorn.dashboard.password }}
+  username: "{{ vault_k3s.storage.longhorn.dashboard.username | string | to_yaml }}"
+  password: "{{ vault_k3s.storage.longhorn.dashboard.password | string | to_yaml }}"
