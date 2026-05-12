@@ -9,16 +9,16 @@ metadata:
   namespace: longhorn-system
 type: Opaque
 data:
-{%- if k3s.storage.longhorn.backup_target.type == "cifs" %}
+{% if k3s.storage.longhorn.backup_target.type == "cifs" %}
   CIFS_USERNAME: "{{ vault_k3s.storage.longhorn.backup_target.access_id | b64encode }}"
   CIFS_PASSWORD: "{{ vault_k3s.storage.longhorn.backup_target.access_key | b64encode }}"
-{%- elif k3s.storage.longhorn.backup_target.type == "aws-s3" %}
+{% elif k3s.storage.longhorn.backup_target.type == "aws-s3" %}
   AWS_ACCESS_KEY_ID: "{{ vault_k3s.storage.longhorn.backup_target.access_id | b64encode }}"
   AWS_SECRET_ACCESS_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key | b64encode }}"
-{%- elif k3s.storage.longhorn.backup_target.type == "azure-blob" %}
+{% elif k3s.storage.longhorn.backup_target.type == "azure-blob" %}
   AZBLOB_ACCOUNT_NAME: "{{ vault_k3s.storage.longhorn.backup_target.access_id | b64encode }}"
   AZBLOB_ACCOUNT_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key | b64encode }}"
-{%- elif k3s.storage.longhorn.backup_target.type == "gcp-storage" %}
+{% elif k3s.storage.longhorn.backup_target.type == "gcp-storage" %}
   AWS_ACCESS_KEY_ID: "{{ vault_k3s.storage.longhorn.backup_target.access_id | b64encode }}"
   AWS_ENDPOINTS: "{{ 'https://storage.googleapis.com' | b64encode }}"
   AWS_SECRET_ACCESS_KEY: "{{ vault_k3s.storage.longhorn.backup_target.access_key | b64encode }}"
