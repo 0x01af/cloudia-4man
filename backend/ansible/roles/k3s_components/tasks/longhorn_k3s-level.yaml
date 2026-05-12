@@ -5,6 +5,9 @@
 # Check 3: Avoid upgrading if a failed BackingImage exists. For more information, see Backing Image.
 # Backup: It is recommended to create a Longhorn system backup before performing the upgrade. This ensures that all critical resources, such as volumes and backing images, are backed up and can be restored in case any issues arise.
 #====
+# inspired by:
+# - https://oneuptime.com/blog/post/2026-03-20-optimize-longhorn-performance-production/view
+#===
 # - name: "deploy prerequisites"
 #  kubernetes.core.k8s:
 #    state: present
