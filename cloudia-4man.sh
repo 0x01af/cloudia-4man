@@ -94,18 +94,21 @@ function c4m_run_ansible() {
   printf -- "Please stand by for any requests or warnings...\n\n"
   
   ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags $tags} | tee "c4m-last-run.log"
-  case $? in
+  local ansible_status=${PIPESTATUS[0]}
+  case $ansible_status in
     0) # everything okay
        dialog --clear \
          --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
          --title "Info" \
-         --msgbox "Cloudia - the foreman - was successfull.\n\nFor more information, read the last-run logfile (c4m-last-run.log)." 0 40
+         --cr-wrap \
+         --msgbox "Cloudia - the foreman - was successfull.\n\nFor more information, read the last-run logfile (c4m-last-run.log)." 0 0
        ;;
     *) # everythin else
        dialog --clear \
          --backtitle "${C4M_CONFIG[dialog_backtitle]}" \
          --title "Error" \
-         --msgbox "ERROR: Cloudia - the foreman - detected an error!\n\nPlease visit the last-run logfile (c4m-last-run.log)." 0 40
+         --cr-wrap \
+         --msgbox "ERROR: Cloudia - the foreman - detected an error!\n\nPlease visit the last-run logfile (c4m-last-run.log)." 0 0
        ;;
     esac
   
