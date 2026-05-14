@@ -78,23 +78,17 @@ function c4m_run_ansible() {
   # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --tags "os_basic_only" --ask-vault-pass
   ## do k8s_apps_only: like k8s apps deployment and updatek8s apps deployment and updates
   # ansible-playbook backend/ansible/c4m-bootstrap.yaml -i inventory/{$environment}/environment.yaml --tags "k8s_apps_only" --ask-vault-pass
-  local playbook="backend/ansible/c4m-$action.yaml"
-  local inventory="${C4M_CONFIG[inventory_path]}/$env/environment.yaml"
-  local tags=""
-  
+  local ANSIBLE_ARGS=("backend/ansible/c4m-$action.yaml" -i "${C4M_CONFIG[inventory_path]}/$env/environment.yaml" --ask-vault-pass)
   if [[ -n "$scope" && "$scope" != "any" ]]; then
-    $tags="$scope"
+    ANSIBLE_ARGS+=(--tags "$scope")
   fi
   
   clear
-  printf -- "Cloudia - the foreman - executes an ansible-playbook with following parameters:\n"
-  printf -- "- playbook: $playbook\n"
-  printf -- "- inventory: $inventory\n"
-  printf -- "- tags: $scope\n"
+  printf -- "Cloudia - the foreman - executes an ansible-playbook with following arguments:\n"
+  printf -- "${ANSIBLE_ARGS[@]}"
   printf -- "Please stand by for any requests or warnings...\n\n"
-
-  echo "ansible-playbook \"$playbook\" -i \"$inventory\" --ask-vault-pass ${tags:+--tags $tags}"
-  ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags $tags} | tee "c4m-last-run.log"
+  
+  ansible-playbook "${ANSIBLE_ARGS[@]}" | tee "c4m-last-run.log"
   local ansible_status=${PIPESTATUS[0]}
   case $ansible_status in
     0) # everything okay
