@@ -61,7 +61,9 @@ spec:
           persistentVolumeClaim:
             claimName: zigbee2mqtt-pv-data
         - name: zigbee2mqtt-configmap-config
-          
+          configMap:
+            name: zigbee2mqtt-configmap
+          defaultMode: 0644  
         - name: zigbee2mqtt-udev
           hostPath:
             path: /run/udev
