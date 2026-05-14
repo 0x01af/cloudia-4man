@@ -50,9 +50,9 @@ spec:
         - name: SSL_PORT
           value: "4122"
         volumeMounts:
-        - name: waf-global-settings-volume
-          mountPath: /etc/modsecurity.d/owasp-crs/rules/00-global-settings.conf
-          subPath: 00-global-settings.conf
+        # - name: waf-global-settings-volume
+        #  mountPath: /etc/modsecurity.d/owasp-crs/rules/00-global-settings.conf
+        #  subPath: 00-global-settings.conf
         - name: waf-webapp-settings-volume
           mountPath: /etc/modsecurity.d/owasp-crs/rules/99-webapp-settings.conf
           subPath: 99-webapp-settings.conf
@@ -101,10 +101,10 @@ spec:
           name: home-assistant-localtime
           readOnly: true
       volumes:
-      - name: waf-global-settings-volume
-        configMap:
-          name: modsecurity-waf-global-settings
-          defaultMode: 0644
+      # - name: waf-global-settings-volume
+      #  configMap:
+      #    name: modsecurity-waf-global-settings
+      #    defaultMode: 0644
       - name: waf-webapp-settings-volume
         configMap:
           name: home-assistant-waf-webapp-settings
