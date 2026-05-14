@@ -17,6 +17,5 @@
         src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ _k8s_app.version }}/reflector.yaml"
     - name: "configure c4m-general reflections"
       kubernetes.core.k8s:
+        template: 'kubernetes-reflector-c4m-general.yaml.j2'
         state: present
-        src: "https://github.com/emberstack/kubernetes-reflector/releases/download/{{ _k8s_app.version }}/reflector.yaml"
-        kubernetes-reflector-c4m-globals.yam
