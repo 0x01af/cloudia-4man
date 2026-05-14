@@ -85,7 +85,7 @@ function c4m_run_ansible() {
   
   clear
   printf -- "Cloudia - the foreman - executes an ansible-playbook with following arguments:\n"
-  printf -- "${ANSIBLE_ARGS[@]}"
+  printf -- "%s\n" "${ANSIBLE_ARGS[*]}"
   printf -- "Please stand by for any requests or warnings...\n\n"
   
   ansible-playbook "${ANSIBLE_ARGS[@]}" | tee "c4m-last-run.log"
