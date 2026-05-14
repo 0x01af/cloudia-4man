@@ -15,10 +15,23 @@
       kubernetes.core.k8s:
         state: present
         template: 'gatus-prerequisites.yaml.j2'
+      register: _gatus_prerequisites
     - name: "deploy gatus"
       kubernetes.core.k8s:
         state: present
         template: 'gatus.yaml.j2'
+    - name: "force pod recreation via Rollout (Clean Sledgehammer)"
+      when: _gatus_prerequisites.changed
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: gatus
+            namespace: "{{ _k8s_app.namespace | default('gatus') }}"
+            annotations:
+              kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+        state: patched
     - name: "configure ingress for gatus"
       kubernetes.core.k8s:
         state: present
