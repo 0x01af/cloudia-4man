@@ -50,11 +50,11 @@ spec:
             cpu: "250m"
         ports:
         - containerPort: 8080
-          name: http
+          name: http-gatus
         readinessProbe:
           httpGet:
             path: "/health"
-            port: "8080"
+            port: http-gatus
           initialDelaySeconds: 2
           periodSeconds: 8
           failureThreshold: 1
@@ -63,7 +63,7 @@ spec:
         livenessProbe:
           httpGet:
             path: "/health"
-            port: "8080"
+            port: http-gatus
           initialDelaySeconds: 2
           periodSeconds: 8
           failureThreshold: 3
