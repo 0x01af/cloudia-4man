@@ -21,8 +21,6 @@ spec:
     # Allows backing image uploads up to 10,000MB
     maxRequestBodyBytes: 10485760000
 ---
-# kubectl patch svc longhorn-frontend -n longhorn-system -p '{"spec": {"type": "LoadBalancer"}}'
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
