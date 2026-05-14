@@ -93,7 +93,7 @@ function c4m_run_ansible() {
   printf -- "- tags: $scope\n"
   printf -- "Please stand by for any requests or warnings...\n\n"
   
-  ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags "$tags"} | tee "c4m-last-run.log"
+  ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags $tags} | tee "c4m-last-run.log"
   case $? in
     0) # everything okay
        dialog --clear \
