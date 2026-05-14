@@ -49,17 +49,17 @@ metadata:
     cert-manager.io/acme-challenge-type: "http01"
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
-rules:
-  - host: "{{ _k8s_app.frontend.fqdn | default('zigbee2mqtt.local') }}"
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: zigbee2mqtt-service
-            port:
-              number: 8080
+  rules:
+    - host: "{{ _k8s_app.frontend.fqdn | default('zigbee2mqtt.local') }}"
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: zigbee2mqtt-service
+              port:
+                number: 8080
   tls:
   - hosts:
     - "{{ _k8s_app.frontend.fqdn | default('zigbee2mqtt.local') }}"
