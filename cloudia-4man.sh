@@ -165,6 +165,7 @@ function c4m_scope() {
     --nocancel \
     --checklist "Choose a scope: " 0 0 15 \
     "os_basic_only" "Run OS Basic only" off \
+    "admin_tools_only" "Run Admin Tools only" off \
     "k8s_apps_only" "Run K8s Apps only" off \
     3>&1 1>&2 2>&3)
 
