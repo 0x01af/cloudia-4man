@@ -21,15 +21,22 @@ metadata:
   name: home-assistant-waf-webapp-settings
   namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
 data:
-  99-webapp-settings.conf: |-
-    
-    SecRuleEngine DetectionOnly
+  99-webapp-settings.conf: |
+    # Globale Engine-Einstellungen
+    SecRuleEngine On
+    SecRequestBodyAccess On
+    SecAuditEngine RelevantOnly
+    SecAuditLogType Serial
+    SecAuditLog /var/log/modsecurity_audit.log
+    # Globale Schwellenwerte für OWASP CRS
+    SecAction "id:900110,phase:1,nolog,pass,t:none,setvar:tx.inbound_anomaly_score_threshold=5"    
+    # Home-Assistant Einstellungen
+    # SecRuleEngine DetectionOnly
     SecDebugLogLevel 9
     # Home Assistant#Onboarding: False-Positive CRS Rule #949110
-    # SecRule REQUEST_URI "@beginsWith /api/onboarding/users" "id:1001,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
-    # SecRule REQUEST_URI "@beginsWith /auth/login_flow" "id:1002,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
-    # TODO: Home Assistant Web Application Security
-    # SecRule REQUEST_URI "@beginsWith /attack-me" "id:1001,phase:1,pass,nolog,ctl:ruleEngine=Off"
+    SecRule REQUEST_URI "@beginsWith /api/onboarding/users" "id:1001,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
+    SecRule REQUEST_URI "@beginsWith /auth/login_flow" "id:1002,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
+    
 ---
 # inspired by:
 # - https://faun.pub/running-your-home-assistant-on-kubernetes-part-ii-60eb46a73c61
