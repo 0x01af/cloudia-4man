@@ -31,11 +31,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              matchExpressions:
-              - key: app-preferred
-                operator: In
-                values:
-                - zigbee2mqtt
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - "{{ _k8s_app.serial.attached_to }}"
       containers:
       - name: zigbee2mqtt
         image: koenkk/zigbee2mqtt:{{ _k8s_app.version }}
@@ -60,6 +60,8 @@ spec:
         - name: zigbee2mqtt-pv-data
           persistentVolumeClaim:
             claimName: zigbee2mqtt-pv-data
+        - name: zigbee2mqtt-configmap-config
+          
         - name: zigbee2mqtt-udev
           hostPath:
             path: /run/udev
