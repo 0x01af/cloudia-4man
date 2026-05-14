@@ -83,13 +83,13 @@ spec:
   issuerRef:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
-    {% if _k8s_app.mode is defined and _k8s_app.mode == "prod" %}
-    # configure prod certificate issueing
+{% if _k8s_app.mode is defined and _k8s_app.mode == "prod" %}
+{# configure prod certificate issueing #}
     name: "letsencrypt-production"
-    {% else %}
-    # configure test certificate issueing
+{% else %}
+{# configure test certificate issueing #}
     name: "letsencrypt-staging"
-    {% endif %}
+{% endif %}
     kind: ClusterIssuer
   commonName: "{{ _k8s_app.mqtt.fqdn | default('mosquitto.local') }}"
   dnsNames:
