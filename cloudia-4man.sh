@@ -92,7 +92,8 @@ function c4m_run_ansible() {
   printf -- "- inventory: $inventory\n"
   printf -- "- tags: $scope\n"
   printf -- "Please stand by for any requests or warnings...\n\n"
-  
+
+  echo "ansible-playbook \"$playbook\" -i \"$inventory\" --ask-vault-pass ${tags:+--tags $tags}"
   ansible-playbook "$playbook" -i "$inventory" --ask-vault-pass ${tags:+--tags $tags} | tee "c4m-last-run.log"
   local ansible_status=${PIPESTATUS[0]}
   case $ansible_status in
