@@ -14,7 +14,7 @@ metadata:
 data:
   config.yaml: |-
     endpoints:
-      {{ _k8s_app.endpoints | to_nice_yaml(indent=2) | indent(6, first=False) }}
+      {{ _k8s_app.endpoints | to_nice_yaml(indent=2, allow_unicode=True) | indent(6, first=False) }}
     # endpoints:
     # - name: example
     #  url: https://example.org
