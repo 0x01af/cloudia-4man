@@ -4,16 +4,16 @@ kind: Namespace
 metadata:
   name: "{{ _k8s_app.namespace | default('home-assistant') }}"
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: modsecurity-waf-global-settings
-  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
-  annotations:
-    reflector.v1.k8s.emberstack.com/reflects: "c4m-general/modsecurity-waf-global-settings"
-    reflector.v1.k8s.emberstack.com/reflected-version: ""
-data:
-
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#  name: modsecurity-waf-global-settings
+#  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
+#  annotations:
+#    reflector.v1.k8s.emberstack.com/reflects: "c4m-general/modsecurity-waf-global-settings"
+#    reflector.v1.k8s.emberstack.com/reflected-version: ""
+# data:
+#
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -22,6 +22,7 @@ metadata:
   namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
 data:
   99-webapp-settings.conf: |-
+    
     SecRuleEngine DetectionOnly
     SecDebugLogLevel 9
     # Home Assistant#Onboarding: False-Positive CRS Rule #949110
