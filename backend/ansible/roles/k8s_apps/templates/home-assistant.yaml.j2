@@ -37,6 +37,20 @@ spec:
                 operator: In
                 values:
                 - home-assistant
+      initContainers:
+      - name: home-assistant-hacs-init
+        image: alpine:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apk add --no-cache wget bash unzip
+            # Prüfen, ob HACS schon da ist, um unnötige Downloads zu vermeiden
+            if [ ! -d "/config/custom_components/hacs" ]; then
+              wget -O - https://get.hacs.xyz | bash -
+            fi
+        volumeMounts:
+        - mountPath: /config
+          name: home-assistant-pv-config
       containers:
       - name: home-assistant-waf-sidecar
         image: owasp/modsecurity-crs:nginx-alpine
@@ -59,8 +73,6 @@ spec:
       # Home-Assistant: https://github.com/home-assistant/core/pkgs/container/home-assistant/versions?filters%5Bversion_type%5D=tagged
       - name: home-assistant
         image: "ghcr.io/home-assistant/home-assistant:{{ _k8s_app.version }}"
-        # command: ["/bin/sh"]
-        # args: ["-c", "wget -O - https://get.hacs.xyz | bash -"]
         securityContext:
             privileged: true
         resources:
@@ -94,9 +106,6 @@ spec:
         - mountPath: /config/recorder.yaml
           name: home-assistant-configmap-config
           subPath: recorder.yaml
-        #- mountPath: /etc/localtime
-        #  name: home-assistant-pv-time
-        #  readOnly: true
         - mountPath: /etc/localtime
           name: home-assistant-localtime
           readOnly: true
