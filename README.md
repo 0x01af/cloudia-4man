@@ -4,16 +4,29 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 ## Features and supported components
 
 * Provisioning Service: typically a once-only job
-  * Raspberry Pi with Ubuntu
-  * Raspberry Pi with Raspberry Pi OS
+  * (not tested) Raspberry Pi with Ubuntu
+  * (not tested) Raspberry Pi with Raspberry Pi OS
   * Topton Mini PC with Ubuntu
 * Configuration & Deployment Management: needs to be repeatedly done
   * OS Ubuntu (with tools cURL, and VIM)
   * (not implemented) OS Raspberry Pi OS
   * (not implemented) Canonical Microcloud
   * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible)
-  * (not implemented) Zigbee2MQTT
-  * (not implemented) Home Assistant (installed on OS Ubuntu)
+  * K8s Apps:
+    * cert-manager
+    * Zigbee2MQTT
+    * Home Assistant: Smart Home
+    * Mosquitto: MQTT Broker
+    * Gatus: Monitoring Solution
+    * (not implemented) Karakeep
+    * (not implemented) Immich
+    * (not implemented) Time-Management
+    * (not implemented) rauthy
+  * Admin Tools
+    * kubectl: K8s/K3s Console Tool
+    * mqttx: MQTT Client
+    * (not final implemented) etcdctl: ETCD Console Tool
+    * (not final trufflehog)
 
 ## Architecture
 
