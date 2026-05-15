@@ -11,7 +11,7 @@ metadata:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: mosquitto-config
+  name: mosquitto-configmap-config
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 data:
   mosquitto.conf: |-
