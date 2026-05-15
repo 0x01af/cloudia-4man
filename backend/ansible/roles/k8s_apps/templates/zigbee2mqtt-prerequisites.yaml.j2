@@ -153,8 +153,8 @@ data:
       # If true, will reset stats every time the health check is executed (only applicable to stats that can be reset). (default: false)
       reset_on_check: false
     # Define the files which contains the configs
-    devices: devices.yaml
-    groups: groups.yaml
+    devices: /data/devices.yaml
+    groups: /data/groups.yaml
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
