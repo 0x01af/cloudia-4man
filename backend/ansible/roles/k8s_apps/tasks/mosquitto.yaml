@@ -12,10 +12,26 @@
       kubernetes.core.k8s:
         state: present
         template: 'mosquitto-prerequisites.yaml.j2'
+      register: _mosquitto_prerequisites
     - name: "deploy mosquitto"
       kubernetes.core.k8s:
         state: present
         template: 'mosquitto.yaml.j2'
+      register: _mosquitto_deployment
+    - name: "force pod recreation via Rollout (Clean Sledgehammer)"
+      when: _mosquitto_prerequisites.changed or _mosquitto_deployment.changed
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: mosquitto-app
+            namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
+          spec:
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
     - name: "configure ingress for mosquitto"
       kubernetes.core.k8s:
         state: present
