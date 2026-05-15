@@ -7,39 +7,39 @@ metadata:
   name: gatus-service
   namespace: "{{ _k8s_app.namespace | default('gatus') }}"
   labels:
-    app: gatus
+    app: gatus-app
 spec:
   type: LoadBalancer
   ports:
     - port: 8080
       targetPort: http-gatus
   selector:
-    app: gatus
+    app: gatus-app
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gatus
+  name: gatus-app
   namespace: "{{ _k8s_app.namespace | default('gatus') }}"
   # annotations:
   #  checksum/config: sha1(jsonencode(kubernetes_config_map_v1.gatus.data))
   labels:
-    app: gatus
+    app: gatus-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: gatus
+      app: gatus-app
   template:
     metadata:
       labels:
-        app: gatus
+        app: gatus-app
     spec:
       securityContext:
         fsGroup: 65534
       containers:
       - image: "twinproduction/gatus:{{ _k8s_app.version }}" # v5.11.0
-        name: gatus
+        name: gatus-container
         resources:
           requests:
             memory: "40Mi"
