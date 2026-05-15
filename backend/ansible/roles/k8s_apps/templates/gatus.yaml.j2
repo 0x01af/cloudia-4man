@@ -9,7 +9,7 @@ metadata:
   labels:
     app: gatus-app
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8080
       targetPort: http-gatus
