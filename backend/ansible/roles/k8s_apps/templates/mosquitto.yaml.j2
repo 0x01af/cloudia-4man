@@ -8,7 +8,7 @@ metadata:
   name: mosquitto-service
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
   labels:
-    app: mosquitto
+    app: mosquitto-app
 spec:
   type: LoadBalancer
   ports:
@@ -19,24 +19,24 @@ spec:
       targetPort: 9001
       name: websocket
   selector:
-    app: mosquitto
+    app: mosquitto-app
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mosquitto
+  name: mosquitto-app
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
   labels:
-    app: mosquitto
+    app: mosquitto-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mosquitto
+      app: mosquitto-app
   template:
     metadata:
       labels:
-        app: mosquitto
+        app: mosquitto-app
     spec:
       securityContext:
         fsGroup: 33
