@@ -1,13 +1,6 @@
 ---
-# - name: "deploy prerequisites"
-#  kubernetes.core.k8s:
-#    state: present
-    # src: 'rauthy-prerequisites.yaml'
-    # definition: |-
-    # template: 'rauthy-prerequisites.yaml.j2'
-    # - path: 'file1.j2'
-    # - path: 'file2.j2'
-
+# inspired by:
+# - https://github.com/Koenkk/zigbee2mqtt/discussions/10899
 - name: "k8s_app zigbee2mqtt"
   when: _k8s_app.version != 'none'
   block:
