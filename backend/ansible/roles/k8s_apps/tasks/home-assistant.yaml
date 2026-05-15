@@ -29,8 +29,11 @@
           metadata:
             name: home-assistant-app
             namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
-            annotations:
-              kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+          spec:
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
         state: patched
     #- name: "force pod recreation (Sledgehammer)"
     #  when: _home_assistant_deployment.changed
