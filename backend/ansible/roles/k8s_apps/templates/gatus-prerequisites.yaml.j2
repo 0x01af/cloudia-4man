@@ -14,11 +14,37 @@ metadata:
 data:
   config.yaml: |-
     endpoints:
-      {{ _k8s_app.endpoints | to_nice_yaml(indent=2, allow_unicode=True) | indent(6, first=False) }}
-    # endpoints:
-    # - name: example
-    #  url: https://example.org
-    #  interval: 60s
-    #  conditions:
-    #    - "[STATUS] == 200"
-    #    - "[BODY] == pat(*<h1>Example Domain</h1>*)"
+{% for ep in _k8s_app.endpoints %}
+      - name: "{{ ep.name }}"
+        url: "{{ ep.url }}"
+{% if ep.interval is defined %}
+        interval: "{{ ep.interval }}"
+{% endif %}
+        conditions:
+{% for cond in ep.conditions %}
+          - "{{ cond }}"
+{% endfor %}
+        alerts:
+{% for alert in ep.alerts %}
+          - type: "{{ alert.type }}"
+            failure-threshold: {{ alert.failure_threshold | default(3) }}
+            success-threshold: {{ alert.success_threshold | default(2) }}
+            send-on-resolved: "{{ alert.send_on_resolved | default("false") }}"
+            description: "{{ alert.description | default("") }}
+{% endfor %}
+{% endfor %}
+    alerting:
+{% for a in _k8s_app.alerting %}
+{% if a.homeassistant is defined %}
+      homeassistant:
+        url: "{{ a.url }}"
+        token: "{{ vault_k8s_apps.gatus.alerting.homeassistant.token | to_json }}"
+{% endif %}
+{% endfor %}
+# endpoints:
+# - name: description # required
+#   url: https://example.org # required
+#   interval: 60s 
+#   conditions:
+#    - "[STATUS] == 200"
+#    - "[BODY] == pat(*<h1>Example Domain</h1>*)"
