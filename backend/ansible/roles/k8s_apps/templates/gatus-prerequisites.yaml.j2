@@ -29,15 +29,15 @@ data:
           - type: "{{ alert.type }}"
             failure-threshold: {{ alert.failure_threshold | default(3) }}
             success-threshold: {{ alert.success_threshold | default(2) }}
-            send-on-resolved: "{{ alert.send_on_resolved | default("false") }}"
-            description: "{{ alert.description | default("") }}
+            send-on-resolved: {{ alert.send_on_resolved | default(false) }}
+            description: "{{ alert.description | default("") }}"
 {% endfor %}
 {% endfor %}
     alerting:
 {% if _k8s_app.alerting.homeassistant is defined %}
       homeassistant:
         url: "{{ _k8s_app.alerting.homeassistant.url }}"
-        token: "{{ vault_k8s_apps.gatus.alerting.homeassistant.token | to_json }}"
+        token: {{ vault_k8s_apps.gatus.alerting.homeassistant.token | to_json }}
 {% endif %}
 # endpoints:
 # - name: description # required
