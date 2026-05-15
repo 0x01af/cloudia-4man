@@ -34,13 +34,11 @@ data:
 {% endfor %}
 {% endfor %}
     alerting:
-{% for a in _k8s_app.alerting %}
-{% if a.homeassistant is defined %}
+{% if _k8s_app.alerting.homeassistant is defined %}
       homeassistant:
         url: "{{ a.url }}"
         token: "{{ vault_k8s_apps.gatus.alerting.homeassistant.token | to_json }}"
 {% endif %}
-{% endfor %}
 # endpoints:
 # - name: description # required
 #   url: https://example.org # required
