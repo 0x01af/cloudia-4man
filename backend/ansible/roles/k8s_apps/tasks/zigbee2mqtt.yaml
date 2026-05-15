@@ -31,18 +31,21 @@
         state: present
         template: 'zigbee2mqtt.yaml.j2'
       register: _zigbee2mqtt_deployment
-    - name: "force pod recreation (Sledgehammer)"
+    - name: "force pod recreation via Rollout (Clean Sledgehammer)"
       when: _zigbee2mqtt_deployment.changed
       kubernetes.core.k8s:
-        state: absent
-        api_version: v1
-        kind: Pod
-        namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
-        name: "zigbee2mqtt-app-0"
-        wait: no
-        delete_options:
-          gracePeriodSeconds: 0
-          propagationPolicy: Background
+        definition:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: zigbee2mqtt
+            namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
+          spec:
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+        state: patched
     - name: "configure ingress for zigbee2mqtt"
       kubernetes.core.k8s:
         state: present
