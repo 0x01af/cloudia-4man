@@ -29,8 +29,11 @@
           metadata:
             name: gatus
             namespace: "{{ _k8s_app.namespace | default('gatus') }}"
-            annotations:
-              kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+          spec:
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
         state: patched
     - name: "configure ingress for gatus"
       kubernetes.core.k8s:
