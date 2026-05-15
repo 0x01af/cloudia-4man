@@ -20,14 +20,15 @@
       kubernetes.core.k8s:
         state: present
         template: 'gatus.yaml.j2'
+      register: _gatus_deployment
     - name: "force pod recreation via Rollout (Clean Sledgehammer)"
-      when: _gatus_prerequisites.changed
+      when: _gatus_prerequisites.changed or _gatus_deployment.changed
       kubernetes.core.k8s:
         definition:
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            name: gatus
+            name: gatus-app
             namespace: "{{ _k8s_app.namespace | default('gatus') }}"
           spec:
             template:
