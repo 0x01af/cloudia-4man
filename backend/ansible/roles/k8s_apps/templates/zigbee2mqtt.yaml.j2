@@ -44,12 +44,12 @@ spec:
         ports:
           - containerPort: 8080
         volumeMounts:
-          - mountPath: /data
+          - mountPath: /app/data
             name: zigbee2mqtt-pv-data
-          - mountPath: /data/configuration.yaml
+          - mountPath: /app/data/configuration.yaml
             name: zigbee2mqtt-configmap-config
             subPath: configuration.yaml
-          - mountPath: /data/secret.yaml
+          - mountPath: /app/data/secret.yaml
             name: zigbee2mqtt-secret-config
             readOnly: true
           - name: zigbee2mqtt-udev
