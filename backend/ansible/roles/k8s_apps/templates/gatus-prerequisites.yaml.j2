@@ -36,7 +36,7 @@ data:
     alerting:
 {% if _k8s_app.alerting.homeassistant is defined %}
       homeassistant:
-        url: "{{ a.url }}"
+        url: "{{ _k8s_app.alerting.homeassistant.url }}"
         token: "{{ vault_k8s_apps.gatus.alerting.homeassistant.token | to_json }}"
 {% endif %}
 # endpoints:
