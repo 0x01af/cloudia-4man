@@ -17,9 +17,9 @@ data:
   mosquitto.conf: |-
     # Basic listener configuration
     listener 1883
-    protocol mqqt
+    protocol mqtt
     # mqtts: listener 8883
-    # protocol mqqt
+    # protocol mqtt
 
     # WebSocket listener
     listener 9001
@@ -39,8 +39,8 @@ data:
     # Persistence
     persistence false
     # persistence_location /mosquitto/data/
-    autosave_interval 300
-    persistent_client_expiration 1
+    # autosave_interval 300
+    persistent_client_expiration 1d
 
     # Logging
     # log_dest file /mosquitto/log/mosquitto.log
