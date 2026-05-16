@@ -49,7 +49,7 @@ spec:
           - mountPath: /app/data/configuration.yaml
             name: zigbee2mqtt-configmap-config
             subPath: configuration.yaml
-          - mountPath: /app/data/secret.yaml
+          - mountPath: /app/data
             name: zigbee2mqtt-secret-config
             readOnly: true
           - name: zigbee2mqtt-udev
@@ -63,7 +63,7 @@ spec:
         - name: zigbee2mqtt-configmap-config
           configMap:
             name: zigbee2mqtt-configmap-config
-            defaultMode: 0644  
+            defaultMode: 0600
         - name: zigbee2mqtt-udev
           hostPath:
             path: /run/udev
