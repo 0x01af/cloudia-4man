@@ -32,6 +32,7 @@
               metadata:
                 annotations:
                   kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+        state: patched
     - name: "configure ingress for mosquitto"
       kubernetes.core.k8s:
         state: present
