@@ -36,6 +36,16 @@ spec:
                   operator: In
                   values:
                     - "{{ _k8s_app.serial.attached_to }}"
+      initContainers:
+      - name: copy-config
+        image: busybox
+        command: ['sh', '-c', 'cp /configmap/configuration.yaml /app/data/configuration.yaml']
+        volumeMounts:
+          - mountPath: /app/data/configuration.yaml
+            name: zigbee2mqtt-configmap-config
+            subPath: configuration.yaml
+          - mountPath: /app/data
+            name: zigbee2mqtt-pv-data
       containers:
       - name: zigbee2mqtt
         image: koenkk/zigbee2mqtt:{{ _k8s_app.version }}
@@ -46,9 +56,6 @@ spec:
         volumeMounts:
           - mountPath: /app/data
             name: zigbee2mqtt-pv-data
-          - mountPath: /app/data/configuration.yaml
-            name: zigbee2mqtt-configmap-config
-            subPath: configuration.yaml
           - mountPath: /app/data/secrets
             name: zigbee2mqtt-secret-config
           - name: zigbee2mqtt-udev
