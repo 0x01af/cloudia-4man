@@ -37,11 +37,11 @@ spec:
                   values:
                     - "{{ _k8s_app.serial.attached_to }}"
       initContainers:
-      - name: copy-config
-        image: busybox
-        command: ['sh', '-c', 'cp /configmap/configuration.yaml /app/data/configuration.yaml']
+      - name: zigbee2mqtt-init
+        image: alpine:latest
+        command: ['sh', '-c', 'cp /tmp/configmap/configuration.yaml /app/data/configuration.yaml']
         volumeMounts:
-          - mountPath: /app/data/configuration.yaml
+          - mountPath: /tmp/configmap/configuration.yaml
             name: zigbee2mqtt-configmap-config
             subPath: configuration.yaml
           - mountPath: /app/data
