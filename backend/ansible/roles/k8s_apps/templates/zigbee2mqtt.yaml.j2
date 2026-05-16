@@ -49,7 +49,7 @@ spec:
           - mountPath: /app/data/configuration.yaml
             name: zigbee2mqtt-configmap-config
             subPath: configuration.yaml
-          - mountPath: /app/data
+          - mountPath: /app/data/secrets
             name: zigbee2mqtt-secret-config
           - name: zigbee2mqtt-udev
             mountPath: /run/udev
