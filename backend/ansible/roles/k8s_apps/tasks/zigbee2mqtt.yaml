@@ -19,7 +19,7 @@
             namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
           stringData:
             secret.yaml: |-
-              {{ lookup('template', 'zigbee2mqtt-secret.yaml.j2' ) | to_yaml }}
+              {{ lookup('template', 'zigbee2mqtt-secret.yaml.j2' ) }}
         state: present
       register: _zigbee2mqtt_secret
     - name: "set label for node affinity"
