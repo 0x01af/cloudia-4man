@@ -146,7 +146,12 @@ data:
       ## Zigbee2MQTT (you are required to serve a standalone UI yourself as needed).
       disable_ui_serving: false
     homeassistant:
+      ## https://www.zigbee2mqtt.io/guide/usage/integrations/home_assistant.html
+{% if _k8s_app.homeassistant is defined and _k8s_app.homeassistant == "enabled" %}
+      enabled: true
+{% else %}
       enabled: false
+{% endif %}
     health:
       # Interval between checks in minutes (default: 10)
       interval: 10
