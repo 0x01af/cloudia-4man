@@ -3,11 +3,25 @@
 # - https://github.com/Koenkk/zigbee2mqtt/discussions/10899
 - name: "k8s_app zigbee2mqtt"
   when: _k8s_app.version != 'none'
-  block:
+  block:    
     - name: "deploy prerequisites of zigbee2mqtt"
       kubernetes.core.k8s:
         state: present
         template: 'zigbee2mqtt-prerequisites.yaml.j2'
+      register: _zigbee2mqtt_prerequisites
+    - name: "deploy secret of zigbee2mqtt"
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: zigbee2mqtt-secret-config
+            namespace: "{{ _k8s_app.namespace | default('zigbee2mqtt') }}"
+          stringData:
+            secrets.yaml: |-
+              {{ lookup('template', 'config.txt.j2' ) | to_yaml }}
+        state: present
+      register: _zigbee2mqtt_secret
     - name: "set label for node affinity"
       when: _k8s_app.serial is defined and _k8s_app.serial.attached_to is defined
       kubernetes.core.k8s:
@@ -25,7 +39,7 @@
         template: 'zigbee2mqtt.yaml.j2'
       register: _zigbee2mqtt_deployment
     - name: "force pod recreation via Rollout (Clean Sledgehammer)"
-      when: _zigbee2mqtt_deployment.changed
+      when: _zigbee2mqtt_prerequisites.changed od _zigbee2mqtt_secret.changed or _zigbee2mqtt_deployment.changed
       kubernetes.core.k8s:
         definition:
           apiVersion: apps/v1
