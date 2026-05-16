@@ -41,14 +41,14 @@ spec:
       securityContext:
         fsGroup: 33
       containers:
-      - image: "eclipse-mosquitto:{{ _k8s_app.version }}"
+      - image: "ghcr.io/eclipse-mosquitto/mosquitto:{{ _k8s_app.version }}-alpine"
         name: mosquitto
         resources:
           requests:
-            memory: "64Mi"
+            memory: "32Mi"
             cpu: "10m"
           limits:
-            memory: "256Mi"
+            memory: "64Mi"
             cpu: "250m"
         ports:
         - containerPort: 1883
