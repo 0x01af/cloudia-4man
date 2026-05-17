@@ -63,20 +63,6 @@ spec:
           value: "8122"
         - name: SSL_PORT
           value: "4122"
-        # 1. Schaltet das detaillierte Audit-Logging ein
-        - name: MODSEC_AUDIT_ENGINE
-          value: "RelevantOnly"  # Loggt nur bei Fehlern/Blocks (schont den Speicher)
-        # 2. Definiert, wo das Audit-Log landet (Das CRS-Image leitet dies intern an stdout weiter)
-    - name: MODSEC_AUDIT_LOG_TYPE
-      value: "Serial"
-
-    # 3. WICHTIG: Ändert das NGINX Log-Level, damit ModSecurity feingranularer schreibt
-    - name: NGINX_ERROR_LOG
-      value: "stderr info"   # 'info' oder 'notice' zwingt NGINX, die ModSec-Details anzuzeigen
-
-    # 4. Bestimmt, welche Daten im Log landen (A, B, C, F, H, Z sind Standard für Analysen)
-    - name: MODSEC_AUDIT_LOG_PARTS
-      value: "ABCFHZ"
         volumeMounts:
         # - name: waf-global-settings-volume
         #  mountPath: /etc/modsecurity.d/owasp-crs/rules/00-global-settings.conf
