@@ -8,10 +8,15 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
   * (not tested) Raspberry Pi with Raspberry Pi OS
   * Topton Mini PC with Ubuntu
 * Configuration & Deployment Management: needs to be repeatedly done
-  * OS Ubuntu (with tools cURL, and VIM)
-  * (not implemented) OS Raspberry Pi OS
-  * (not implemented) Canonical Microcloud
-  * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible)
+  * OS
+    * Ubuntu (with tools cURL, and VIM)
+    * (not implemented) ArchLinux
+    * (not implemented) Raspberry Pi OS
+  * Virtual Machine Plattform
+    * (not implemented) Canonical Microcloud
+  * Container Runtime Plattform
+    * (not implemented) Canonical Microcloud
+    * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible)
   * K8s Apps:
     * cert-manager
     * Zigbee2MQTT
@@ -22,6 +27,9 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) Immich
     * (not implemented) Time-Management
     * (not implemented) rauthy
+  * Linux Apps
+    * (not implemented) NetBird
+    * (not implemented) FlexiWAN
   * Admin Tools
     * kubectl: K8s/K3s Console Tool
     * mqttx: MQTT Client
