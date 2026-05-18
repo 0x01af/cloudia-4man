@@ -27,15 +27,17 @@ data:
     SecRequestBodyAccess On
     SecAuditEngine RelevantOnly
     SecAuditLogType Serial
-    SecAuditLog /var/log/modsecurity_audit.log
+    SecAuditLogParts ABHIJKZ
+    SecAuditLogFormat JSON
+    SecAuditLog /dev/stdout
     # Globale Schwellenwerte für OWASP CRS
-    SecAction "id:900110,phase:1,nolog,pass,t:none,setvar:tx.inbound_anomaly_score_threshold=5"    
+    SecAction "id:900110,phase:1,nolog,pass,t:none,setvar:tx.inbound_anomaly_score_threshold=5"
     # Home-Assistant Einstellungen
-    # SecRuleEngine DetectionOnly
+    SecRuleEngine DetectionOnly
     SecDebugLogLevel 9
     # Home Assistant#Onboarding: False-Positive CRS Rule #949110
-    SecRule REQUEST_URI "@beginsWith /api/onboarding/users" "id:1001,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
-    SecRule REQUEST_URI "@beginsWith /auth/login_flow" "id:1002,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
+    # SecRule REQUEST_URI "@beginsWith /api/onboarding/users" "id:1001,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
+    # SecRule REQUEST_URI "@beginsWith /auth/login_flow" "id:1002,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
     
 ---
 # inspired by:
