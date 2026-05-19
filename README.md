@@ -18,17 +18,19 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) Canonical Microcloud
     * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible)
   * K8s Apps:
-    * cert-manager
-    * Zigbee2MQTT
-    * Home Assistant: Smart Home
-    * Mosquitto: MQTT Broker
-    * Gatus: Monitoring Solution
+    * cert-manager - Certificate Manager for Kubernetes Ingress/Services
+    * (not fully implemented) Kubernetes Reflector - Reflector for Kubernetes ConfigMaps and Secrets
+    * Zigbee2MQTT - Zigbee2MQTT Bridge
+    * Home Assistant - Smart Home
+    * Mosquitto - MQTT Broker
+    * Gatus - Monitoring Solution
     * (not implemented) Karakeep
     * (not implemented) Immich
     * (not implemented) Time-Management
     * (not implemented) rauthy
+    * (not implemented) NetBird for Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access)
   * Linux Apps
-    * (not implemented) NetBird
+    * (not implemented) NetBird Hub / Agent - Secure Access Platform (https://netbird.io/)
     * (not implemented) FlexiWAN
   * Admin Tools
     * kubectl: K8s/K3s Console Tool
