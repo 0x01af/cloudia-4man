@@ -27,6 +27,8 @@ metadata:
     app: gatus-app
 spec:
   replicas: 1
+  # Revision History: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: gatus-app
