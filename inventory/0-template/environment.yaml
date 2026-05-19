@@ -23,9 +23,3 @@ k3s_cluster:
         <server4>:
         <server5>:
         <server6>:
-
-# Template for Zigbee2MQTT proxies
-# - add each server - that has a ZigBee Z-stack USB stick attached - to the predefined group <zigbee2mqtt_proxies>
-zigbee2mqtt_proxies:
-  hosts:
-    <server1>:
