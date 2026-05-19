@@ -28,10 +28,12 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) Immich
     * (not implemented) Time-Management
     * (not implemented) rauthy
-    * (not implemented) NetBird for Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access)
+    * (not implemented) NetBird - Secure Access to Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access)
+    * (not implemented) Headlamp - Kubernetes Dashboard (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea)
   * Linux Apps
     * (not implemented) NetBird Hub / Agent - Secure Access Platform (https://netbird.io/)
     * (not implemented) FlexiWAN
+    * (not implemented) Beszel - Lightweight server monitoring platform built on PocketBase (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea)
   * Admin Tools
     * kubectl: K8s/K3s Console Tool
     * mqttx: MQTT Client
