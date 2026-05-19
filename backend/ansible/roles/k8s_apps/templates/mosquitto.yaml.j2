@@ -40,6 +40,8 @@ spec:
     spec:
       securityContext:
         fsGroup: 33
+      # Revision History: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit
+      revisionHistoryLimit: 1
       containers:
       - image: "ghcr.io/eclipse-mosquitto/mosquitto:{{ _k8s_app.version }}-alpine"
         name: mosquitto
