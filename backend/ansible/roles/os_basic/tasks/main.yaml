@@ -5,7 +5,7 @@
 
 - name: 'Change time zone'
   community.general.timezone:
-    name: "{{ os_local.time_zone }}"
+    name: "{{ all_local.time_zone }}"
   register: _os_local_time
 
 - name: 'Restart all time-dependent services'
