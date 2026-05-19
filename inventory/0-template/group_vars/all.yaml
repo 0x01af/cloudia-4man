@@ -3,8 +3,8 @@
 # cloudia-4man Basic Configuration
 ansible_user: "your-superuser"
 
-# Operating System Local Configuration
-os_local:
+# General Local Configuration (Operating Systems, Containers, ...)
+all_local:
   time_zone: "Europe/Zurich"
   ntp:
     servers:
