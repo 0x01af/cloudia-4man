@@ -21,7 +21,7 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * cert-manager - Certificate Manager for Kubernetes Ingress/Services
     * (not fully implemented) Kubernetes Reflector - Reflector for Kubernetes ConfigMaps and Secrets
     * Zigbee2MQTT - Zigbee2MQTT Bridge
-    * Home Assistant - Smart Home
+    * Home Assistant - Smart Home (with HACS support)
     * Mosquitto - MQTT Broker
     * Gatus - Monitoring Solution
     * (not implemented) Karakeep
