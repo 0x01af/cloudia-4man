@@ -36,19 +36,12 @@
                 annotations:
                   kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
         state: patched
-    #- name: "force pod recreation (Sledgehammer)"
-    #  when: _home_assistant_deployment.changed
-    #  kubernetes.core.k8s:
-    #    state: absent
-    #    api_version: v1
-    #    kind: Pod
-    #    namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
-    #    name: "home-assistant-app-0"
-    #    wait: no
-    #    delete_options:
-    #      gracePeriodSeconds: 0
-    #      propagationPolicy: Backgroundwait: no
     - name: "configure ingress for home-assistant"
       kubernetes.core.k8s:
         state: present
         template: 'home-assistant-ingress.yaml.j2'
+    - name: "configure local-access ingress for home-assistant"
+      when: _k8s_app.local_access is defined and _k8s_app.local_access.enabled
+      kubernetes.core.k8s:
+        state: present
+        template: 'home-assistant-ingress-local-access.yaml.j2'
