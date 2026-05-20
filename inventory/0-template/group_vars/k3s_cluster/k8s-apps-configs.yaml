@@ -17,6 +17,9 @@ k8s_apps:
       language: "de"
       currency: "CHF"
       time_zone: "Europe/Zurich"
+    local_access:
+      enabled: false
+      fqdn: "home-assistant.local.fqdn" # http-only, no https, use a private fqdn
     storage:
       class_name: "longhorn"
       size: "16Gi"
