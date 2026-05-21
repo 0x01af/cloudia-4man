@@ -99,6 +99,10 @@ spec:
     logs:
       access:
         enabled: true
+        format: json
+        fields:
+          headers:
+            defaultMode: keep
     ### Pre-configure typical Middleware definitions in namespace "traefik"
     extraObjects:
       - apiVersion: v1
