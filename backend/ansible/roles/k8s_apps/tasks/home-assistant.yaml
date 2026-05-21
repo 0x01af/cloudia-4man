@@ -44,4 +44,4 @@
       when: _k8s_app.local_access is defined and _k8s_app.local_access.enabled
       kubernetes.core.k8s:
         state: present
-        template: 'home-assistant-ingress-local-access.yaml.j2'
+        template: 'home-assistant-ingress-local-access-{{  }}.yaml.j2'
