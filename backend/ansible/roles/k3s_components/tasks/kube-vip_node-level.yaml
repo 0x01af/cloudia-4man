@@ -47,3 +47,7 @@
       ansible.builtin.file:
         path: "/var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip"
         state: touch
+
+        /etc/rancher/k3s/config.yaml
+      disable:
+  - servicelb
