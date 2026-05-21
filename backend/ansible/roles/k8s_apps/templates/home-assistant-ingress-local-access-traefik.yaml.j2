@@ -1,34 +1,17 @@
 ---
 apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: home-assistant-ingress-local-access-ipallowlist
-  namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
-spec:
-  ipAllowList:
-    sourceRange:
-      - "10.0.0.0/8"
-      - "172.16.0.0/12"
-      - "192.168.0.0/16"
-      - "fc00::/7"
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+kind: IngressRouter
 metadata:
   name: home-assistant-ingress-local-access
   namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: weblocal
 spec:
-  ingressClassName: {{ _k8s_ingress_detected }}
-  rules:
-    - host: "{{ _k8s_app.local_access.fqdn | default('home-assistant.local') }}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: home-assistant-service
-                port:
-                  number: 8123
+  entryPoints:
+    - weblocal
+  routes:
+  - match: Host(`{{ _k8s_app.local_access.fqdn | default('home-assistant.local') }}`)
+    kind: Rule
+    services:
+    - name: home-assistant-service
+      port: 8123
+    middlewares:
+    - name: 
