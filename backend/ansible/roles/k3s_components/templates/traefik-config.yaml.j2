@@ -22,8 +22,10 @@ spec:
     ### Add well-defined ports / entrypoints in "traefik"
     # 80 | web | pre-defined by traefik
     # 443 | websecure | pre-defined by traefik
+    # 8080 | traefik | pre-defined by traefik (local only, not exposable)
     # 1883 | mqtt | added
     # 8883 | mqtts | added
+    # 8000 | weblocal | added, which will be accessible by RFC1918 addresses only
     ports:
       mqtt:
         port: 1883
@@ -53,9 +55,24 @@ spec:
         proxyProtocol:
           trustedIPs: []
           insecure: false
+      weblocal:
+        port: 8000
+        expose:
+          default: true
+        exposedPort: 8000
+        protocol: TCP
+        redirections:
+          entryPoint: {}
+        forwardedHeaders:
+          trustedIPs: []    
+          insecure: false
+        proxyProtocol:
+          trustedIPs: []
+          insecure: false
     additionalArguments:
       - "--entryPoints.mqtt.address=:1883/tcp"
       - "--entryPoints.mqtts.address=:8883/tcp"
+      - "--entryPoints.weblocal.address=:8000/tcp"
     ###
     ingressRoute:
       ### Create an IngressRoute for the dashboard
@@ -96,15 +113,16 @@ spec:
             regex: "^http://(.*)"
             replacement: "https://${1}/"
             permanent: false
-      ### ISSUE: Doesn't work, because of load balancing (source ip is cluster internal lb address)
-      # - apiVersion: traefik.io/v1alpha1
-      #  kind: Middleware
-      #  metadata:
-      #    name: traefik-dashboard-ipallowlist
-      #    namespace: kube-system
-      #  spec:
-      #    ipAllowList:
-      #      sourceRange:
-      #        % for item in k3s.ingress.traefik.dashboard.ipallowlist %
-      #        -  item 
-      #        % endfor 
+      ### REMINDER: Doesn't work, if service definition hasn't externalTrafficPolicy: Local configured.
+      - apiVersion: traefik.io/v1alpha1
+        kind: Middleware
+        metadata:
+         name: traefik-dashboard-local-access
+         namespace: traefik
+        spec:
+          ipAllowList:
+            sourceRange:
+              - "10.0.0.0/8"
+              - "172.16.0.0/12"
+              - "192.168.0.0/16"
+              - "fc00::/7"
