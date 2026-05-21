@@ -24,12 +24,13 @@ spec:
     api:
       dashboard: true
     ### Add well-defined ports / entrypoints in "traefik"
-    # 80 | web | pre-defined by traefik
-    # 443 | websecure | pre-defined by traefik
-    # 8080 | traefik | pre-defined by traefik (local only, not exposable)
-    # 1883 | mqtt | added
-    # 8883 | mqtts | added
-    # 8000 | weblocal | added, which will be accessible by RFC1918 addresses only
+    # 80-8000 | web | pre-defined by traefik
+    # 443-8443 | websecure | pre-defined by traefik
+    # 9100-9100 | metrics | pre-defined by traefik
+    # 8080-8080 | traefik | pre-defined by traefik (local only, not exposable)
+    # 1883-1883 | mqtt | added
+    # 8883-8883 | mqtts | added
+    # 8008-8008 | weblocal | added, which will be accessible by RFC1918 addresses only
     ports:
       mqtt:
         port: 1883
