@@ -92,7 +92,11 @@ spec:
         middlewares:
           - name: redirect-to-https
             namespace: traefik
-      ### Pre-configure typical Middleware definitions in namespace "traefik"
+    ### Enable Access-Logs
+    logs:
+      access:
+        enabled: true
+    ### Pre-configure typical Middleware definitions in namespace "traefik"
     extraObjects:
       - apiVersion: v1
         kind: Namespace
