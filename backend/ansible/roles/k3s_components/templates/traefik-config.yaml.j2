@@ -17,6 +17,10 @@ spec:
         enabled: true
         allowCrossNamespace: true
     ###
+    service:
+      spec:
+        externalTrafficPolicy: Local
+    ###
     api:
       dashboard: true
     ### Add well-defined ports / entrypoints in "traefik"
@@ -117,7 +121,7 @@ spec:
       - apiVersion: traefik.io/v1alpha1
         kind: Middleware
         metadata:
-         name: traefik-dashboard-local-access
+        name: local-access-ipallowlist
          namespace: traefik
         spec:
           ipAllowList:
