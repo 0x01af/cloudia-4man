@@ -5,7 +5,7 @@ metadata:
   name: home-assistant-ingress-local-access
   namespace: "{{ _k8s_app.namespace | default('home-assistant') }}"
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.entrypoints: web-local
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
   rules:
