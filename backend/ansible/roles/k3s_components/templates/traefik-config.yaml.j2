@@ -61,10 +61,10 @@ spec:
           trustedIPs: []
           insecure: false
       weblocal:
-        port: 8000
+        port: 8008
         expose:
           default: true
-        exposedPort: 8000
+        exposedPort: 8008
         protocol: TCP
         redirections:
           entryPoint: {}
@@ -77,7 +77,7 @@ spec:
     additionalArguments:
       - "--entryPoints.mqtt.address=:1883/tcp"
       - "--entryPoints.mqtts.address=:8883/tcp"
-      - "--entryPoints.weblocal.address=:8000/tcp"
+      - "--entryPoints.weblocal.address=:8008/tcp"
     ###
     ingressRoute:
       ### Create an IngressRoute for the dashboard
