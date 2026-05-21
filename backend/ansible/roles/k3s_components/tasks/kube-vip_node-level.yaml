@@ -47,7 +47,10 @@
       ansible.builtin.file:
         path: "/var/lib/rancher/k3s/server/manifests/servicelb.yaml.skip"
         state: touch
-
+    - name: Prevent default configuration of K3s load balancer servicelb
+      ansible.builtin.file:
+        path: "/etc/rancher/k3s/config.yaml.d/90-k3s-server-disable-servicelb.yaml"
+        state: touch
         /etc/rancher/k3s/config.yaml
       disable:
   - servicelb
