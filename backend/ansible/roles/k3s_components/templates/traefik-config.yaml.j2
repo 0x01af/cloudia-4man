@@ -11,16 +11,18 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    ### DeamonSet and externalTrafficPolicy: Local
+    deployment:
+      kind: DaemonSet
+    service:
+      enabled: true
+      spec:
+        externalTrafficPolicy: Local
     ### Allow cross-namespace usage for the Middleware definitions in namespace "traefik" (https://doc.traefik.io/traefik/reference/routing-configuration/kubernetes/crd/http/middleware/
     providers:
       kubernetesCRD:
         enabled: true
         allowCrossNamespace: true
-    ###
-    service:
-      enabled: true
-      spec:
-        externalTrafficPolicy: Local
     ###
     api:
       dashboard: true
