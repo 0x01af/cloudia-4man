@@ -50,7 +50,5 @@
     - name: Prevent default configuration of K3s load balancer servicelb
       ansible.builtin.template:
         src: traefik-k3s_server-config.yaml.j2
-        dest: "/etc/rancher/k3s/config.yaml.d/90-disable-servicelb.yaml"
-        owner: root
-        group: root
+        dest: "/etc/rancher/k3s/config.yaml.d/50-servicelb-disable.yaml"
         mode: "0644"
