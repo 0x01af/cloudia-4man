@@ -91,13 +91,6 @@ data:
       trusted_proxies:
         - 127.0.0.1
         - ::1
-  sensor_homeassistant_specials.yaml: |-
-    # BUG/2026-01-11: Home Assistant log an error "The filesize platform for the sensor integration does not support platform setup. Please remove it from your config."
-    # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
-    # - platform: filesize
-    #  scan_interval: 300
-    #  file_paths:
-    #    - "/config/home-assistant_v2.db"
   recorder.yaml: |-
     # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
     include:
