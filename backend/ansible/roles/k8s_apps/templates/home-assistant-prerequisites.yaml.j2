@@ -54,12 +54,21 @@ data:
     # Load frontend themes
     frontend:
       themes: !include_dir_merge_named themes
-    # Load automations, scripts, and scenes
-    automation: !include_dir_list user/automations
-    script: !include_dir_list user/scripts
-    scene: !include scenes.yaml
-    zone: !include zones.yaml
-    sensor: !include_dir_merge_list sensors/
+    # Automations created externally and managed by Git
+    automation manual: !include_dir_merge_list user/automations/
+    # Automations created within the Home Assistant UI
+    automation ui: !include automations_ui.yaml
+    # Scripts created externally and managed by Git
+    script: !include_dir_merge_list user/scripts/
+    # Packages created externally and managed by Git
+    packages: !include_dir_merge_named user/packages/
+    # Sensors created internally and externally and managed by Git
+    sensor: !include_dir_merge_list user/sensors/
+    # Scenes created internally and externally and managed by Git
+    scene: !include_dir_merge_list user/scenes/
+    # Zones created internally and externally and managed by Git
+    zone: !include user/zones.yaml
+    # Recorders managed by ConfigMap only
     recorder: !include recorder.yaml
 
     ### Enhanced default configuration by home-assistant-on-k3s
@@ -101,10 +110,6 @@ data:
       entities:
         - sensor.last_boot
         - sensor.date
-  automations.yaml: |
-  scripts.yaml: |
-  scenes.yaml: |
-  zones.yaml: |
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
