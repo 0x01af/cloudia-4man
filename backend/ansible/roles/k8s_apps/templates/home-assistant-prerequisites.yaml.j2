@@ -54,20 +54,22 @@ data:
     # Load frontend themes
     frontend:
       themes: !include_dir_merge_named themes
+    # Automations created within the Home Assistant UI
+    automation ui: !include automations.yaml
     # Automations created externally and managed by Git
     automation manual: !include_dir_merge_list user/automations/
-    # Automations created within the Home Assistant UI
-    automation ui: !include automations_ui.yaml
+    # Scripts created within the Home Assistant UI
+    script ui: !include scripts.yaml
     # Scripts created externally and managed by Git
-    script: !include_dir_merge_list user/scripts/
+    script manual: !include_dir_merge_list user/scripts/
     # Packages created externally and managed by Git
     packages: !include_dir_merge_named user/packages/
-    # Sensors created internally and externally and managed by Git
+    # Sensors created externally and managed by Git
     sensor: !include_dir_merge_list user/sensors/
     # Scenes created internally and externally and managed by Git
     scene: !include_dir_merge_list user/scenes/
     # Zones created internally and externally and managed by Git
-    zone: !include user/zones.yaml
+    zone: !include zones.yaml
     # Recorders managed by ConfigMap only
     recorder: !include recorder.yaml
 
