@@ -77,7 +77,7 @@ data:
     # Recorders managed by ConfigMap only
     recorder: !include recorder.yaml
 
-    ### Enhanced default configuration by home-assistant-on-k3s
+    ### Enhanced default configuration
     homeassistant:
       # Configure your individual setting
       unit_system: metric
@@ -88,8 +88,7 @@ data:
       internal_url: "https://{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
       language: "de"
       allowlist_external_dirs:
-        # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
-        - "/config"
+        - "/config" # Data Housekeeping: https://community.home-assistant.io/t/how-to-keep-your-recorder-database-size-under-control/295795
       debug: false
     # Web Application Security: Configuration for Web Application Firewall Sidecar
     http:
