@@ -44,10 +44,14 @@ spec:
         args:
           - |
             apk add --no-cache wget bash unzip
-            # Prüfen, ob HACS schon da ist, um unnötige Downloads zu vermeiden
+            # if HACS do not exists, install HACS
             if [ ! -d "/config/custom_components/hacs" ]; then
               wget -O - https://get.hacs.xyz | bash -
             fi
+            # prepare /config/user directory
+            mkdir -p "/config/user"
+            # prepare /config/automations_ui.yaml
+            touch /config/automations_ui.yaml
         volumeMounts:
         - mountPath: /config
           name: home-assistant-pv-config
