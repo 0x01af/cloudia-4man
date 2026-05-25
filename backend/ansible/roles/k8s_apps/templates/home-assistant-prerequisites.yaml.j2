@@ -73,7 +73,11 @@ data:
     # Scenes created internally and externally and managed by Git
     scene: !include_dir_merge_list user/scenes/
     # Zones created internally and externally and managed by Git
-    zone: !include zones.yaml
+    zone manual: !include user/zones.yaml
+    # Zones created internally
+    zone ui: !include zones.yaml
+    # Weather created externally and managed by Git
+    weather: !include user/weather.yaml
     # Recorders managed by ConfigMap only
     recorder: !include recorder.yaml
 
