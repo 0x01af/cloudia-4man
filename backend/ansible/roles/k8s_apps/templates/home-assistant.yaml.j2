@@ -50,6 +50,12 @@ spec:
             fi
             # prepare /config/user directory for advanced mode manual
             mkdir -p "/config/user"
+            mkdir -p "/config/user/themes"
+            mkdir -p "/config/user/automations"
+            mkdir -p "/config/user/scripts"
+            mkdir -p "/config/user/packages"
+            mkdir -p "/config/user/sensors"
+            mkdir -p "/config/user/scenes"
             # prepare /config/<file>.yaml for default mode UI
             touch /config/automations.yaml
             touch /config/scripts.yaml
