@@ -71,6 +71,11 @@ spec:
         image: owasp/modsecurity-crs:nginx-alpine
         ports:
         - containerPort: 8122
+        resources:
+          requests:
+            memory: "256Mi"
+          limits:
+            memory: "512Mi"
         env:
         - name: BACKEND
           value: "http://localhost:8123"
@@ -92,9 +97,9 @@ spec:
             privileged: true
         resources:
           requests:
-            memory: "256Mi"
+            memory: "1024Mi"
           limits:
-            memory: "512Mi"
+            memory: "4096Mi"
         ports:
         - containerPort: 8123
         volumeMounts:
