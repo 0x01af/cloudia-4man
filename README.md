@@ -16,14 +16,14 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) Canonical Microcloud
   * Container Runtime Plattform
     * (not implemented) Canonical Microcloud
-    * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible)
+    * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible) with storage (local-path-provisioner, Longhorn), network (Flannel), ingress (Traefik, NGINX-deprecated), and load-balancing (Kube-VIP for Kube-API AND K8s Apps)
   * K8s Apps:
-    * cert-manager - Certificate Manager for Kubernetes Ingress/Services
+    * cert-manager: Certificate Manager for Kubernetes Ingress/Services
     * (not fully implemented) Kubernetes Reflector - Reflector for Kubernetes ConfigMaps and Secrets
-    * Zigbee2MQTT - Zigbee2MQTT Bridge
-    * Home Assistant - Smart Home (with HACS support)
-    * Mosquitto - MQTT Broker
-    * Gatus - Monitoring Solution
+    * Zigbee2MQTT: Zigbee2MQTT Bridge
+    * Home Assistant: Smart Home (with HACS support)
+    * Mosquitto: MQTT Broker
+    * Gatus: Monitoring Solution
     * (not implemented) Karakeep
     * (not implemented) Immich: Photo Management like Google Photos
     * (not implemented) SearXNG: Search machine proxy
