@@ -46,9 +46,10 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 
 ## Architecture
 
-* Orchestration Service: Shell script
+* Inventory
+  * Multiple environments with Ansible inventories
+* Orchestration Service: Shell script cloudia-4man.sh
   * controls Provisioning Service and Configuration & Deployment Management
-  * manages Inventory (Infrastructure as Code)
 * Provisioning Service: Ansible
   * stages Infrastructure like Bare Metal Server (Raspberry Pi) based on initial state definition
 * Configuration & Deployment Management: Ansible
@@ -57,10 +58,11 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 
 ## Functionality
 
-### New infrastructure component
-1. Define a new infrastructure component based on the template in folder /inventory
+### New environment
+1. Define a new environment based on the template in folder /inventory
    1. copy the folder /0-template and name it using your environment name.
    2. describe your environment within file environment.yaml
+   3. configure your components by variables under group_vars and host_vars
 2. Run Orchestration Service shell script cloudia-4man.sh
    1. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
       run provisioning service, and start configuration & deployment management.
