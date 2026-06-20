@@ -30,7 +30,8 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) Seafile: File-Sharing like Dropbox or OneDrive
     * (not implemented) Jellyfin: Media and Streaming Service, like Netflix or Spotify
     * (not implemented) Time-Management
-    * (not implemented) rauthy: Light-weight Identity and Access Management
+    * (not implemented) Dex: Light-weight Identity Broker (because everyone already has a preferred Identity Provider - like Microsoft Entra ID, Google Identity, or your local Synology User Directory)
+    * (not implemented) Authentik / Authelia / rauthy: Light-weight Identity and Access Management
     * (not implemented) Vaultwarden: Bitwarden compatible Password Manager (other solution: Keepass with database hosting on Seafile or local NAS)
     * (not implemented) NetBird: Secure Access to Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access)
     * (not implemented) Headlamp: Kubernetes Dashboard (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea)
