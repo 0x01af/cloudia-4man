@@ -19,7 +19,8 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * Suse K3s (inspired by https://github.com/k3s-io/k3s-ansible) with storage (local-path-provisioner, Longhorn), network (Flannel), ingress (Traefik, NGINX-deprecated), and load-balancing (Kube-VIP for Kube-API AND K8s Apps)
   * K8s Apps:
     * cert-manager: Certificate Manager for Kubernetes Ingress/Services
-    * (not fully implemented) Kubernetes Reflector - Reflector for Kubernetes ConfigMaps and Secrets
+    * (not implemented) CloudNativePG (CNPG): PostgreSQL Database for any K8s app
+    * (not fully implemented) Kubernetes Reflector: Reflector for Kubernetes ConfigMaps and Secrets (original use case didn't work as expected - therefore postponed)
     * Zigbee2MQTT: Zigbee2MQTT Bridge
     * Home Assistant: Smart Home (with HACS support)
     * Mosquitto: MQTT Broker
