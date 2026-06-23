@@ -73,4 +73,5 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 * https://blog.devgenius.io/provisioning-vs-configuration-management-with-terraform-4bf07b9c79db
 * Why Terraform and Ansible? -> https://serverfault.com/questions/1022690/is-it-possible-to-run-ansible-on-a-bare-metal
 * Using YAML instead INI -> https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases
+* Kubernetes Deployments: Stop using CPU limits, set Memory limit equals to requested: https://home.robusta.dev/blog/stop-using-cpu-limits / https://medium.com/@danielvalev/stop-setting-kubernetes-cpu-limits-yes-really-285dbdf8ff51
 
