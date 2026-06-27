@@ -36,6 +36,7 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) Vaultwarden: Bitwarden compatible Password Manager (other solution: Keepass with database hosting on Seafile or local NAS)
     * (not implemented) NetBird: Secure Access to Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access)
     * (not implemented) Headlamp: Kubernetes Dashboard (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea)
+    * (not implemented) Hermes-Agent: Self-improving AI agent (https://github.com/nousresearch/hermes-agent)
   * Linux Apps
     * (not implemented) NetBird Hub / Agent - Secure Access Platform (https://netbird.io/)
     * (not implemented) FlexiWAN
