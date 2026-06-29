@@ -30,7 +30,7 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
     * (not implemented) SearXNG: Search machine proxy
     * (not implemented) Seafile: File-Sharing like Dropbox or OneDrive
     * (not implemented) Jellyfin: Media and Streaming Service, like Netflix or Spotify
-    * (not implemented) Time-Management
+    * (not implemented) Kimai: timetracker (working hours, holidays, ...)
     * (not implemented) Dex: Light-weight Identity Broker (because everyone already has a preferred Identity Provider - like Microsoft Entra ID, Google Identity, or your local Synology User Directory)
     * (not implemented) Authentik / Authelia / rauthy: Light-weight Identity and Access Management
     * (not implemented) Vaultwarden: Bitwarden compatible Password Manager (other solution: Keepass with database hosting on Seafile or local NAS)
