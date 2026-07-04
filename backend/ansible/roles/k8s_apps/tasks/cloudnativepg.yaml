@@ -1,22 +1,10 @@
+###
+# based on: https://cloudnative-pg.io/documentation/1.17/installation_upgrade/
 ---
 - name: "k8s_app CloudNativePG"
   when: _k8s_app.version != 'none'
   block:
-    - name: "prepare HELM repository for CloudNativePG"
-      kubernetes.core.helm_repository:
-        release_name: stable
-        repo_url: "https://cloudnative-pg.github.io/charts"
-    - name: "deploy CloudNativePG"
-      kubernetes.core.helm:
-        release_name: cnpg
-        release_namespace: {{ _k8s_app.namespace | default('cloudnativepg') }}
-        release_state: present
-        release_values: "{{ lookup('template', 'somefile.yaml') | from_yaml }}"
-        wait: true
-        create_namespace: true
-        chart_ref: cnpg/cloudnativepg
-        chart_version: 5.0.12
-        update_repo_cache: true
+    
 
     - name: "deploy prerequisites of CloudNativePG"
       kubernetes.core.k8s:
