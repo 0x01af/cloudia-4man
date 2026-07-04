@@ -4,8 +4,6 @@
 - name: "k8s_app CloudNativePG"
   when: _k8s_app.version != 'none'
   block:
-    
-
     - name: "deploy prerequisites of CloudNativePG"
       kubernetes.core.k8s:
         state: present
@@ -23,15 +21,11 @@
           apiVersion: apps/v1
           kind: StatefulSet
           metadata:
-            name: cloudnativepg-operator
-            namespace: "{{ _k8s_app.namespace | default('cloudnativepg') }}"
+            name: cnpg-controller-manager
+            namespace: cnpg-system
           spec:
             template:
               metadata:
                 annotations:
                   kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
         state: patched
-    - name: "configure ingress for cloudnativepg"
-      kubernetes.core.k8s:
-        state: present
-        template: 'cloudnativepg-ingress.yaml.j2'
