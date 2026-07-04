@@ -1,0 +1,17 @@
+---
+# example: helm
+# - name: "prepare HELM repository for CloudNativePG"
+#   kubernetes.core.helm_repository:
+#     release_name: <appl-name or local-repo-name>
+#      repo_url: "https://cloudnative-pg.github.io/charts"
+#    - name: "deploy CloudNativePG"
+#      kubernetes.core.helm:
+        # release_name: cnpg-controller-manager
+        # release_namespace: 
+ #       release_state: present
+ #       release_values: "{{ lookup('template', 'somefile.yaml') | from_yaml }}"
+ #       wait: true
+ #       create_namespace: true
+ #       chart_ref: cnpg/cloudnativepg
+ #       chart_version: 5.0.12
+ #       update_repo_cache: true
