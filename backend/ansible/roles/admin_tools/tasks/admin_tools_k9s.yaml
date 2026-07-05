@@ -1,0 +1,38 @@
+---
+- name: "tool k9s"
+  when: _admin_tool.version != 'none'
+  block:
+    - name: "k9s: prepare environment"
+      ansible.builtin.file:
+        path: "/tmp/k9s"
+        state: directory
+    - name: "k9s: downloading binaries"
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/{{ _admin_tool.version }}/bin/linux/amd64/kubectl"
+        dest: "/tmp/kubectl/"
+    - name: "kubectl: installing binaries"
+      ansible.builtin.command:
+        cmd: "install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl"
+      args:
+        chdir: "/tmp/kubectl"
+      become: true
+    - name: "kubectl: configuring kubectl - autocomplete"
+      ansible.builtin.lineinfile:
+        path: "~/.bashrc"
+        regexp: '\.\s+<\(kubectl completion bash\)'
+        line: ". <(kubectl completion bash)  # Added by ansible admin_tools_kubectl"
+    # - name: "configuring kubectl - get kubeconfig"
+    - name: "kubectl: Test"
+      ansible.builtin.file:
+        path: "~/test-{{ groups['k3s_servers'][0] }}"
+        state: touch
+      delegate_to: "{{ groups['k3s_servers'][0] }}"
+    
+    - name: Inform user about KUBECONFIG environment variable
+      ansible.builtin.debug:
+       msg: |
+           K3s Cluster and Kubeconfig has been set up.\n
+           -------------------------------------------\n
+           Please check the installation with following commands:\n
+           - kubectl get nodes -l 'node-role.kubernetes.io/control-plane=true' -o=jsonpath='{.items[*].metadata.name}'\n
+           Remember: Helm Controller is automatically installed.\n
