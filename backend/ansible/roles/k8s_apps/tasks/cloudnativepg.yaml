@@ -12,7 +12,7 @@
     - name: "deploy CloudNativePG"
       kubernetes.core.k8s:
         state: present
-        file: "https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-{{ _k8s_app.version.split('.')[0:2] | join('.') }}/releases/cnpg-{{ _k8s_app.version }}.yaml"
+        src: "https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-{{ _k8s_app.version.split('.')[0:2] | join('.') }}/releases/cnpg-{{ _k8s_app.version }}.yaml"
       register: _cloudnativepg_deployment
     - name: "force pod recreation via Rollout (Clean Sledgehammer)"
       when: _cloudnativepg_deployment.changed or _cloudnativepg_prerequisites.changed
