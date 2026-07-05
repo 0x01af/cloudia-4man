@@ -3,6 +3,26 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 
 ## Features and supported components
 
+### Provisioning Service: typically a once-only job
+
+| Component | Description | State |
+| --- | --- | :---: |
+
+
+### Configuration & Deployment Management: needs to be repeatedly done
+
+#### Operating System (OS)
+
+| Component | Description | State |
+| --- | --- | :---: |
+
+
+#### Container Runtime Plattform
+
+| Component | Description | State |
+| --- | --- | :---: |
+| Suse K3s | (inspired by https://github.com/k3s-io/k3s-ansible) with storage (local-path-provisioner, Longhorn), network (Flannel), ingress (Traefik, NGINX-deprecated), and load-balancing (Kube-VIP for Kube-API AND K8s Apps) | production-ready |
+
 * Provisioning Service: typically a once-only job
   * (not tested) Raspberry Pi with Ubuntu
   * (not tested) Raspberry Pi with Raspberry Pi OS
