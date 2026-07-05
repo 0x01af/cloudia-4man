@@ -21,7 +21,7 @@ Cloudia - as foreman - accounts for providing, configuring and managing IT resso
 
 | Component | Description | State |
 | --- | --- | :---: |
-| Suse K3s | (inspired by https://github.com/k3s-io/k3s-ansible) with storage (local-path-provisioner, Longhorn), network (Flannel), ingress (Traefik, NGINX-deprecated), and load-balancing (Kube-VIP for Kube-API AND K8s Apps) | production-ready |
+| Suse K3s | (inspired by https://github.com/k3s-io/k3s-ansible) with storage (local-path-provisioner, Longhorn), network (Flannel), ingress (Traefik, NGINX-deprecated), and load-balancing (Kube-VIP for Kube-API AND K8s Apps) | :rocket: production-ready |
 
 * Provisioning Service: typically a once-only job
   * (not tested) Raspberry Pi with Ubuntu
