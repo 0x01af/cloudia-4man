@@ -50,6 +50,7 @@ All supported components are marked by their implementation state:
 | Home Assistant | Smart Home (with HACS support) |  :rocket: production-ready |
 | Mosquitto | MQTT Broker |  :rocket: production-ready |
 | Zigbee2MQTT | Zigbee to MQTT Bridge |  :rocket: production-ready |
+| TaskView | It combines task management, custom workflows, developer integrations, analytics, and AI-assisted automation in a platform you can run on your own infrastructure. (https://github.com/Gimanh/taskview-community) |  :bulb: idea |
 | SilverBullet | Personal Knowledge Management (see https://silverbullet.md/) |  :bulb: idea |
 | CloudNativePG (CNPG) | PostgreSQL Database for any K8s app |  :mag: dev-mode |
 | Kubernetes Reflector | Reflector for Kubernetes ConfigMaps and Secrets (original use case didn't work as expected - therefore postponed) |  :mag: dev-mode |
