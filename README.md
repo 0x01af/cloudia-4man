@@ -73,21 +73,21 @@ All supported components are marked by their implementation state:
 
 | Component | Description | State |
 | --- | --- | :---: |
+| NetBird Hub / Agent | Secure Access Platform (https://netbird.io/) |  :bulb: idea |
+| FlexiWAN |  Open Source SD-WAN & SASE (! critical license !) |  :bulb: idea |
+| Beszel | Lightweight server monitoring platform built on PocketBase (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea) |  :bulb: idea |
 
-    * (not implemented) NetBird Hub / Agent - Secure Access Platform (https://netbird.io/)
-    * (not implemented) FlexiWAN
-    * (not implemented) Beszel - Lightweight server monitoring platform built on PocketBase (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea)
 
 #### Admin Tools (Linux-dependent)
 
 | Component | Description | State |
 | --- | --- | :---: |
-    * kubectl: K8s/K3s Console Tool
-    * mqttx: MQTT Client
-    * k9s: Kubernetes CLI To Manage Your Clusters In Style (https://k9scli.io/)
-    * (not final implemented) etcdctl: ETCD Console Tool
-    * (not final implemented) trufflehog
-    * (not final implemented) k8sgpt
+| k9s | Kubernetes CLI To Manage Your Clusters In Style (https://k9scli.io/) |  :rocket: production-ready |
+| kubectl | K8s/K3s Console Tool |  :rocket: production-ready |
+| mqttx | MQTT Client |  :rocket: production-ready |
+| etcdctl | ETCD Console Tool |  :mag: dev-mode |
+| trufflehog | most powerful secrets Discovery, Classification, Validation, and Analysis tool|  :mag: dev-mode |
+| k8sgpt | AI-powered tool that helps diagnose and fix Kubernetes issues with intelligent insights and automated troubleshooting |  :mag: dev-mode |
 
 ## Architecture
 
