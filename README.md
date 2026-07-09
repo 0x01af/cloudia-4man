@@ -97,7 +97,7 @@ It's done with 'ansible'.
 * Orchestration Service: Shell script cloudia-4man.sh
   * controls Provisioning Service ( :mag: dev-mode ) and Configuration & Deployment Management ( :rocket: production-ready)
 * Provisioning Service: cloud-init
-  * stages Infrastructure like Bare Metal Server (Raspberry Pi) based on initial state definition
+  * stages Infrastructure like Bare Metal Server (e.g. Raspberry Pi, Topton Mini-PC) based on initial state definition
 * Configuration & Deployment Management: Ansible
   * installs and updes Middleware, Software, and so on based on recommendation
   * configures Middleware, Software, and so on based on Best-Practice guidelines
