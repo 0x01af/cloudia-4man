@@ -19,6 +19,7 @@ All supported components are marked by their implementation state:
 
 
 ### Configuration & Deployment Management: needs to be repeatedly done
+It's done with 'ansible'.
 
 #### Operating System (OS)
 
@@ -94,8 +95,8 @@ All supported components are marked by their implementation state:
 * Inventory
   * Multiple environments with Ansible inventories
 * Orchestration Service: Shell script cloudia-4man.sh
-  * controls Provisioning Service and Configuration & Deployment Management
-* Provisioning Service: Ansible
+  * controls Provisioning Service ( :mag: dev-mode ) and Configuration & Deployment Management ( :rocket: production-ready)
+* Provisioning Service: cloud-init
   * stages Infrastructure like Bare Metal Server (Raspberry Pi) based on initial state definition
 * Configuration & Deployment Management: Ansible
   * installs and updes Middleware, Software, and so on based on recommendation
