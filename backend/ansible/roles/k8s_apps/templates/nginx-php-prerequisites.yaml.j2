@@ -13,7 +13,7 @@ data:
   default.conf: |
     server {
         listen 80;
-        server_name {{ _k8s_app.fqdn | default('nginx-php.local') }};
+        server_name {{ _k8s_app.config.fqdn | default('nginx-php.local') }};
         
         # Base directory containing all webapps folder
         root /var/www/html;
