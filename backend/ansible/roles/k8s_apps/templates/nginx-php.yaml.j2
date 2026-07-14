@@ -17,7 +17,7 @@ spec:
       containers:
       # --- PHP 7.4 Engine ---
       - name: php-fpm
-        image: php:7.4-fpm-alpine
+        image: "php:{{ _k8s_app.php.version | default('7.4') }}-fpm-alpine"
         resources:
           requests:
             memory: "20Mi"
