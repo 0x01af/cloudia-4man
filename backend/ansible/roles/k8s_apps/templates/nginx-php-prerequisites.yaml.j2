@@ -1,3 +1,18 @@
 ---
-longhorn
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nginx-php
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-php-storage-pvc
+  namespace: php-apps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 2Gi
