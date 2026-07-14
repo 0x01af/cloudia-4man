@@ -60,6 +60,18 @@ k8s_apps:
       conditions:
         - "[STATUS] == 200"
         - "[BODY] == pat(*<h1>Example Domain</h1>*)"
+  - name: "nginx-php"
+    namespace: "nginx-php"
+    php:
+      version: "7.4"
+    storage:
+      class_name: "longhorn"
+      size: "1Gi"
+    www:
+      fqdn: "test.mesh.local"
+      sites:
+      - path: "time"
+      - path: "test"
   #- name: name - required
   #  version: version - required
   #  namespace: namespace
