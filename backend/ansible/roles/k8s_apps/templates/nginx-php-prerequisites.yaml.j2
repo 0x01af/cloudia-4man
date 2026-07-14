@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "{{ _k8s_app.namespace | default('php-nginx') }}"
+  name: "{{ _k8s_app.namespace | default('nginx-php') }}"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
