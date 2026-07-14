@@ -13,29 +13,42 @@ data:
   default.conf: |
     server {
         listen 80;
-        server_name {{ _k8s_app.config.fqdn | default('nginx-php.local') }};
+          - name: "nginx-php"
+    namespace: "nginx-php"
+    php:
+      version: "7.4"
+    nginx:
+      fqdn: "test.mesh.local"
+      sites:
+      - path: "time"
+      - path: "test"
+    storage:
+      class_name: "longhorn"
+      size: "1Gi"
+        server_name {{ _k8s_app.nginx.fqdn | default('nginx-php.local') }};
         
         # Base directory containing all webapps folder
         root /var/www/html;
         index index.php index.html;
 
-        # Redirect root URL '/' to '/webapp1/'
+        {% for site in _k8s_app.nginx.sites %}
+        # Redirect root URL '/' to '/{{ site.path }}/'
         location = / {
-            return 302 /webapp1/;
+            return 302 /{{ site.path }}/;
         }
 
         # ----------------------------------------------------
-        # Application 1 (Path: /webapp1/)
+        # Application 1 (Path: /{{ site.path }}/)
         # ----------------------------------------------------
-        # Handle /webapp1 (without trailing slash) by redirecting to /webapp1/
-        location = /webapp1 {
-            return 301 /webapp1/;
+        # Handle /{{ site.path }} (without trailing slash) by redirecting to /{{ site.path }}/
+        location = /{{ site.path }} {
+            return 301 /{{ site.path }}/;
         }
 
-        location /webapp1/ {
-            try_files $uri $uri/ /webapp1/index.php?$query_string;
+        location /{{ site.path }}/ {
+            try_files $uri $uri/ /{{ site.path }}/index.php?$query_string;
         }
-
+ 
         # ----------------------------------------------------
         # Application 2 (Path: /webapp2/)
         # ----------------------------------------------------
