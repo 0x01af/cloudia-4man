@@ -5,6 +5,51 @@ metadata:
   name: "{{ _k8s_app.namespace | default('nginx-php') }}"
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-php-config
+  name: "{{ _k8s_app.namespace | default('nginx-php') }}"
+data:
+  default.conf: |
+    # Application 1
+    server {
+        listen 80;
+        server_name web1.mesh.local;
+        root /var/www/html/web1;
+        index index.php index.html;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_index index.php;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        }
+    }
+
+    # Application 2
+    server {
+        listen 80;
+        server_name web2.mesh.local;
+        root /var/www/html/web2;
+        index index.php index.html;
+
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_index index.php;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        }
+    }
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nginx-php-pv-config
