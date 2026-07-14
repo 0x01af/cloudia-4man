@@ -1,0 +1,29 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-php-ingress
+  namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+{% if _k8s_app.mode is defined and _k8s_app.mode == "prod" %}
+{# configure prod certificate issueing #}
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+{% else %}
+{# configure test certificate issueing #}
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+{% endif %}
+    cert-manager.io/acme-challenge-type: "http01"
+spec:
+  ingressClassName: {{ _k8s_ingress_detected }}
+  rules:
+  - host: "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-php-service
+            port:
+              number: 80
