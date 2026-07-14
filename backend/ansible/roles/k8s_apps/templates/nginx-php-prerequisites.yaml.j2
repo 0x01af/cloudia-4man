@@ -7,12 +7,14 @@ metadata:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nginx-php-storage-pvc
-  namespace: php-apps
+  name: nginx-php-pv-config
+  namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
+  labels:
+    app: nginx-php-app
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
   resources:
     requests:
-      storage: 2Gi
+      storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
+  storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
