@@ -11,43 +11,59 @@ metadata:
   name: "{{ _k8s_app.namespace | default('nginx-php') }}"
 data:
   default.conf: |
-    # Application 1
     server {
         listen 80;
-        server_name web1.mesh.local;
-        root /var/www/html/web1;
+        server_name {{ _k8s_app.fqdn | default('nginx-php.local') }};
+        
+        # Base directory containing all webapps folder
+        root /var/www/html;
         index index.php index.html;
 
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
+        # Redirect root URL '/' to '/webapp1/'
+        location = / {
+            return 302 /webapp1/;
         }
 
+        # ----------------------------------------------------
+        # Application 1 (Path: /webapp1/)
+        # ----------------------------------------------------
+        # Handle /webapp1 (without trailing slash) by redirecting to /webapp1/
+        location = /webapp1 {
+            return 301 /webapp1/;
+        }
+
+        location /webapp1/ {
+            try_files $uri $uri/ /webapp1/index.php?$query_string;
+        }
+
+        # ----------------------------------------------------
+        # Application 2 (Path: /webapp2/)
+        # ----------------------------------------------------
+        # Handle /webapp2 (without trailing slash) by redirecting to /webapp2/
+        location = /webapp2 {
+            return 301 /webapp2/;
+        }
+
+        location /webapp2/ {
+            try_files $uri $uri/ /webapp2/index.php?$query_string;
+        }
+
+        # ----------------------------------------------------
+        # Global PHP Handler for all subpaths
+        # ----------------------------------------------------
         location ~ \.php$ {
+            # Check that the PHP file exists before passing to PHP-FPM
+            try_files $uri =404;
+
             fastcgi_pass 127.0.0.1:9000;
             fastcgi_index index.php;
             include fastcgi_params;
+            
+            # Resolves /webappX/index.php -> /var/www/html/webappX/index.php
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         }
     }
 
-    # Application 2
-    server {
-        listen 80;
-        server_name web2.mesh.local;
-        root /var/www/html/web2;
-        index index.php index.html;
-
-        location / {
-            try_files $uri $uri/ /index.php?$query_string;
-        }
-
-        location ~ \.php$ {
-            fastcgi_pass 127.0.0.1:9000;
-            fastcgi_index index.php;
-            include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        }
-    }
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
