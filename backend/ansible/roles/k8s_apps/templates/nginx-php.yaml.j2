@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-php-app
-  namespace: 
+  namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
 spec:
   replicas: 1
   selector:
@@ -48,20 +48,19 @@ spec:
         - name: nginx-config-volume
           mountPath: /etc/nginx/conf.d/default.conf
           subPath: default.conf
-
       volumes:
       - name: web-root
         persistentVolumeClaim:
-          claimName: php-storage-pvc
+          claimName: nginx-php-pv
       - name: nginx-config-volume
         configMap:
-          name: nginx-config
+          name: nginx-php-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: nginx-php-service
-  namespace: 
+  namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
 spec:
   type: ClusterIP
   ports:
