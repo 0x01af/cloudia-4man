@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-php-app
+  namespace: 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-php-app
+  template:
+    metadata:
+      labels:
+        app: nginx-php-app
+    spec:
+      containers:
+      # --- PHP 7.4 Engine ---
+      - name: php-fpm
+        image: php:7.4-fpm-alpine
+        resources:
+          requests:
+            memory: "20Mi"
+            cpu: "10m"
+          limits:
+            memory: "64Mi"
+            cpu: "250m"
+        volumeMounts:
+        - name: web-root
+          mountPath: /var/www/html
+
+      # --- Nginx Webserver ---
+      - name: nginx
+        image: nginx:alpine
+        resources:
+          requests:
+            memory: "8Mi"
+            cpu: "5m"
+          limits:
+            memory: "32Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: web-root
+          mountPath: /var/www/html
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+
+      volumes:
+      - name: web-root
+        persistentVolumeClaim:
+          claimName: php-storage-pvc
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-php-service
+  namespace: 
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: nginx-php-app
