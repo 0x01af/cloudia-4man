@@ -13,54 +13,31 @@ data:
   default.conf: |
     server {
         listen 80;
-          - name: "nginx-php"
-    namespace: "nginx-php"
-    php:
-      version: "7.4"
-    nginx:
-      fqdn: "test.mesh.local"
-      sites:
-      - path: "time"
-      - path: "test"
-    storage:
-      class_name: "longhorn"
-      size: "1Gi"
         server_name {{ _k8s_app.nginx.fqdn | default('nginx-php.local') }};
         
         # Base directory containing all webapps folder
         root /var/www/html;
         index index.php index.html;
-
-        {% for site in _k8s_app.nginx.sites %}
+        
+{% for site in _k8s_app.nginx.sites %}
         # Redirect root URL '/' to '/{{ site.path }}/'
         location = / {
-            return 302 /{{ site.path }}/;
+            return 302 {{ site.path }}/;
         }
-
+        
         # ----------------------------------------------------
         # Application 1 (Path: /{{ site.path }}/)
         # ----------------------------------------------------
         # Handle /{{ site.path }} (without trailing slash) by redirecting to /{{ site.path }}/
-        location = /{{ site.path }} {
-            return 301 /{{ site.path }}/;
+        location = {{ site.path }} {
+            return 301 {{ site.path }}/;
         }
-
+        
         location /{{ site.path }}/ {
-            try_files $uri $uri/ /{{ site.path }}/index.php?$query_string;
+            try_files $uri $uri/ {{ site.path }}/index.php?$query_string;
         }
- 
-        # ----------------------------------------------------
-        # Application 2 (Path: /webapp2/)
-        # ----------------------------------------------------
-        # Handle /webapp2 (without trailing slash) by redirecting to /webapp2/
-        location = /webapp2 {
-            return 301 /webapp2/;
-        }
-
-        location /webapp2/ {
-            try_files $uri $uri/ /webapp2/index.php?$query_string;
-        }
-
+ {% endfor %}
+        
         # ----------------------------------------------------
         # Global PHP Handler for all subpaths
         # ----------------------------------------------------
