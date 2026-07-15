@@ -20,19 +20,22 @@ spec:
         image: "php:{{ _k8s_app.php.version | default('8.5') }}-fpm-alpine"
         resources:
           requests:
-            memory: "20Mi"
+            memory: "64Mi"
           limits:
             memory: "64Mi"
         volumeMounts:
         - name: web-root
           mountPath: /var/www/html
+        - name: php-fpm-config-volume
+          mountPath: /usr/local/etc/php-fpm.d/zzz-docker.conf
+          subPath: zzz-docker.conf
 
       # --- Nginx Webserver ---
       - name: nginx
         image: nginx:alpine
         resources:
           requests:
-            memory: "8Mi"
+            memory: "32Mi"
           limits:
             memory: "32Mi"
         ports:
