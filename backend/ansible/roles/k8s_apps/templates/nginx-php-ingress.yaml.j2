@@ -8,8 +8,8 @@ metadata:
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
-  rules:
-  - host: "{{ _k8s_app.config.fqdn | default('nginx-php.local') }}"
+  rules:      
+  - host: "{{ _k8s_app.nginx.fqdn | default('nginx-php.local') }}"
     http:
       paths:
       - path: /
