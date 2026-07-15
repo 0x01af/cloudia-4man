@@ -63,12 +63,13 @@ k8s_apps:
   - name: "nginx-php"
     namespace: "nginx-php"
     php:
-      version: "7.4"
+      version: "8.5"
     nginx:
-      fqdn: "test.mesh.local"
+      fqdn: "www.example.org"
       sites:
-      - path: "time"
-      - path: "test"
+      - path: "/" # root/main site
+      - path: "/subsite1"
+      - path: "/subsite2"
     storage:
       class_name: "longhorn"
       size: "1Gi"
