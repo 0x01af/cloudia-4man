@@ -71,7 +71,7 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nginx-php-pv-config
+  name: nginx-php-pv-wwwdata
   namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
   labels:
     app: nginx-php-app
