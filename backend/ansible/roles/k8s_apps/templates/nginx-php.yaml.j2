@@ -26,10 +26,10 @@ spec:
         volumeMounts:
         - name: web-root
           mountPath: /var/www/html
-        - name: php-fpm-config-volume
-          mountPath: /usr/local/etc/php-fpm.d/zzz-docker.conf
-          subPath: zzz-docker.conf
-
+        - name: nginx-php-configmap
+          mountPath: /usr/local/etc/php-fpm.d/zzz-php-fpm.conf
+          subPath: zzz-php-fpm.conf
+      
       # --- Nginx Webserver ---
       - name: nginx
         image: nginx:alpine
@@ -44,16 +44,16 @@ spec:
         volumeMounts:
         - name: web-root
           mountPath: /var/www/html
-        - name: nginx-config-volume
+        - name: nginx-php-configmap
           mountPath: /etc/nginx/conf.d/default.conf
           subPath: default.conf
       volumes:
       - name: web-root
         persistentVolumeClaim:
           claimName: nginx-php-pv-config
-      - name: nginx-config-volume
+      - name: nginx-php-configmap
         configMap:
-          name: nginx-php-config
+          name: nginx-php-configmap
 ---
 apiVersion: v1
 kind: Service
