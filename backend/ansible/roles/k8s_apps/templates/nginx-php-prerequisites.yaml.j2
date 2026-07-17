@@ -7,7 +7,7 @@ metadata:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-php-config
+  name: nginx-php-configmap
   name: "{{ _k8s_app.namespace | default('nginx-php') }}"
 data:
   default.conf: |
@@ -54,7 +54,18 @@ data:
         }
     }
 
-  zzz-php-fpm.conf: |volumeMounts:
+  zzz-php-fpm.conf: |
+    [global]
+    daemonize = no
+
+    [www]
+    listen = 127.0.0.1:9000
+    
+    # Process manager optimized for low memory
+    pm = ondemand
+    pm.max_children = 2
+    pm.process_idle_timeout = 10s
+    pm.max_requests = 500
 
 ---
 apiVersion: v1
