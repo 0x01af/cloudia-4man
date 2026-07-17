@@ -1,0 +1,14 @@
+--
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "{{ _k8s_app.namespace | default('cnpg-system') }}"
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: cnpg-configmap-config
+  namespace: "{{ _k8s_app.namespace | default('cnpg-system') }}"
+data:
+  none.conf: |
+    
