@@ -50,7 +50,7 @@ spec:
       volumes:
       - name: web-root
         persistentVolumeClaim:
-          claimName: nginx-php-pv-config
+          claimName: nginx-php-pv-wwwdata
       - name: nginx-php-configmap
         configMap:
           name: nginx-php-configmap
