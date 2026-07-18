@@ -44,17 +44,17 @@ It's done with 'ansible'.
 
 #### K8s Apps (platform-independent)
 
-| Component | Description | State |
-| --- | --- | :---: |
-| cert-manager | Certificate Manager for Kubernetes Ingress/Services |  :rocket: production-ready |
-| Gatus | Monitoring Solution |  :rocket: production-ready |
-| Home Assistant | Smart Home (with HACS support) |  :rocket: production-ready |
-| Mosquitto | MQTT Broker |  :rocket: production-ready |
-| Zigbee2MQTT | Zigbee to MQTT Bridge |  :rocket: production-ready |
-| TaskView | It combines task management, custom workflows, developer integrations, analytics, and AI-assisted automation in a platform you can run on your own infrastructure. (https://github.com/Gimanh/taskview-community) |  :bulb: idea |
-| SilverBullet | Personal Knowledge Management (see https://silverbullet.md/) |  :bulb: idea |
-| CloudNativePG (CNPG) | PostgreSQL Database for any K8s app |  :mag: dev-mode |
-| Kubernetes Reflector | Reflector for Kubernetes ConfigMaps and Secrets (original use case didn't work as expected - therefore postponed) |  :mag: dev-mode |
+| Component | Description | State | Recommendation |
+| --- | --- | :---: | --- |
+| cert-manager | Certificate Manager for Kubernetes Ingress/Services |  :rocket: production-ready |  ⭐ |
+| Gatus | Monitoring Solution |  :rocket: production-ready |  ⭐ |
+| Home Assistant | Smart Home (with HACS support) |  :rocket: production-ready |  ⭐ |
+| Mosquitto | MQTT Broker |  :rocket: production-ready |  ⭐ |
+| Zigbee2MQTT | Zigbee to MQTT Bridge |  :rocket: production-ready |  ⭐ |
+| TaskView | It combines task management, custom workflows, developer integrations, analytics, and AI-assisted automation in a platform you can run on your own infrastructure. (https://github.com/Gimanh/taskview-community) |  :bulb: idea | |
+| SilverBullet | Personal Knowledge Management (see https://silverbullet.md/) |  :bulb: idea | |
+| CloudNativePG (CNPG) | PostgreSQL Database for any K8s app |  :mag: dev-mode | |
+| Kubernetes Reflector | Reflector for Kubernetes ConfigMaps and Secrets (original use case didn't work as expected - therefore postponed) |  :mag: dev-mode | |
 
 
 * (not implemented) Karakeep
@@ -72,17 +72,17 @@ It's done with 'ansible'.
 
 #### Linux Apps (platform-independent)
 
-| Component | Description | State |
-| --- | --- | :---: |
-| NetBird Hub / Agent | Secure Access Platform (https://netbird.io/) |  :bulb: idea |
-| FlexiWAN |  Open Source SD-WAN & SASE (! critical license !) |  :bulb: idea |
-| Beszel | Lightweight server monitoring platform built on PocketBase (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea) |  :bulb: idea |
+| Component | Description | State | Recommendation |
+| --- | --- | :---: | --- |
+| NetBird Hub / Agent | Secure Access Platform (https://netbird.io/) |  :bulb: idea | |
+| FlexiWAN |  Open Source SD-WAN & SASE (! critical license !) |  :bulb: idea | |
+| Beszel | Lightweight server monitoring platform built on PocketBase (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea) |  :bulb: idea | |
 
 
 #### Admin Tools (Linux-dependent)
 
-| Component | Description | State | Recommandation |
-| --- | --- | :---: | :--- |
+| Component | Description | State | Recommendation |
+| --- | --- | :---: | --- |
 | k9s | Kubernetes CLI To Manage Your Clusters In Style (https://k9scli.io/) |  :rocket: production-ready |  ⭐ |
 | kubectl | K8s/K3s Console Tool |  :rocket: production-ready |  ⭐ |
 | mqttx | MQTT Client |  :rocket: production-ready | |
