@@ -81,14 +81,16 @@ It's done with 'ansible'.
 
 #### Admin Tools (Linux-dependent)
 
-| Component | Description | State |
-| --- | --- | :---: |
-| k9s | Kubernetes CLI To Manage Your Clusters In Style (https://k9scli.io/) |  :rocket: production-ready |
-| kubectl | K8s/K3s Console Tool |  :rocket: production-ready |
-| mqttx | MQTT Client |  :rocket: production-ready |
-| etcdctl | ETCD Console Tool |  :mag: dev-mode |
-| trufflehog | most powerful secrets Discovery, Classification, Validation, and Analysis tool|  :mag: dev-mode |
-| k8sgpt | AI-powered tool that helps diagnose and fix Kubernetes issues with intelligent insights and automated troubleshooting |  :mag: dev-mode |
+| Component | Description | State | Recommandation | 
+| --- | --- | :---: | | :--- |
+| k9s | Kubernetes CLI To Manage Your Clusters In Style (https://k9scli.io/) |  :rocket: production-ready |  ⭐ |
+| kubectl | K8s/K3s Console Tool |  :rocket: production-ready |  ⭐ |
+| mqttx | MQTT Client |  :rocket: production-ready | |
+| etcdctl | ETCD Console Tool |  :mag: dev-mode | |
+| trufflehog | most powerful secrets Discovery, Classification, Validation, and Analysis tool|  :mag: dev-mode | |
+| k8sgpt | AI-powered tool that helps diagnose and fix Kubernetes issues with intelligent insights and automated troubleshooting |  :mag: dev-mode | |
+| Kubescape | Security Scanning for Your Cluster |  :bulb: idea | ⭐ |
+| Popeye | Popeye scans a live cluster and grades it from A to F, surfacing misconfigurations that quietly accumulate over time. |  :bulb: idea |   |
 
 ## Architecture
 
