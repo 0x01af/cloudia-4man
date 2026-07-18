@@ -61,6 +61,7 @@ k8s_apps:
         - "[STATUS] == 200"
         - "[BODY] == pat(*<h1>Example Domain</h1>*)"
   - name: "nginx-php"
+    version: "none" # change to "latest" for installing nginx-php
     namespace: "nginx-php"
     php:
       version: "8.5"
