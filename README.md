@@ -97,9 +97,9 @@ It's done with 'ansible'.
   * Multiple environments with Ansible inventories
 * Orchestration Service: Shell script cloudia-4man.sh
   * controls Provisioning Service ( :mag: dev-mode ) and Configuration & Deployment Management ( :rocket: production-ready)
-* Provisioning Service: cloud-init
+* Provisioning Service: cloud-init ( :mag: dev-mode )
   * stages Infrastructure like Bare Metal Server (e.g. Raspberry Pi, Topton Mini-PC) based on initial state definition
-* Configuration & Deployment Management: Ansible
+* Configuration & Deployment Management: Ansible ( :rocket: production-ready)
   * installs and updes Middleware, Software, and so on based on recommendation
   * configures Middleware, Software, and so on based on Best-Practice guidelines
 
