@@ -1,1 +1,36 @@
-https://serverfault.com/questions/671400/multiple-versions-of-php-through-nginx
+---
+# inspired by:
+# - https://github.com/sebinxavi/kubernetes-nginx-phpfpm-app
+# - https://serverfault.com/questions/671400/multiple-versions-of-php-through-nginx
+- name: "k8s_app nginx-php"
+  when: _k8s_app.version != 'none'
+  block:
+    - name: "deploy prerequisites of nginx-php"
+      kubernetes.core.k8s:
+        state: present
+        template: 'nginx-php-prerequisites.yaml.j2'
+      register: _nginx_php_prerequisites
+    - name: "deploy nginx-php"
+      kubernetes.core.k8s:
+        state: present
+        template: 'nginx-php.yaml.j2'
+      register: _nginx_php_deployment
+    - name: "force pod recreation via Rollout (Clean Sledgehammer)"
+      when: _nginx_php_deployment.changed or _nginx_php_prerequisites.changed
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: apps/v1
+          kind: StatefulSet
+          metadata:
+            name: nginx-php-app
+            namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
+          spec:
+            template:
+              metadata:
+                annotations:
+                  kubectl.kubernetes.io/restartedAt: "{{ ansible_date_time.iso8601 }}"
+        state: patched
+    - name: "configure ingress for nginx-php"
+      kubernetes.core.k8s:
+        state: present
+        template: 'nginx-php-ingress.yaml.j2'
