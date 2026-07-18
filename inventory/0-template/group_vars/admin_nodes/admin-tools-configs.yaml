@@ -8,6 +8,8 @@ admin_tools:
     version: "v3.6.10"
   - name: "mqttx"
     version: "v1.13.0"
+  - name: "k9s"
+    version: "v0.51.0"
   #- name: "trufflehog"
   #  version: "none"
   #- name: "k8sgpt"
