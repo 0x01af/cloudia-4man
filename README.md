@@ -81,8 +81,8 @@ It's done with 'ansible'.
 
 #### Admin Tools (Linux-dependent)
 
-| Component | Description | State | Recommandation | 
-| --- | --- | :---: | | :--- |
+| Component | Description | State | Recommandation |
+| --- | --- | :---: | :--- |
 | k9s | Kubernetes CLI To Manage Your Clusters In Style (https://k9scli.io/) |  :rocket: production-ready |  ⭐ |
 | kubectl | K8s/K3s Console Tool |  :rocket: production-ready |  ⭐ |
 | mqttx | MQTT Client |  :rocket: production-ready | |
