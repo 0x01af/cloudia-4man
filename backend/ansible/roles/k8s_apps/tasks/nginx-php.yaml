@@ -3,7 +3,7 @@
 # - https://github.com/sebinxavi/kubernetes-nginx-phpfpm-app
 # - https://serverfault.com/questions/671400/multiple-versions-of-php-through-nginx
 - name: "k8s_app nginx-php"
-  when: _k8s_app.version != 'none'
+  when: _k8s_app.version == 'latest' # no versioning possible
   block:
     - name: "deploy prerequisites of nginx-php"
       kubernetes.core.k8s:
