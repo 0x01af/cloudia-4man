@@ -55,13 +55,12 @@ It's done with 'ansible'.
 | SilverBullet | Personal Knowledge Management (see https://silverbullet.md/) |  :bulb: idea | |
 | CloudNativePG (CNPG) | PostgreSQL Database for any K8s app |  :mag: dev-mode | |
 | Kubernetes Reflector | Reflector for Kubernetes ConfigMaps and Secrets (original use case didn't work as expected - therefore postponed) |  :mag: dev-mode | |
+| Karakeep |  |  :bulb: idea | |
+| Immich | Photo Management like Google Photos |  :bulb: idea | |
+| SearXNG | Search machine proxy |  :bulb: idea | |
+| Seafile | File-Sharing like Dropbox or OneDrive |  :bulb: idea | |
+| Jellyfin | Media and Streaming Service, like Netflix or Spotify |  :bulb: idea | |
 
-
-* (not implemented) Karakeep
-* (not implemented) Immich: Photo Management like Google Photos
-* (not implemented) SearXNG: Search machine proxy
-* (not implemented) Seafile: File-Sharing like Dropbox or OneDrive
-* (not implemented) Jellyfin: Media and Streaming Service, like Netflix or Spotify
 * (not implemented) Kimai: timetracker (working hours, holidays, ...)
 * (not implemented) Dex: Light-weight Identity Broker (because everyone already has a preferred Identity Provider - like Microsoft Entra ID, Google Identity, or your local Synology User Directory)
 * (not implemented) Authentik / Authelia / rauthy: Light-weight Identity and Access Management
@@ -121,3 +120,7 @@ It's done with 'ansible'.
 * Using YAML instead INI -> https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases
 * Kubernetes Deployments: Stop using CPU limits, set Memory limit equals to requested: https://home.robusta.dev/blog/stop-using-cpu-limits / https://medium.com/@danielvalev/stop-setting-kubernetes-cpu-limits-yes-really-285dbdf8ff51
 
+## Feature Request
+
+### Never ever
+* *rr-Stack: It seems, that all components of *rr-Stack are calling home. I don't like that.
