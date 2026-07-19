@@ -1,5 +1,5 @@
 # pip packages (will be used by ansible playbook)
 kubernetes
+# kubernetes requires: PyYAML
 passlib
 dnspython
-PyYAML
