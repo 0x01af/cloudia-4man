@@ -45,6 +45,12 @@
         k3s: "{{ k3s | ansible.builtin.combine({'version_installed': _cmd_k3s_version_output.stdout_lines[0].split(' ')[2]}) }}"
         # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/combine_filter.html#ansible-collections-ansible-builtin-combine-filter
         # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
+    - name: 
+      ansible.builtin.debug:
+      msg:
+        - "===== K3s version ====="
+        - "Configured: {{ k3s.version }}"
+        - "Installed:  {{ k3s.version_installed }}"
 
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
