@@ -8,7 +8,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-php-configmap
-  name: "{{ _k8s_app.namespace | default('nginx-php') }}"
+  namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
 data:
   default.conf: |
     server {
