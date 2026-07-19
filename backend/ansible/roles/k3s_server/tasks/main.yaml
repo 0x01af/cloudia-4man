@@ -47,10 +47,10 @@
         # k3s: "{{ k3s | merge({'version_installed': '{{ _cmd_k3s_version_output.stdout_lines[0].split(' ')[2] }}'}) }}"
     - name: "Print information about k3s version"
       ansible.builtin.debug:
-      msg:
-        - "===== K3s version ====="
-        - "Configured: {{ k3s.version }}"
-        - "Installed:  {{ k3s.version_installed }}"
+        msg:
+          - "===== K3s version ====="
+          - "Configured: {{ k3s.version }}"
+          - "Installed:  {{ k3s.version_installed }}"
 
 ### Prepare OS and HW for K3s
 - name: Prepare system for K3s
