@@ -23,6 +23,15 @@ data:
         # ----------------------------------------------------
         location / {
             try_files $uri $uri/ /index.php?$query_string;
+            
+            location ~ \.php$ {
+                # Check that the PHP file exists before passing to PHP-FPM
+                try_files $uri =404;
+                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_index index.php;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            }
         }
 {% else %}
         # ----------------------------------------------------
@@ -35,21 +44,18 @@ data:
         
         location ^~ {{ site.path }}/ {
             try_files $uri $uri/ {{ site.path }}/index.php?$query_string;
+            
+            location ~ \.php$ {
+                # Check that the PHP file exists before passing to PHP-FPM
+                try_files $uri =404;
+                fastcgi_pass 127.0.0.1:9000;
+                fastcgi_index index.php;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            }
         }
 {% endif %}
 {% endfor %}
-        # ----------------------------------------------------
-        # Global PHP Handler for all sites
-        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        # ----------------------------------------------------
-        location ~ \.php$ {
-            # Check that the PHP file exists before passing to PHP-FPM
-            try_files $uri =404;
-            fastcgi_pass 127.0.0.1:9000;
-            fastcgi_index index.php;
-            include fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        }
     }
 
   zzz-php-fpm.conf: |
