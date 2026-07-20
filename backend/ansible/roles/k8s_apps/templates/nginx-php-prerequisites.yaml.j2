@@ -10,7 +10,7 @@ metadata:
   name: nginx-php-configmap
   namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
 data:
-  default.conf: |
+  zzz-nginx.conf: |
     server {
         listen 80;
         server_name {{ _k8s_app.nginx.fqdn | default('nginx-php.local') }};
