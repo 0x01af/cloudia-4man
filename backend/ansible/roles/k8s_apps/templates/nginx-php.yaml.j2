@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: nginx-php-app
   namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
