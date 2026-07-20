@@ -33,8 +33,7 @@ data:
             return 301 {{ site.path }}/;
         }
         
-        location {{ site.path }}/ {
-            # root /var/www/html{{ site.path}};
+        location ^~ {{ site.path }}/ {
             try_files $uri $uri/ {{ site.path }}/index.php?$query_string;
         }
 {% endif %}
