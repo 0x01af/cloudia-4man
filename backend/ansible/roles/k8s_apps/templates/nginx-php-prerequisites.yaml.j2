@@ -14,42 +14,42 @@ data:
     server {
         listen 80;
         server_name {{ _k8s_app.nginx.fqdn | default('nginx-php.local') }};
-        
-        # Base directory containing all webapps folder
         root /var/www/html;
         index index.php index.html;
-        
 {% for site in _k8s_app.nginx.sites %}
-        # Redirect root URL '/' to '/{{ site.path }}/'
-        location = / {
-            return 302 {{ site.path }}/;
+{% if site.path == "/" %}
+        # ----------------------------------------------------
+        # Site /
+        # ----------------------------------------------------
+        location / {
+            root /var/www/html;
+            try_files $uri $uri/ /index.php?$query_string;
         }
-        
+{% else %}
         # ----------------------------------------------------
-        # Application 1 (Path: /{{ site.path }}/)
+        # Site {{ site.path }}
         # ----------------------------------------------------
-        # Handle /{{ site.path }} (without trailing slash) by redirecting to /{{ site.path }}/
+        # Handle {{ site.path }} (without trailing slash) by redirecting to {{ site.path }}/
         location = {{ site.path }} {
             return 301 {{ site.path }}/;
         }
         
-        location /{{ site.path }}/ {
+        location {{ site.path }}/ {
+            root /var/www/html{{ site.path}};
             try_files $uri $uri/ {{ site.path }}/index.php?$query_string;
         }
- {% endfor %}
-        
+{% endif %}
+{% endfor %}
         # ----------------------------------------------------
-        # Global PHP Handler for all subpaths
+        # Global PHP Handler for all sites
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
         # ----------------------------------------------------
         location ~ \.php$ {
             # Check that the PHP file exists before passing to PHP-FPM
             try_files $uri =404;
-
             fastcgi_pass 127.0.0.1:9000;
             fastcgi_index index.php;
             include fastcgi_params;
-            
-            # Resolves /webappX/index.php -> /var/www/html/webappX/index.php
             fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         }
     }
