@@ -13,7 +13,7 @@ spec:
     solvers:
       - http01:
           ingress:
-            class: {{ _k8s_ingress_detected }}
+            ingressClassName: {{ _k8s_ingress_detected }}
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
