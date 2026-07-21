@@ -4,7 +4,7 @@ k8s_apps:
   - name: "kubernetes-reflector"
     version: "none" # v10.0.3
   - name: "cert-manager"
-    version: "none" # v1.19.2
+    version: "none" # v1.21.0
     acme:
       email: "hostmaster@fqdn"
   - name: "home-assistant"
