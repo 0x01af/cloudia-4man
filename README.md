@@ -107,11 +107,11 @@ It's done with 'ansible'.
 ## How to
 ### Installation
 > [!IMPORTANT]
-> Requirements: You need a computer with any kind of Linux operating system. If you have a compute with Windows operating system installed, use Windows Subsystem for Linux (WSL, more info: https://learn.microsoft.com/en-us/windows/wsl/about).
+> Requirements: You need a computer with any kind of Linux operating system. If you have a computer with Windows operating system installed, use Windows Subsystem for Linux (WSL, more info: https://learn.microsoft.com/en-us/windows/wsl/about).
 
 1. Change working directory to your preferred location (eg. home directory: `cd ~`)
 2. Clone this repository to your computer (`git clone git@github.com:0x01af/cloudia-4man.git`)
-3. Change file mode of main script cloudia-4man.sh to "executable" (`chmod 755 cloudia-4man.sh`)
+3. Change file mode of main script cloudia-4man.sh to executable (`chmod 755 cloudia-4man.sh`)
 
 > [!NOTE]
 > Updating: Because you change the state of the main script, you need to restore it first (`git restore cloudia-4man.sh`). Afterwards, use `git pull` to download any kind of updates. Your environment definitions won't be touched.
