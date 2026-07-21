@@ -119,7 +119,7 @@ It's done with 'ansible'.
 > All your own environment definitions won't be touched. Therefore, never change the file `.gitignore`.
 
 1. Because you change the state of the main script, you need to restore it first (`git restore cloudia-4man.sh`).
-2. Afterwards, use `git pull` to download the newest release of '''cloudia-4man'''.
+2. Afterwards, use `git pull` to download the newest release of **cloudia-4man**.
 
 ### Orchestrate a new environment
 1. Define a new environment based on the template in folder /inventory
