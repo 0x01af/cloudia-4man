@@ -113,8 +113,13 @@ It's done with 'ansible'.
 2. Clone this repository to your computer (`git clone git@github.com:0x01af/cloudia-4man.git`)
 3. Change file mode of main script cloudia-4man.sh to executable (`chmod 755 cloudia-4man.sh`)
 
+### Updating
+
 > [!NOTE]
-> Updating: Because you change the state of the main script, you need to restore it first (`git restore cloudia-4man.sh`). Afterwards, use `git pull` to download any kind of updates. Your environment definitions won't be touched.
+> All your own environment definitions won't be touched. Therefore, never change the file `.gitignore`.
+
+1. Because you change the state of the main script, you need to restore it first (`git restore cloudia-4man.sh`).
+2. Afterwards, use `git pull` to download the newest release of '''cloudia-4man'''.
 
 ### Orchestrate a new environment
 1. Define a new environment based on the template in folder /inventory
@@ -125,13 +130,15 @@ It's done with 'ansible'.
    1. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
       run provisioning service, and start configuration & deployment management.
 
+## Feature Request
+
+### Never ever
+* *rr-Stack: It seems, that all components of *rr-Stack are calling home. I don't like that.
+
+
 # Further reading
 * https://blog.devgenius.io/provisioning-vs-configuration-management-with-terraform-4bf07b9c79db
 * Why Terraform and Ansible? -> https://serverfault.com/questions/1022690/is-it-possible-to-run-ansible-on-a-bare-metal
 * Using YAML instead INI -> https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases
 * Kubernetes Deployments: Stop using CPU limits, set Memory limit equals to requested: https://home.robusta.dev/blog/stop-using-cpu-limits / https://medium.com/@danielvalev/stop-setting-kubernetes-cpu-limits-yes-really-285dbdf8ff51
 
-## Feature Request
-
-### Never ever
-* *rr-Stack: It seems, that all components of *rr-Stack are calling home. I don't like that.
