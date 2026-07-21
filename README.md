@@ -104,14 +104,24 @@ It's done with 'ansible'.
   * installs and updes Middleware, Software, and so on based on recommendation
   * configures Middleware, Software, and so on based on Best-Practice guidelines
 
-## Functionality
+## How to
+### Installation
+> [!IMPORTANT]
+> Requirements: You need a computer with any kind of Linux operating system. If you have a compute with Windows operating system installed, use Windows Subsystem for Linux (WSL, more info: https://learn.microsoft.com/en-us/windows/wsl/about).
 
-### New environment
+1. Change working directory to your preferred location (eg. home directory: `cd ~`)
+2. Clone this repository to your computer (`git clone git@github.com:0x01af/cloudia-4man.git`)
+3. Change file mode of main script cloudia-4man.sh to "executable" (`chmod 755 cloudia-4man.sh`)
+
+> [!NOTE]
+> Updating: Because you change the state of the main script, you need to restore it first (`git restore cloudia-4man.sh`). Afterwards, use `git pull` to download any kind of updates. Your environment definitions won't be touched.
+
+### Orchestrate a new environment
 1. Define a new environment based on the template in folder /inventory
    1. copy the folder /0-template and name it using your environment name.
    2. describe your environment within file environment.yaml
    3. configure your components by variables under group_vars and host_vars
-2. Run Orchestration Service shell script cloudia-4man.sh
+2. Run Orchestration Service shell script cloudia-4man.sh (`./cloudia-4man.sh`)
    1. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
       run provisioning service, and start configuration & deployment management.
 
