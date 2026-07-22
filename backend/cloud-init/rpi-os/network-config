@@ -1,0 +1,57 @@
+# Cloudia's cloud-init
+# --------------------
+# Author: github.com/0x01af
+# Version: v2026-rpi-os
+#
+# inspired by: https://www.jimangel.io/posts/automate-ubuntu-22-04-lts-bare-metal/
+# This file contains a netplan-compatible configuration which cloud-init will
+# apply on first-boot (note: it will *not* update the config after the first
+# boot). Please refer to the cloud-init documentation and the netplan reference
+# for full details:
+#
+# https://netplan.io/reference
+# https://cloudinit.readthedocs.io/en/latest/topics/network-config.html
+# https://cloudinit.readthedocs.io/en/latest/topics/network-config-format-v2.html
+#
+# Please note that the YAML format employed by this file is sensitive to
+# differences in whitespace; if you are editing this file in an editor (like
+# Notepad) which uses literal tabs, take care to only use spaces for
+# indentation. See the following link for more details:
+#
+# https://en.wikipedia.org/wiki/YAML
+#
+# Additionally, please be aware that if your boot sequence depends on active
+# networking (e.g. if your cloud-init configuration pulls packages or SSH
+# keys from the network), you *must* mark at least one interface as required
+# ("optional: false") below. Otherwise, particularly on faster boards,
+# cloud-init will start attempting to use the network before it is ready
+
+# Some additional examples are commented out below
+
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    eth0:
+      match:
+        name: eth0
+      accept-ra: false
+      dhcp6: false
+      dhcp4: false
+      addresses:
+        - '192.168.123.8/25'
+        - '2a02:169:67f5:1af::8/64'
+      routes:
+        - to: default
+          via: '192.168.123.1'
+        - to: default
+          via: '2a02:169:67f5:1af::1'
+      nameservers:
+        search: [mesh.local]
+        addresses: ['192.168.123.1', '2a02:169:67f5:1af::1']
+  wifis:
+    wlan0:
+	  accept-ra: false
+      dhcp6: false
+      dhcp4: false
+	  optional: true
