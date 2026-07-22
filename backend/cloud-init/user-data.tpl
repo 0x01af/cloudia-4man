@@ -2,7 +2,7 @@
 # Cloudia's cloud-init
 # --------------------
 # Author: github.com/0x01af
-# Version: v2025-delta
+# Version: v2026-ubuntu
 # inspired by: https://www.jimangel.io/posts/automate-ubuntu-22-04-lts-bare-metal/
 #
 # This is the user-data configuration file for Ubuntu's autoinstall (a cloud-init-like configuration).
