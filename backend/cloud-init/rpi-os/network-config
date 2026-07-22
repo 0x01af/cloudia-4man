@@ -39,16 +39,16 @@ network:
       dhcp6: false
       dhcp4: false
       addresses:
-        - '192.168.123.8/25'
-        - '2a02:169:67f5:1af::8/64'
+        - '{{ ip4.address }}'
+        - '{{ ip6.address }}'
       routes:
         - to: default
-          via: '192.168.123.1'
+          via: '{{ ip4.gateway }}'
         - to: default
-          via: '2a02:169:67f5:1af::1'
+          via: '{{ ip6.gateway }}'
       nameservers:
-        search: [mesh.local]
-        addresses: ['192.168.123.1', '2a02:169:67f5:1af::1']
+        search: [{{ dns.domain }}]
+        addresses: ['{{ ip4.dns }}', '{{ ip6.dns }}']
   wifis:
     wlan0:
 	  accept-ra: false
