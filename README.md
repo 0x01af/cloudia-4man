@@ -2,8 +2,11 @@
 Cloudia - as foreman - accounts for providing, configuring and managing IT ressources.
 
 Why?
+
 How?
+
 What?
+
 
 ## Features and supported components
 
