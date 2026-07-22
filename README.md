@@ -11,19 +11,21 @@ What?
 ## Features and supported components
 
 All supported components are marked by their implementation state:
-*  :rocket: production-ready - I use it in my own productive environment.
-*  :mag: dev-mode 
-*  :bulb: idea
+*  :rocket: production-ready - I use it in my own home environment.
+*  :mag: dev-mode - I am currently integrating this feature/component.
+*  :bulb: idea - Not available, but I want to integrate it. Raise a feature request, if you also want it.
 
 ### Provisioning Service: typically a once-only job
+It's done with 'cloud-init' and 'operating system auto-install' by booting an USB stick.
 
-| Component | Description | State |
-| --- | --- | :---: |
+> [!NOTE]
+> Unfortunately, this feature isn't well maintained by myself. If you need help, raise an issue.
 
-* (not tested) Raspberry Pi with Ubuntu
-* (not tested) Raspberry Pi with Raspberry Pi OS
-* Topton Mini PC with Ubuntu
-
+| Component | Description | State | Recommendation |
+| --- | --- | :---: | --- |
+| Topton Mini PC with Ubuntu x64 server | My home environment consists of three Topton Mini PC with Ubuntu x64 server (Intel N100, 32 GB RAM, 128 GB SSD)  |  :mag: dev-mode | |
+| Raspberry Pi with Ubuntu x64 server |    | :bulb: idea | | 
+| Raspberry Pi with Raspberry Pi OS |    | :bulb: idea | |
 
 ### Configuration & Deployment Management: needs to be repeatedly done
 It's done with 'ansible'.
