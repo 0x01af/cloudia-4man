@@ -62,6 +62,8 @@ autoinstall:
     install: true
 
   user-data:
+    # (tbc) hostname: {{ hostname }}
+    # (tbc) manage_etc_hosts: true
     disable_root: true
     package_upgrade: false
     # Add users and groups to the system, and import keys with the ssh-import-id utility
