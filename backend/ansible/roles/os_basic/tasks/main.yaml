@@ -2,8 +2,11 @@
 # Role: os_basic
 # supported operating systems:
 # - Ubuntu
+# - Debian
+# - Raspberry Pi OS (based on Debian)
 
 - name: 'Change time zone'
+  become: yes
   community.general.timezone:
     name: "{{ all_local.time_zone }}"
   register: _os_local_time
