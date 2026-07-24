@@ -78,6 +78,11 @@ It's done with 'ansible'.
 | NetBird | Secure Access to Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access) |  :bulb: idea | |
 | Headlamp | Kubernetes Dashboard (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea) |  :bulb: idea | |
 | Hermes-Agent | Self-improving AI agent (https://github.com/nousresearch/hermes-agent) |  :bulb: idea | |
+| WasmEdge | Server-side WebAssembly Runtime on K3s (https://wasmedge.org/docs/develop/deploy/kubernetes/k3s) |  :bulb: idea | |
+
+#### WebAssembly Apps
+needs to be proofed
+
 
 #### Linux Apps (platform-independent)
 
