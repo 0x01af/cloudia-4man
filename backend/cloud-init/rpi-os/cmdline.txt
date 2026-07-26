@@ -1,1 +1,1 @@
-## am Ende muss: ds=nocloud;i=<IMAGE NAME in meta-data>
+## am Ende muss " ds=nocloud;i={{ instance-id siehe meta-data }}" hinzugefügt werden
