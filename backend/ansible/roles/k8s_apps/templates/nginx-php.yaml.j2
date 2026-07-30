@@ -27,8 +27,8 @@ spec:
         - name: web-root
           mountPath: /var/www/html
         - name: nginx-php-configmap
-          mountPath: /usr/local/etc/php-fpm.d/zzz-php-fpm.conf
-          subPath: zzz-php-fpm.conf
+          mountPath: /usr/local/etc/php-fpm.d/99-php-fpm.conf
+          subPath: 99-php-fpm.conf
       
       # --- Nginx Webserver ---
       - name: nginx
