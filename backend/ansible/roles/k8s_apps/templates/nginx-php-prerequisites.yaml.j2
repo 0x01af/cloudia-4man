@@ -10,7 +10,7 @@ metadata:
   name: nginx-php-configmap
   namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
 data:
-  zzz-nginx.conf: |
+  99-nginx.conf: |
     server {
         listen 80;
         server_name {{ _k8s_app.nginx.fqdn | default('nginx-php.local') }};
@@ -70,6 +70,15 @@ data:
     pm.max_children = 2
     pm.process_idle_timeout = 10s
     pm.max_requests = 500
+
+  99-modsecurity.conf: |
+    # Enable rule engine (On = Block, DetectionOnly = Log only)
+    SecRuleEngine On
+
+    # Configure Anomaly Thresholds
+    SecAction "id:900110,phase:1,nolog,pass,t:none,setvar:tx.inbound_anomaly_score_threshold=5,setvar:tx.outbound_anomaly_score_threshold=4"
+    # Configure Paranoia Level (1-4)
+    SecAction "id:900000,phase:1,nolog,pass,t:none,setvar:tx.paranoia_level=1"
 
 ---
 apiVersion: v1
