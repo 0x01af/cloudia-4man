@@ -39,14 +39,16 @@ spec:
           limits:
             memory: "64Mi"
         ports:
-        - containerPort: 80
-          name: http
+        - containerPort: 8080
         volumeMounts:
         - name: web-root
           mountPath: /var/www/html
         - name: nginx-php-configmap
-          mountPath: /etc/nginx/conf.d/zzz-nginx.conf
-          subPath: zzz-nginx.conf
+          mountPath: /etc/nginx/conf.d/99-nginx.conf
+          subPath: 99-nginx.conf
+        - name: nginx-php-configmap
+          mountPath: /etc/modsecurity.d/owasp-crs/rules/99-modsecurity.conf
+          subPath: 99-modsecurity.conf
       volumes:
       - name: web-root
         persistentVolumeClaim:
