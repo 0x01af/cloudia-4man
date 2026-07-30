@@ -155,5 +155,6 @@ needs to be proofed
 * Why Terraform and Ansible? -> https://serverfault.com/questions/1022690/is-it-possible-to-run-ansible-on-a-bare-metal
 * Using YAML instead INI -> https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases
 * Kubernetes Deployments: Stop using CPU limits, set Memory limit equals to requested: https://home.robusta.dev/blog/stop-using-cpu-limits / https://medium.com/@danielvalev/stop-setting-kubernetes-cpu-limits-yes-really-285dbdf8ff51
+  * Class idea: Guaranteed / critical workload (Highest Priority) -> set cpu and memory, memory limits = requests; Burstable / default (Medium Priority) -> set memory limits = 2 x requests, no cpu; best effort (low priority, kill if necessary) -> neither set cpu nor memory.
 * Kubara: If you only need to initialize K8s cluster, and you are a DevOps engineer. -> https://github.com/kubara-io/kubara
 
