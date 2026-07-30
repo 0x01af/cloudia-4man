@@ -72,13 +72,23 @@ data:
     pm.max_requests = 500
 
   99-modsecurity.conf: |
+    ### Global Engine Configuration
     # Enable rule engine (On = Block, DetectionOnly = Log only)
     SecRuleEngine On
-
+    SecRequestBodyAccess On
+    SecAuditEngine RelevantOnly 
+    SecAuditLogType Serial
+    SecAuditLogParts ABHIJKZ
+    SecAuditLogFormat JSON
+    SecAuditLog /dev/stdout
+    ### Global Thresholds of OWASP CRS
     # Configure Anomaly Thresholds
     SecAction "id:900110,phase:1,nolog,pass,t:none,setvar:tx.inbound_anomaly_score_threshold=5,setvar:tx.outbound_anomaly_score_threshold=4"
     # Configure Paranoia Level (1-4)
     SecAction "id:900000,phase:1,nolog,pass,t:none,setvar:tx.paranoia_level=1"
+        
+    ### App-specifc Engine Configuration
+    # SecRule REQUEST_URI "@beginsWith /api/onboarding/users" "id:1001,phase:2,pass,nolog,ctl:ruleRemoveById=949110"
 
 ---
 apiVersion: v1
