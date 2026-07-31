@@ -63,6 +63,7 @@ k8s_apps:
   - name: "nginx-php"
     version: "none" # change to "latest" for installing nginx-php
     namespace: "nginx-php"
+    mode: "prod" # test
     php:
       version: "8.5"
     nginx:
