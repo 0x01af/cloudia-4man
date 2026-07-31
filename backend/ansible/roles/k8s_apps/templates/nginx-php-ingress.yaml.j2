@@ -19,7 +19,7 @@ metadata:
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
   rules:
-{% for site in %}
+{% for site in _k8s_app.nginx.sites if site.fqdn is defined and site.fqdn | length > 0 %}
   - host: "{{ site.fqdn }}"
     http:
       paths:
@@ -33,7 +33,7 @@ spec:
 {% endfor %}
   tls:
   - hosts:
-{% for site in %}
-    - "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
-{% endfor %}    
+{% for site in _k8s_app.nginx.sites if site.fqdn is defined and site.fqdn | length > 0 %}
+    - "{{ site.fqdn }}"
+{% endfor %}  
     secretName: nginx-php-ingress-tls-secret
