@@ -69,7 +69,9 @@ It's done with 'ansible'.
 | SearXNG | Search machine proxy |  :bulb: idea | |
 | Seafile | File-Sharing like Dropbox or OneDrive |  :bulb: idea | |
 | Jellyfin | Media and Streaming Service, like Netflix or Spotify |  :bulb: idea | |
+| ConvertX | A self-hosted online file converter. Supports over a thousand different formats. |  :bulb: idea | |
 | Kimai | timetracker (working hours, holidays, ...) |  :bulb: idea | |
+| PocketID | The most user-friendly OpenID Connect Certified™ and OAuth 2.0 provider that lets users sign in to your applications with passkeys. |  :bulb: idea |  ⭐ |
 | Dex | Light-weight Identity Broker (because everyone already has a preferred Identity Provider - like Microsoft Entra ID, Google Identity, or your local Synology User Directory) |  :bulb: idea | |
 | Authentik | Light-weight Identity and Access Management |  :bulb: idea | |
 | Authelia | Light-weight Identity and Access Management |  :bulb: idea |  ⭐ |
