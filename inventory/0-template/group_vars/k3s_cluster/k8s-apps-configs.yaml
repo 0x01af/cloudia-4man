@@ -66,11 +66,10 @@ k8s_apps:
     php:
       version: "8.5"
     nginx:
-      fqdn: "www.example.org"
       sites:
-      - path: "/" # root/main site
-      - path: "/subsite1"
-      - path: "/subsite2"
+      - fqdn: "www.example.org"
+      - fqdn: "test.example.com"
+      - fqdn: "test.example.org"
     storage:
       class_name: "longhorn"
       size: "1Gi"
