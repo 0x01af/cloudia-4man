@@ -12,51 +12,29 @@ metadata:
 data:
   99-nginx.conf: |
     server {
+        listen 80 default_server;
+        server_name "";
+        return 404; # Not found
+    }
+{% for site in _k8s_app.nginx.sites if site.fqdn is defined and site.fqdn | length > 0 %}
+    server {
         listen 80;
-        server_name {{ _k8s_app.nginx.fqdn | default('nginx-php.local') }};
-        root /var/www/html;
+        server_name {{ site.fqdn }};
+        root /var/www/html/{{ site.fqdn | regex_replace('(\.)', '_') }};
         index index.php index.html;
-{% for site in _k8s_app.nginx.sites %}
-{% if site.path == "/" %}
-        # ----------------------------------------------------
-        # Site /
-        # ----------------------------------------------------
         location / {
             try_files $uri $uri/ /index.php?$query_string;
-            
-            location ~ \.php$ {
-                # Check that the PHP file exists before passing to PHP-FPM
-                try_files $uri =404;
-                fastcgi_pass 127.0.0.1:9000;
-                fastcgi_index index.php;
-                include fastcgi_params;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            }
         }
-{% else %}
-        # ----------------------------------------------------
-        # Site {{ site.path }}
-        # ----------------------------------------------------
-        # Handle {{ site.path }} (without trailing slash) by redirecting to {{ site.path }}/
-        location = {{ site.path }} {
-            return 301 {{ site.path }}/;
+        location ~ \.php$ {
+            # Check that the PHP file exists before passing to PHP-FPM
+            try_files $uri =404;
+            fastcgi_pass 127.0.0.1:9000;
+            fastcgi_index index.php;
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         }
-        
-        location ^~ {{ site.path }}/ {
-            try_files $uri $uri/ {{ site.path }}/index.php?$query_string;
-            
-            location ~ \.php$ {
-                # Check that the PHP file exists before passing to PHP-FPM
-                try_files $uri =404;
-                fastcgi_pass 127.0.0.1:9000;
-                fastcgi_index index.php;
-                include fastcgi_params;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-            }
-        }
-{% endif %}
-{% endfor %}
     }
+{% endfor %}
 
   99-php-fpm.conf: |
     [global]
