@@ -5,11 +5,22 @@ metadata:
   name: nginx-php-ingress
   namespace: "{{ _k8s_app.namespace | default('nginx-php') }}"
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: "web"
+    traefik.ingress.kubernetes.io/router.middlewares: traefik-redirect-to-https@kubernetescrd
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+{% if _k8s_app.mode is defined and _k8s_app.mode == "prod" %}
+{# configure prod certificate issueing #}
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+{% else %}
+{# configure test certificate issueing #}
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+{% endif %}
+    cert-manager.io/acme-challenge-type: "http01"
 spec:
   ingressClassName: {{ _k8s_ingress_detected }}
-  rules:      
-  - host: "{{ _k8s_app.nginx.fqdn | default('nginx-php.local') }}"
+  rules:
+{% for site in %}
+  - host: "{{ site.fqdn }}"
     http:
       paths:
       - path: /
@@ -19,3 +30,10 @@ spec:
             name: nginx-php-service
             port:
               number: 80
+{% endfor %}
+  tls:
+  - hosts:
+{% for site in %}
+    - "{{ _k8s_app.config.fqdn | default('home-assistant.local') }}"
+{% endfor %}    
+    secretName: nginx-php-ingress-tls-secret
