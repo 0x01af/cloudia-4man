@@ -43,7 +43,7 @@ spec:
       securityContext:
         fsGroup: 33
       containers:
-      - image: "ghcr.io/eclipse-mosquitto/mosquitto:{{ _k8s_app.version }}-alpine"
+      - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
         name: mosquitto
         resources:
           requests:
