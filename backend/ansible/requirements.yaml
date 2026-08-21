@@ -8,4 +8,6 @@ collections:
 
 # ansible roles (will be used by ansible-galaxy)
 roles:
-# NONE
+  #- name: myrole
+  #  src: git+https://github.com/IhrUser/ansible-role-myrole.git
+  #  version: v1.0.0
