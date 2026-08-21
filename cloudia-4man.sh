@@ -12,7 +12,7 @@ trap 'c4m_aborted' INT
 ### Configuration
 # Konstanten als assoziatives Array (Benötigt Bash 4.0+)
 declare -A C4M_CONFIG=(
-    [ansible_version]="2.7"
+    [ansible_version]="2.13.9"
     [inventory_path]="./inventory"
     [dialog_backtitle]="Cloudia - the foreman (cloudia-4man)"
 )
