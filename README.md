@@ -74,7 +74,7 @@ It's done with 'ansible'.
 | PocketID | The most user-friendly OpenID Connect Certified™ and OAuth 2.0 provider that lets users sign in to your applications with passkeys. |  :bulb: idea |  ⭐ |
 | Dex | Light-weight Identity Broker (because everyone already has a preferred Identity Provider - like Microsoft Entra ID, Google Identity, or your local Synology User Directory) |  :bulb: idea | |
 | Authentik | Light-weight Identity and Access Management |  :bulb: idea | |
-| Authelia | Light-weight Identity and Access Management |  :bulb: idea |  ⭐ |
+| Authelia | Light-weight Identity and Access Management (https://www.reddit.com/r/selfhosted/comments/1vs2t4u/best_2fa_selfhosted_recommendations/) |  :bulb: idea |  ⭐ |
 | rauthy | Light-weight Identity and Access Management |  :bulb: idea | |
 | Vaultwarden | Bitwarden compatible Password Manager (other solution: Keepass with database hosting on Seafile or local NAS) |  :bulb: idea | |
 | NetBird | Secure Access to Kubernetes Resource Access (Nodes, Pods, Services, see https://netbird.io/knowledge-hub/using-netbird-for-kubernetes-access) |  :bulb: idea | |
