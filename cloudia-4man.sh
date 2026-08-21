@@ -46,6 +46,8 @@ fi
 # python3 -m pip install --user ansible
 # - ansible collections: ensure, all required collections are installed
 ansible-galaxy collection install -r backend/ansible/requirements.yaml
+# - ansible roles: ensure, all required roles are installed
+ansible-galaxy role install --roles-path backend/ansible/roles -r backend/ansible/requirements.yaml
 # - python libraries: ensure, all required python libraries are installed (https://packaging.python.org/en/latest/tutorials/installing-packages/)
 python3 -m pip install -r backend/python/requirements.txt
 
