@@ -62,7 +62,7 @@ It's done with 'ansible'.
 | Zigbee2MQTT | Zigbee to MQTT Bridge |  :rocket: production-ready |  ⭐ |
 | TaskView | It combines task management, custom workflows, developer integrations, analytics, and AI-assisted automation in a platform you can run on your own infrastructure. (https://github.com/Gimanh/taskview-community) |  :bulb: idea | |
 | SilverBullet | Personal Knowledge Management (see https://silverbullet.md/) |  :bulb: idea | |
-| CloudNativePG (CNPG) | PostgreSQL Database for any K8s app |  :mag: dev-mode | |
+| CloudNativePG (CNPG) | PostgreSQL Database for any K8s app (https://medium.com/@surbhi19/we-put-our-production-database-on-kubernetes-heres-what-dbre-taught-us-c0875f3acfc3) |  :mag: dev-mode | |
 | Kubernetes Reflector | Reflector for Kubernetes ConfigMaps and Secrets (original use case didn't work as expected - therefore postponed) |  :mag: dev-mode | |
 | Karakeep |  |  :bulb: idea | |
 | Immich | Photo Management like Google Photos |  :bulb: idea | |
