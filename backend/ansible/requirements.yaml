@@ -8,6 +8,6 @@ collections:
 
 # ansible roles (will be used by ansible-galaxy)
 roles:
-  #- name: myrole
-  #  src: git+https://github.com/IhrUser/ansible-role-myrole.git
-  #  version: v1.0.0
+  - name: cloudnative-pg
+    src: git+https://github.com/0x01af/ansible-role-cloudnative-pg.git
+    version: 0.0.1
