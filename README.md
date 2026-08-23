@@ -146,6 +146,16 @@ needs to be proofed
    1. Orchestration Service detects new infrastructure component, asks about any special parameters like one-time-passwords, or similar,
       run provisioning service, and start configuration & deployment management.
 
+### Advanced usage
+Cloudia as foreman allows you to control Ansible plays in advanced modes:
+| Advanced Mode | Description | State |
+| --- | --- | :---: |
+| **bootstrap** (default) | install/update/configure, it's the production-ready default behavior |  :mag: dev-mode |
+| **housekeeping** | save/backup/clean logs/remove temporary | :bulb: idea |
+| **shutdown** | save/backup/stop | :bulb: idea |
+| **uninstall** | save/backup/stop/uninstall/remove files | :bulb: idea |
+If a role doesn't apply an advanced mode, than Cloudia as foreman informs you.
+
 ## Feature Request
 
 ### Never ever
