@@ -154,6 +154,7 @@ Cloudia as foreman allows you to control Ansible plays in advanced modes:
 | **housekeeping** | save/backup/clean logs/remove temporary | :bulb: idea |
 | **shutdown** | save/backup/stop | :bulb: idea |
 | **uninstall** | save/backup/stop/uninstall/remove files | :bulb: idea |
+
 If a role doesn't apply an advanced mode, than Cloudia as foreman informs you.
 
 ## Feature Request
