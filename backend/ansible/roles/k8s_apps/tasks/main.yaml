@@ -50,3 +50,19 @@
     label: "{{ item.name }} ({{ item.version }})"
   vars:
     _k8s_app: "{{ item }}"
+
+### NEW VERSION 2.0: BREAKING CHANGE ###
+# - name: "Set parameter of all K8s applications"
+#  ansible.builtin.set_fact:
+#    "{{ item.key }}": "{{ item.value }}"
+#  loop: "{{ k8s_apps | dict2items }}"
+#  loop_control:
+#    label: "{{ item.key }} ({{ item.value.version }})"
+#  when: item.value.version != "none"
+#
+#- name: "Configure all K8s applications"
+#  include_role: 
+#    name: "{{ item.key }}"
+#  loop: "{{ k8s_apps | dict2items }}"
+#  loop_control:
+#    label: "{{ item.key }} ({{ item.value.version }})"
