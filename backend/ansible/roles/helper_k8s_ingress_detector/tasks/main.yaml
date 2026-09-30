@@ -1,0 +1,26 @@
+- name: "Identify current ingress controller"
+  run_once: true
+  block:
+    - name: "Get all ingress classes"
+      kubernetes.core.k8s_info:
+        kind: IngressClass
+      register: _k8s_ingress_classes
+
+    - name: "Select default ingress class (fallback: first one)"
+      set_fact:
+        k8s_ingress_class: >-
+          {{
+            (
+              _k8s_ingress_classes.resources
+              | selectattr('metadata.annotations.ingressclass.kubernetes.io/is-default-class', 'defined')
+              | map(attribute='metadata.name') | list
+              + _k8s_ingress_classes.resources | map(attribute='metadata.name') | list
+            ) | first | default('none')
+          }}
+        cacheable: true
+
+    - name: "Warn user, if no ingress has been detected"
+      when: k8s_ingress_class == 'none'
+      debug:
+        msg: "WARNING: No K8s ingress controller detected! Applications requiring one will fail."
+  when: k8s_ingress_class is not defined
