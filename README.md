@@ -21,11 +21,11 @@ It's done with 'cloud-init' and 'operating system auto-install' by booting an US
 > [!NOTE]
 > Unfortunately, this feature isn't well maintained by myself. If you need help, raise an issue.
 
-| Component | Description | State | Recommendation |
-| --- | --- | :---: | --- |
-| Topton Mini PC with Ubuntu x64 server | My home environment consists of three Topton Mini PC with Ubuntu x64 server (Intel N100, 32 GB RAM, 128 GB SSD)  |  :mag: dev-mode | |
-| Raspberry Pi with Ubuntu x64 server |    | :bulb: idea | | 
-| Raspberry Pi with Raspberry Pi OS |    | :bulb: idea | |
+| Component | Description | State | Recommendation | Ansible Collection |
+| --- | --- | :---: | --- | --- |
+| Topton Mini PC with Ubuntu x64 server | My home environment consists of three Topton Mini PC with Ubuntu x64 server (Intel N100, 32 GB RAM, 128 GB SSD)  |  :mag: dev-mode | |  |
+| Raspberry Pi with Ubuntu x64 server |    | :bulb: idea | |  |
+| Raspberry Pi with Raspberry Pi OS |    | :bulb: idea | |  |
 
 ### Configuration & Deployment Management: needs to be repeatedly done
 It's done with 'ansible'.
@@ -167,6 +167,7 @@ If a role doesn't apply an execution mode, than Cloudia as foreman informs you.
 * https://blog.devgenius.io/provisioning-vs-configuration-management-with-terraform-4bf07b9c79db
 * Why Terraform and Ansible? -> https://serverfault.com/questions/1022690/is-it-possible-to-run-ansible-on-a-bare-metal
 * Using YAML instead INI -> https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-aliases
+* Ansible collections are better than standalone Ansible roles -> https://docs.ansible.com/projects/ansible/latest/dev_guide/developing_collections_creating.html
 * Kubernetes Deployments: Stop using CPU limits, set Memory limit equals to requested: https://home.robusta.dev/blog/stop-using-cpu-limits / https://medium.com/@danielvalev/stop-setting-kubernetes-cpu-limits-yes-really-285dbdf8ff51
   * Class idea: Guaranteed / critical workload (Highest Priority) -> set cpu and memory, memory limits = requests; Burstable / default (Medium Priority) -> set memory limits = 2 x requests, no cpu; best effort (low priority, kill if necessary) -> neither set cpu nor memory.
 * Kubara: If you only need to initialize K8s cluster, and you are a DevOps engineer. -> https://github.com/kubara-io/kubara
