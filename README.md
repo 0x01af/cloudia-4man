@@ -110,6 +110,7 @@ needs to be proofed
 | Kubescape | Security Scanning for Your Cluster |  :bulb: idea | ⭐ |
 | Popeye | Popeye scans a live cluster and grades it from A to F, surfacing misconfigurations that quietly accumulate over time. |  :bulb: idea |   |
 | Dnsglobe | A global DNS propagation checker for your terminal — a Rust TUI that queries 34 public DNS resolvers around the world in parallel, compares their answers, and shows the propagation of your record on a world map. (https://github.com/514-labs/dnsglobe)  |  :bulb: idea |   |
+| LLMfit | Find out which open-source Large Language Models (LLMs) your hardware can comfortably run. llmfit inspects your CPU, system RAM, GPU(s), VRAM, and accelerator configuration to recommend models across popular quantizations. (https://github.com/AlexsJones/llmfit)  |  :bulb: idea |   |
 
 ## Architecture
 
