@@ -81,6 +81,7 @@ It's done with 'ansible'.
 | Headlamp | Kubernetes Dashboard (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea) |  :bulb: idea | |
 | Hermes-Agent | Self-improving AI agent (https://github.com/nousresearch/hermes-agent) |  :bulb: idea | |
 | WasmEdge | Server-side WebAssembly Runtime on K3s (https://wasmedge.org/docs/develop/deploy/kubernetes/k3s) |  :bulb: idea | |
+| Instatic | A self-hosted CMS where the visual editor, content engine, and publisher all live in one Bun server — and the pages it ships are clean enough to read in view-source. (https://github.com/corebunch/instatic)  |  :bulb: idea | |
 
 #### WebAssembly Apps
 needs to be proofed
@@ -93,6 +94,7 @@ needs to be proofed
 | NetBird Hub / Agent | Secure Access Platform (https://netbird.io/) |  :bulb: idea | |
 | FlexiWAN |  Open Source SD-WAN & SASE (! critical license !) |  :bulb: idea | |
 | Beszel | Lightweight server monitoring platform built on PocketBase (idea from https://raveeshagarwal.medium.com/building-the-observability-stack-for-my-4-node-homelab-kubernetes-cluster-with-headlamp-and-beszel-b48fa73674ea) |  :bulb: idea | |
+| Sculptor | Sculptor is an extensible, open source app for running coding agents in parallel (https://imbue.com/product/sculptor) |  :bulb: idea | |
 
 
 #### Admin Tools (Linux-dependent)
