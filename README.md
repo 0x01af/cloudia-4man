@@ -109,6 +109,7 @@ needs to be proofed
 | k8sgpt | AI-powered tool that helps diagnose and fix Kubernetes issues with intelligent insights and automated troubleshooting |  :mag: dev-mode | |
 | Kubescape | Security Scanning for Your Cluster |  :bulb: idea | ⭐ |
 | Popeye | Popeye scans a live cluster and grades it from A to F, surfacing misconfigurations that quietly accumulate over time. |  :bulb: idea |   |
+| Dnsglobe | A global DNS propagation checker for your terminal — a Rust TUI that queries 34 public DNS resolvers around the world in parallel, compares their answers, and shows the propagation of your record on a world map. (https://github.com/514-labs/dnsglobe)  |  :bulb: idea |   |
 
 ## Architecture
 
