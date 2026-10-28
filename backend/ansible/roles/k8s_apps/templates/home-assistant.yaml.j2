@@ -38,16 +38,18 @@ spec:
                 values:
                 - home-assistant
       initContainers:
-      - name: home-assistant-hacs-init
+      - name: home-assistant-init
         image: alpine:latest
         command: ["/bin/sh", "-c"]
         args:
           - |
             apk add --no-cache wget bash unzip
-            # if HACS do not exists, install HACS
+{% if _k8s_app.version | version('2026.11', '<') %}
+            # if HACS do not exists, install HACS (only versions before 2026.11)
             if [ ! -d "/config/custom_components/hacs" ]; then
               wget -O - https://get.hacs.xyz | bash -
             fi
+{% endif %}
             # prepare /config/user directory for advanced mode manual
             mkdir -p "/config/user"
             mkdir -p "/config/user/themes"
