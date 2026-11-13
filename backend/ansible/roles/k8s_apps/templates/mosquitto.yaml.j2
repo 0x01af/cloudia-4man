@@ -41,7 +41,7 @@ spec:
         app: mosquitto-app
     spec:
       securityContext:
-        fsGroup: 33
+        fsGroup: 1883
       containers:
       - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
         name: mosquitto
