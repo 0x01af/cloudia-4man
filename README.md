@@ -82,6 +82,7 @@ It's done with 'ansible'.
 | Hermes-Agent | Self-improving AI agent (https://github.com/nousresearch/hermes-agent) |  :bulb: idea | |
 | WasmEdge | Server-side WebAssembly Runtime on K3s (https://wasmedge.org/docs/develop/deploy/kubernetes/k3s) |  :bulb: idea | |
 | Instatic | A self-hosted CMS where the visual editor, content engine, and publisher all live in one Bun server — and the pages it ships are clean enough to read in view-source. (https://github.com/corebunch/instatic)  |  :bulb: idea | |
+| Huginn | Huginn is a system for building agents that perform automated tasks for you online. (https://github.com/huginn/huginn) |  :bulb: idea |  ⭐ |
 
 #### WebAssembly Apps
 needs to be proofed
