@@ -30,6 +30,9 @@ metadata:
     app: mosquitto-app
 spec:
   replicas: 1
+  strategy:
+    # Recreate Deployment Strategy (non-default): https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+    type: Recreate
   # Revision History: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#revision-history-limit
   revisionHistoryLimit: 1
   selector:
@@ -41,6 +44,8 @@ spec:
         app: mosquitto-app
     spec:
       securityContext:
+        runAsUser: 1883
+        runAsGroup: 1883
         fsGroup: 1883
       containers:
       - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
@@ -74,3 +79,4 @@ spec:
       - name: mosquitto-configmap-config
         configMap:
           name: mosquitto-configmap-config
+          defaultMode: 0640
