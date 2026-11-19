@@ -44,7 +44,7 @@ spec:
         args:
           - |
             apk add --no-cache wget bash unzip
-{% if _k8s_app.version | version('2026.11', '<') %}
+{% if _k8s_app.version is version('2026.11', '<') %}
             # if HACS do not exists, install HACS (only versions before 2026.11)
             if [ ! -d "/config/custom_components/hacs" ]; then
               wget -O - https://get.hacs.xyz | bash -
