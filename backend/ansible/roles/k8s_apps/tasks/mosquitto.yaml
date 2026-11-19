@@ -16,6 +16,7 @@
     - name: "deploy mosquitto"
       kubernetes.core.k8s:
         state: present
+        merge_type: ['strategic-merge', 'merge']
         template: 'mosquitto.yaml.j2'
       register: _mosquitto_deployment
     - name: "force pod recreation via Rollout (Clean Sledgehammer)"
