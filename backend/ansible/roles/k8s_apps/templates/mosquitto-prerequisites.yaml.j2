@@ -34,7 +34,11 @@ data:
     
     # Authentication
     allow_anonymous false
+    # DEPRECATION WARNING since 2.1:
     password_file /mosquitto/password_file/password_file.conf
+    # BREAKING CHANGE 3.x:
+    # global_plugin /path/to/mosquitto_password_file.so
+    # plugin_opt_password_file /mosquitto/password_file/password_file.conf
     
     # Persistence
     persistence false
