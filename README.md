@@ -58,7 +58,7 @@ It's done with 'ansible'.
 | cert-manager | Certificate Manager for Kubernetes Ingress/Services |  :rocket: production-ready |  ⭐ |
 | Gatus | Monitoring Solution |  :rocket: production-ready |  ⭐ |
 | Home Assistant | Smart Home (with HACS support) |  :rocket: production-ready |  ⭐ |
-| Mosquitto | MQTT Broker |  :rocket: production-ready |  ⭐ |
+| Mosquitto | MQTT Broker (WARNING: Don't use v2.1.0 to v2.1.3 - see bugs: #3461, #3498) |  :rocket: production-ready |  ⭐ |
 | Zigbee2MQTT | Zigbee to MQTT Bridge |  :rocket: production-ready |  ⭐ |
 | TaskView | It combines task management, custom workflows, developer integrations, analytics, and AI-assisted automation in a platform you can run on your own infrastructure. (https://github.com/Gimanh/taskview-community) |  :bulb: idea | |
 | SilverBullet | Personal Knowledge Management (see https://silverbullet.md/) |  :bulb: idea | |
