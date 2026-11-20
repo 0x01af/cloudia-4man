@@ -57,19 +57,20 @@ spec:
             limits:
               memory: "64Mi"
               cpu: "250m"
-        ports:
-          - containerPort: 1883
-            name: mqtt
-          - containerPort: 9001
-            name: websocket
-        volumeMounts:
-          # - name: mosquitto-pv-config
-          #   mountPath: /mosquitto/config
-          - name: mosquitto-secret-config
-            mountPath: /mosquitto/config/password_file.conf
-            readOnly: true
-          - name: mosquitto-configmap-config
-            mountPath: /mosquitto/config/mosquitto.conf
+          ports:
+            - containerPort: 1883
+              name: mqtt
+            - containerPort: 9001
+              name: websocket
+          volumeMounts:
+            # - name: mosquitto-pv-config
+            #   mountPath: /mosquitto/config
+            - name: mosquitto-secret-config
+              mountPath: /mosquitto/secret
+              readOnly: true
+            - name: mosquitto-configmap-config
+              mountPath: /mosquitto/config
+              readOnly: true
       volumes:
         # - name: mosquitto-pv-config
         #   persistentVolumeClaim:
@@ -81,3 +82,4 @@ spec:
         - name: mosquitto-secret-config
           secret:
             secretName: mosquitto-secret-config
+            defaultMode: 0640
