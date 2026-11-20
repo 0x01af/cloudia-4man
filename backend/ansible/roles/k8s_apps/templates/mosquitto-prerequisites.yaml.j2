@@ -8,8 +8,8 @@ metadata:
 # - https://blog.quadmeup.com/2025/07/09/mosquitto-in-kubernetes-the-simple-way/
 # - https://www.datacamp.com/de/tutorial/mosquitto-docker
 # - https://shantanoo-desai.github.io/posts/technology/mosquitto_ansible_passgen/
-kind: ConfigMap
 apiVersion: v1
+kind: ConfigMap
 metadata:
   name: mosquitto-configmap-config
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
