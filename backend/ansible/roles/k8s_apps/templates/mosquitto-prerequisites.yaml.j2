@@ -14,7 +14,7 @@ metadata:
   name: mosquitto-configmap-config
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 data:
-  mosquitto.conf: |
+  mosquitto.conf: |-
     # Basic listener configuration
     listener 1883
     protocol mqtt
