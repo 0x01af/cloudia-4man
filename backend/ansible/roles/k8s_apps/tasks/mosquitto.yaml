@@ -22,17 +22,17 @@
             name: mosquitto-secret-config
             namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
           stringData:
-            secret.yaml: |-
-              {{ lookup('template', 'zigbee2mqtt-secret.yaml.j2' ) }}
+            password_file.conf: |-
+              {{ lookup('template', 'mosquitto-password-file.conf.j2' ) }}
         state: present
-      register: _zigbee2mqtt_secret
+      register: _mosquitto_secret
     - name: "deploy mosquitto"
       kubernetes.core.k8s:
         state: present
         template: 'mosquitto.yaml.j2'
       register: _mosquitto_deployment
     - name: "force pod recreation via Rollout (Clean Sledgehammer)"
-      when: _mosquitto_prerequisites.changed or _mosquitto_deployment.changed
+      when: _mosquitto_prerequisites.changed or _mosquitto_secret.changed or _mosquitto_deployment.changed
       kubernetes.core.k8s:
         definition:
           apiVersion: apps/v1
