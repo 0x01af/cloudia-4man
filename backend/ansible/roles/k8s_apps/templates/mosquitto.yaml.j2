@@ -66,7 +66,7 @@ spec:
             # - name: mosquitto-pv-config
             #   mountPath: /mosquitto/config
             - name: mosquitto-secret-config
-              mountPath: /mosquitto/secret
+              mountPath: /mosquitto/password_file
               readOnly: true
             - name: mosquitto-configmap-config
               mountPath: /mosquitto/config
