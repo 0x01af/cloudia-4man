@@ -48,28 +48,28 @@ spec:
         runAsGroup: 1883
         fsGroup: 1883
       containers:
-      - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
-        name: mosquitto
-        resources:
-          requests:
-            memory: "32Mi"
-            cpu: "10m"
-          limits:
-            memory: "64Mi"
-            cpu: "250m"
+        - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
+          name: mosquitto
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "10m"
+            limits:
+              memory: "64Mi"
+              cpu: "250m"
         ports:
-        - containerPort: 1883
-          name: mqtt
-        - containerPort: 9001
-          name: websocket
+          - containerPort: 1883
+            name: mqtt
+          - containerPort: 9001
+            name: websocket
         volumeMounts:
-        # - name: mosquitto-pv-config
-        #   mountPath: /mosquitto/config
-        - name: mosquitto-secret-config
-          mountPath: /mosquitto/config/password_file.conf
-          readOnly: true
-        - name: mosquitto-configmap-config
-          mountPath: /mosquitto/config/mosquitto.conf
+          # - name: mosquitto-pv-config
+          #   mountPath: /mosquitto/config
+          - name: mosquitto-secret-config
+            mountPath: /mosquitto/config/password_file.conf
+            readOnly: true
+          - name: mosquitto-configmap-config
+            mountPath: /mosquitto/config/mosquitto.conf
       volumes:
         # - name: mosquitto-pv-config
         #   persistentVolumeClaim:
