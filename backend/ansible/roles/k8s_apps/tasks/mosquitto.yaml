@@ -13,6 +13,19 @@
         state: present
         template: 'mosquitto-prerequisites.yaml.j2'
       register: _mosquitto_prerequisites
+    - name: "deploy secret of mosquitto"
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: mosquitto-secret-config
+            namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
+          stringData:
+            secret.yaml: |-
+              {{ lookup('template', 'zigbee2mqtt-secret.yaml.j2' ) }}
+        state: present
+      register: _zigbee2mqtt_secret
     - name: "deploy mosquitto"
       kubernetes.core.k8s:
         state: present
