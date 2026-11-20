@@ -14,44 +14,45 @@ metadata:
   name: mosquitto-configmap-config
   namespace: "{{ _k8s_app.namespace | default('mosquitto') }}"
 data:
-  # Basic listener configuration
-  listener 1883
-  protocol mqtt
-  # mqtts: listener 8883
-  # protocol mqtt
-  
-  # WebSocket listener
-  listener 9001
-  protocol websockets
-  # https: listener 9002
-  # protocol websockets
-  
-  # Encryption
-  # cafile /mosquitto/config/ca.crt
-  # certfile /mosquitto/config/server.crt
-  # keyfile /mosquitto/config/server.key
-  
-  # Authentication
-  allow_anonymous false
-  password_file /mosquitto/config/password_file.conf
-  
-  # Persistence
-  persistence false
-  # persistence_location /mosquitto/data/
-  # autosave_interval 300
-  persistent_client_expiration 1d
-  
-  # Logging
-  # log_dest file /mosquitto/log/mosquitto.log
-  log_dest stdout
-  log_timestamp true
-  log_type error
-  log_type warning
-  # debugging: log_type notice
-  # debugging: log_type information
-  # # debugging: log_type debug
-  # debugging: connection_messages true
-  
+  mosquitto.conf: |
+    # Basic listener configuration
+    listener 1883
+    protocol mqtt
+    # mqtts: listener 8883
+    # protocol mqtt
+     
+    # WebSocket listener
+    listener 9001
+    protocol websockets
+    # https: listener 9002
+    # protocol websockets
+    
+    # Encryption
+    # cafile /mosquitto/config/ca.crt
+    # certfile /mosquitto/config/server.crt
+    # keyfile /mosquitto/config/server.key
+    
+    # Authentication
+    allow_anonymous false
+    password_file /mosquitto/config/password_file.conf
+     
+    # Persistence
+    persistence false
+    # persistence_location /mosquitto/data/
+    # autosave_interval 300
+    persistent_client_expiration 1d
+    
+    # Logging
+    # log_dest file /mosquitto/log/mosquitto.log
+    log_dest stdout
+    log_timestamp true
+    log_type error
+    log_type warning
+    # debugging: log_type notice
+    # debugging: log_type information
+    # # debugging: log_type debug
+    # debugging: connection_messages true
+    
 ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
