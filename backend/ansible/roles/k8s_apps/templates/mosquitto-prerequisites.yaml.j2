@@ -51,13 +51,7 @@ data:
   # debugging: log_type information
   # # debugging: log_type debug
   # debugging: connection_messages true
----
-
-
-  password_file.conf: |-
-    {% for user in vault_k8s_apps.mosquitto.users %}
-      {{ user.username }}:{{ user.password | mosquitto_passwd }}
-    {% endfor %}
+  
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
