@@ -11,6 +11,8 @@
     - name: "deploy prerequisites of mosquitto"
       kubernetes.core.k8s:
         state: present
+        apply: true
+        force: true
         template: 'mosquitto-prerequisites.yaml.j2'
       register: _mosquitto_prerequisites
     - name: "deploy secret of mosquitto"
@@ -25,11 +27,15 @@
             password_file.conf: |-
               {{ lookup('template', 'mosquitto-password-file.conf.j2' ) }}
         state: present
+        apply: true
+        force: true
       register: _mosquitto_secret
     - name: "deploy mosquitto"
       kubernetes.core.k8s:
         state: present
         template: 'mosquitto.yaml.j2'
+        apply: true
+        force: true
       register: _mosquitto_deployment
     - name: "force pod recreation via Rollout (Clean Sledgehammer)"
       when: _mosquitto_prerequisites.changed or _mosquitto_secret.changed or _mosquitto_deployment.changed
@@ -49,4 +55,6 @@
     - name: "configure ingress for mosquitto"
       kubernetes.core.k8s:
         state: present
+        apply: true
+        force: true
         template: 'mosquitto-ingress-{{ _k8s_ingress_detected }}.yaml.j2'
