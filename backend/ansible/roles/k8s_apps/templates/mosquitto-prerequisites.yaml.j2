@@ -52,7 +52,7 @@ data:
   # # debugging: log_type debug
   # debugging: connection_messages true
   
-# ---
+---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
 # metadata:
@@ -67,7 +67,7 @@ data:
 #     requests:
 #       storage: "{{ _k8s_app.storage.size | default('1Gi') }}"
 #   storageClassName: "{{ _k8s_app.storage.class_name | default('') }}"
----
+# ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
