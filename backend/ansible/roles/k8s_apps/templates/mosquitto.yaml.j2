@@ -52,6 +52,8 @@ spec:
         # HARDENING POD-LEVEL: Enable Secure Computing Mode
         seccompProfile:
           type: RuntimeDefault
+        appArmorProfile:
+          type: RuntimeDefault
       containers:
         - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
           name: mosquitto
