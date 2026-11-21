@@ -249,27 +249,22 @@
         mode: "0644"
       register: _k3s_config
 
-- name: Write K3s service file
+- name: Write definition of K3s service
   ansible.builtin.template:
     src: "k3s-server.service.j2"
     dest: "/etc/systemd/system/k3s.service"
     mode: "0644"
   register: _k3s_service
-- name: Enable K3s service (if not existing)
-  ansible.builtin.systemd:
-    name: k3s
-    daemon_reload: true
-    state: started
-    enabled: true
 
 ### (Re-)Start K3s service
-- name: Restart K3s service
+- name: Enable and (Re-)start K3s service
   when:
     - _k3s_service.changed or _k3s_config.changed or _k3s_binaries_installed.changed
   ansible.builtin.systemd:
     name: k3s
     daemon_reload: true
     state: restarted
+    enabled: true
 - name: Pause to allow first server startup
   when:
     - (groups['k3s_servers'] | length) >= 3
