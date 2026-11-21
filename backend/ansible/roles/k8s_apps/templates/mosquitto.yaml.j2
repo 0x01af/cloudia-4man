@@ -43,6 +43,15 @@ spec:
       labels:
         app: mosquitto-app
     spec:
+      securityContext:
+        # HARDENING POD-LEVEL: Run as Non-Root User
+        runAsNonRoot: true
+        runAsUser: 1883
+        runAsGroup: 1883
+        fsGroup: 1883
+        # HARDENING POD-LEVEL: Enable Secure Computing Mode
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
           name: mosquitto
@@ -51,22 +60,13 @@ spec:
             - name: MOSQUITTO_UNSAFE_ALLOW_SYMLINKS
               value: "ANY"
           securityContext:
-            # SECURITY: Run as Non-Root User
-            runAsNonRoot: true
-            runAsUser: 1883
-            runAsGroup: 1883
-            fsGroup: 1883
-            # SECURITY: Disable Privilege Escalation
+            # HARDENING CONTAINER-LEVEL: Disable Privilege Escalation
             allowPrivilegeEscalation: false
-            # SECURITY: Restrict Linux Capabilities
+            # HARDENING CONTAINER-LEVEL: Restrict Linux Capabilities
             capabilities:
-              drop:
-                - ALL
-            # SECURITY: Set Root Filesystem to Read-Only
+              drop: ["ALL"]
+            # HARDENING CONTAINER-LEVEL: Set Root Filesystem to Read-Only
             readOnlyRootFilesystem: true
-            # SECURITY: Enable Secure Computing Mode
-            seccompProfile:
-              type: RuntimeDefault
           resources:
             requests:
               memory: "32Mi"
