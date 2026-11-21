@@ -42,7 +42,11 @@ data:
     
     # Persistence
     persistence false
+    # DEPRECATION WARNING since 2.1:
     # persistence_location /mosquitto/data/
+    # BREAKING CHANGE 3.x:
+    # persistence_location /mosquitto/data/
+    # plugin /usr/lib/mosquitto_persist_sqlite.so
     # autosave_interval 300
     persistent_client_expiration 1d
     
