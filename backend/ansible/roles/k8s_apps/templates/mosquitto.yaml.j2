@@ -55,8 +55,11 @@ spec:
       containers:
         - image: "eclipse-mosquitto:{{ _k8s_app.version }}-alpine"
           name: mosquitto
+{%- if _k8s_app.version is version('2.1', '>') %}
+          # BUG WORKAROUND: https://github.com/eclipse-mosquitto/mosquitto/issues/3465#issuecomment-7070761509
           command: ["/usr/sbin/mosquitto"]
           args: ["-c", "/mosquitto/config/mosquitto.conf"]
+{%- endif %}
           env:
             # BREAKING CHANGE SINCE v2.1 / Feature since v2.1.1: Allow Symlinks in safe environments like Kubernetes (https://mosquitto.org/blog/2026/02/version-2-1-1-released/)
             - name: MOSQUITTO_UNSAFE_ALLOW_SYMLINKS
