@@ -89,10 +89,8 @@ spec:
             #   mountPath: /mosquitto/config
             - name: mosquitto-secret-config
               mountPath: /mosquitto/password_file
-              readOnly: true
             - name: mosquitto-configmap-config
               mountPath: /mosquitto/config
-              readOnly: true
       volumes:
         # - name: mosquitto-pv-config
         #   persistentVolumeClaim:
