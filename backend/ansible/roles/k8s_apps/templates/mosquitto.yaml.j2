@@ -53,7 +53,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - image: "eclipse-mosquitto:{{ _k8s_app.version }}{{ '-alpine' if _k8s_app.version is version('2.1.0', '>=' else '-openssl' }}"
+        - image: "eclipse-mosquitto:{{ _k8s_app.version }}{{ '-alpine' if _k8s_app.version is version('2.1.0', '>=') else '-openssl' }}"
           name: mosquitto
 {% if _k8s_app.version is version('2.1.0', '>=') and _k8s_app.version is version('2.1.4', '<=') %}
           # BUG WORKAROUND: https://github.com/eclipse-mosquitto/mosquitto/issues/3465#issuecomment-7070761509
